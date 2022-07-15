@@ -74,7 +74,7 @@ class Ui_MainWindow(object):
         font.setBold(False)
         font.setWeight(50)
         self.btn_login.setFont(font)
-        self.btn_login.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
+        self.btn_login.setFocusPolicy(QtCore.Qt.FocusPolicy.StrongFocus)
         self.btn_login.setStyleSheet("QPushButton {\n"
 "background-color: rgb(228, 107, 134);\n"
 "border: none;\n"
@@ -547,8 +547,8 @@ class Ui_MainWindow(object):
         self.stackedWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
         MainWindow.setTabOrder(self.line_login, self.line_password)
-        MainWindow.setTabOrder(self.line_password, self.btn_path_dayWeek_bakery)
-        MainWindow.setTabOrder(self.btn_path_dayWeek_bakery, self.btn_path_OLAP_P)
+        MainWindow.setTabOrder(self.line_password, self.btn_login)
+        MainWindow.setTabOrder(self.btn_login, self.btn_path_OLAP_P)
         MainWindow.setTabOrder(self.btn_path_OLAP_P, self.btn_path_ost_cakes)
         MainWindow.setTabOrder(self.btn_path_ost_cakes, self.btn_pie)
         MainWindow.setTabOrder(self.btn_pie, self.btn_cakes)
@@ -559,6 +559,7 @@ class Ui_MainWindow(object):
         MainWindow.setTabOrder(self.btn_path_dayWeek_pie, self.btn_path_dayWeek_cakes)
         MainWindow.setTabOrder(self.btn_path_dayWeek_cakes, self.btn_path_ost_filling)
         MainWindow.setTabOrder(self.btn_path_ost_filling, self.btn_exit)
+        MainWindow.setTabOrder(self.btn_exit, self.btn_path_dayWeek_bakery)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -568,6 +569,7 @@ class Ui_MainWindow(object):
         self.suppot_text.setText(_translate("MainWindow", "По всем вопросам работы программы \n"
 " обращаться в Отдел построения"))
         self.btn_login.setText(_translate("MainWindow", "Начать работу"))
+        self.btn_login.setShortcut(_translate("MainWindow", "Enter"))
         self.line_password.setPlaceholderText(_translate("MainWindow", "Пароль"))
         self.line_login.setPlaceholderText(_translate("MainWindow", "Логин"))
         self.label_login_password.setText(_translate("MainWindow", "Введите логин и пароль"))

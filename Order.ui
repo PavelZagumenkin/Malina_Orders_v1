@@ -182,7 +182,7 @@
        </font>
       </property>
       <property name="focusPolicy">
-       <enum>Qt::NoFocus</enum>
+       <enum>Qt::StrongFocus</enum>
       </property>
       <property name="styleSheet">
        <string notr="true">QPushButton {
@@ -202,6 +202,9 @@ background-color: rgba(228, 107, 134, 1)
       </property>
       <property name="text">
        <string>Начать работу</string>
+      </property>
+      <property name="shortcut">
+       <string>Enter</string>
       </property>
       <property name="checkable">
        <bool>false</bool>
@@ -1106,7 +1109,7 @@ background-color: rgba(228, 107, 134, 1)
  <tabstops>
   <tabstop>line_login</tabstop>
   <tabstop>line_password</tabstop>
-  <tabstop>btn_path_dayWeek_bakery</tabstop>
+  <tabstop>btn_login</tabstop>
   <tabstop>btn_path_OLAP_P</tabstop>
   <tabstop>btn_path_ost_cakes</tabstop>
   <tabstop>btn_pie</tabstop>
@@ -1118,6 +1121,7 @@ background-color: rgba(228, 107, 134, 1)
   <tabstop>btn_path_dayWeek_cakes</tabstop>
   <tabstop>btn_path_ost_filling</tabstop>
   <tabstop>btn_exit</tabstop>
+  <tabstop>btn_path_dayWeek_bakery</tabstop>
  </tabstops>
  <resources/>
  <connections/>
