@@ -75,32 +75,32 @@ class Interface(QtWidgets.QMainWindow):
 
     # Прописываем выбранные пути в поля
     def olap_p(self):
-        fileName = QFileDialog.getOpenFileName(self, 'Выберите файл OLAP по продажам', 'C:\PythonProject\Project_Order\Отчеты', 'Excel файл (*.xlsx)')
+        fileName = QFileDialog.getOpenFileName(self, 'Выберите файл OLAP по продажам', 'Отчеты', 'Excel файл (*.xlsx)')
         self.ui.lineEdit_OLAP_P.setText(fileName[0])
         self.ui.lineEdit_OLAP_P.setStyleSheet("padding-left: 5px; color: rgb(0, 0, 0)")
 
     def olap_dayWeek_bakery(self):
-        fileName = QFileDialog.getOpenFileName(self, 'Выберите файл OLAP по дням недели для пекарни', 'C:\PythonProject\Project_Order\Отчеты', 'Excel файл (*.xlsx)')
+        fileName = QFileDialog.getOpenFileName(self, 'Выберите файл OLAP по дням недели для пекарни', 'Отчеты', 'Excel файл (*.xlsx)')
         self.ui.lineEdit_OLAP_dayWeek_bakery.setText(fileName[0])
         self.ui.lineEdit_OLAP_dayWeek_bakery.setStyleSheet("padding-left: 5px; color: rgb(0, 0, 0)")
 
     def olap_dayWeek_pie(self):
-        fileName = QFileDialog.getOpenFileName(self, 'Выберите файл OLAP по дням недели для пирожных', 'C:\PythonProject\Project_Order\Отчеты', 'Excel файл (*.xlsx)')
+        fileName = QFileDialog.getOpenFileName(self, 'Выберите файл OLAP по дням недели для пирожных', 'Отчеты', 'Excel файл (*.xlsx)')
         self.ui.lineEdit_OLAP_dayWeek_pie.setText(fileName[0])
         self.ui.lineEdit_OLAP_dayWeek_pie.setStyleSheet("padding-left: 5px; color: rgb(0, 0, 0)")
 
     def olap_dayWeek_cakes(self):
-        fileName = QFileDialog.getOpenFileName(self, 'Выберите файл OLAP по дням недели для тортов', 'C:\PythonProject\Project_Order\Отчеты', 'Excel файл (*.xlsx)')
+        fileName = QFileDialog.getOpenFileName(self, 'Выберите файл OLAP по дням недели для тортов', 'Отчеты', 'Excel файл (*.xlsx)')
         self.ui.lineEdit_OLAP_dayWeek_cakes.setText(fileName[0])
         self.ui.lineEdit_OLAP_dayWeek_cakes.setStyleSheet("padding-left: 5px; color: rgb(0, 0, 0)")
 
     def olap_ost_cakes(self):
-        fileName = QFileDialog.getOpenFileName(self, 'Выберите файл OLAP остатков тортов', 'C:\PythonProject\Project_Order\Отчеты', 'Excel файл (*.xlsx)')
+        fileName = QFileDialog.getOpenFileName(self, 'Выберите файл OLAP остатков тортов', 'Отчеты', 'Excel файл (*.xlsx)')
         self.ui.lineEdit_ost_cakes.setText(fileName[0])
         self.ui.lineEdit_ost_cakes.setStyleSheet("padding-left: 5px; color: rgb(0, 0, 0)")
 
     def olap_ost_filling(self):
-        fileName = QFileDialog.getOpenFileName(self, 'Выберите файл OLAP остатков начинки', 'C:\PythonProject\Project_Order\Отчеты', 'Excel файл (*.xlsx)')
+        fileName = QFileDialog.getOpenFileName(self, 'Выберите файл OLAP остатков начинки', 'Отчеты', 'Excel файл (*.xlsx)')
         self.ui.lineEdit_ost_filling.setText(fileName[0])
         self.ui.lineEdit_ost_filling.setStyleSheet("padding-left: 5px; color: rgb(0, 0, 0)")
 

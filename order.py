@@ -569,7 +569,7 @@ class Ui_MainWindow(object):
         self.suppot_text.setText(_translate("MainWindow", "По всем вопросам работы программы \n"
 " обращаться в Отдел построения"))
         self.btn_login.setText(_translate("MainWindow", "Начать работу"))
-        self.btn_login.setShortcut(_translate("MainWindow", "Enter"))
+        self.btn_login.setShortcut(_translate("MainWindow", "Return"))
         self.line_password.setPlaceholderText(_translate("MainWindow", "Пароль"))
         self.line_login.setPlaceholderText(_translate("MainWindow", "Логин"))
         self.label_login_password.setText(_translate("MainWindow", "Введите логин и пароль"))

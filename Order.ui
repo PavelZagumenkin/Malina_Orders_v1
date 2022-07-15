@@ -204,7 +204,7 @@ background-color: rgba(228, 107, 134, 1)
        <string>Начать работу</string>
       </property>
       <property name="shortcut">
-       <string>Enter</string>
+       <string>Return</string>
       </property>
       <property name="checkable">
        <bool>false</bool>
