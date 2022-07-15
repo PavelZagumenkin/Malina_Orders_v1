@@ -1,0 +1,1124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1280</width>
+    <height>720</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>1280</width>
+    <height>720</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>1280</width>
+    <height>720</height>
+   </size>
+  </property>
+  <property name="font">
+   <font>
+    <family>Trebuchet MS</family>
+    <pointsize>14</pointsize>
+   </font>
+  </property>
+  <property name="cursor">
+   <cursorShape>ArrowCursor</cursorShape>
+  </property>
+  <property name="mouseTracking">
+   <bool>false</bool>
+  </property>
+  <property name="tabletTracking">
+   <bool>false</bool>
+  </property>
+  <property name="windowTitle">
+   <string>Малина 64</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>image/icon.png</normaloff>image/icon.png</iconset>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background: #fff</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QStackedWidget" name="stackedWidget">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>-20</y>
+      <width>1281</width>
+      <height>741</height>
+     </rect>
+    </property>
+    <property name="contextMenuPolicy">
+     <enum>Qt::DefaultContextMenu</enum>
+    </property>
+    <property name="acceptDrops">
+     <bool>false</bool>
+    </property>
+    <property name="layoutDirection">
+     <enum>Qt::LeftToRight</enum>
+    </property>
+    <property name="inputMethodHints">
+     <set>Qt::ImhNone</set>
+    </property>
+    <property name="lineWidth">
+     <number>1</number>
+    </property>
+    <property name="midLineWidth">
+     <number>0</number>
+    </property>
+    <property name="currentIndex">
+     <number>0</number>
+    </property>
+    <widget class="QWidget" name="p_home">
+     <widget class="QLabel" name="autor_text">
+      <property name="geometry">
+       <rect>
+        <x>800</x>
+        <y>669</y>
+        <width>361</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+       </font>
+      </property>
+      <property name="text">
+       <string>Автор логиcтических расчетов Китов А.О. 
+ Разработчик Загуменкин П.И.</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="logo_721">
+      <property name="geometry">
+       <rect>
+        <x>-20</x>
+        <y>20</y>
+        <width>731</width>
+        <height>721</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="pixmap">
+       <pixmap>image/logo_721.png</pixmap>
+      </property>
+      <property name="scaledContents">
+       <bool>false</bool>
+      </property>
+     </widget>
+     <widget class="QLabel" name="suppot_text">
+      <property name="geometry">
+       <rect>
+        <x>810</x>
+        <y>610</y>
+        <width>341</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="mouseTracking">
+       <bool>true</bool>
+      </property>
+      <property name="tabletTracking">
+       <bool>false</bool>
+      </property>
+      <property name="acceptDrops">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string>По всем вопросам работы программы 
+ обращаться в Отдел построения</string>
+      </property>
+      <property name="textFormat">
+       <enum>Qt::AutoText</enum>
+      </property>
+      <property name="scaledContents">
+       <bool>false</bool>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+      <property name="wordWrap">
+       <bool>true</bool>
+      </property>
+      <property name="margin">
+       <number>10</number>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btn_login">
+      <property name="geometry">
+       <rect>
+        <x>800</x>
+        <y>390</y>
+        <width>351</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Trebuchet MS</family>
+        <pointsize>22</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+background-color: rgb(228, 107, 134);
+border: none;
+border-radius: 10px}
+
+QPushButton:hover {
+border: 1px solid  rgb(0, 0, 0);
+background-color: rgba(228, 107, 134, 0.9)
+}
+
+QPushButton:pressed {
+border:3px solid  rgb(0, 0, 0);
+background-color: rgba(228, 107, 134, 1)
+}</string>
+      </property>
+      <property name="text">
+       <string>Начать работу</string>
+      </property>
+      <property name="checkable">
+       <bool>false</bool>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="line_password">
+      <property name="geometry">
+       <rect>
+        <x>800</x>
+        <y>290</y>
+        <width>351</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Trebuchet MS</family>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="tabletTracking">
+       <bool>false</bool>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::StrongFocus</enum>
+      </property>
+      <property name="contextMenuPolicy">
+       <enum>Qt::DefaultContextMenu</enum>
+      </property>
+      <property name="inputMethodHints">
+       <set>Qt::ImhHiddenText|Qt::ImhNoAutoUppercase|Qt::ImhNoPredictiveText|Qt::ImhSensitiveData</set>
+      </property>
+      <property name="maxLength">
+       <number>16</number>
+      </property>
+      <property name="echoMode">
+       <enum>QLineEdit::Password</enum>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+      <property name="placeholderText">
+       <string>Пароль</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="line_login">
+      <property name="geometry">
+       <rect>
+        <x>800</x>
+        <y>210</y>
+        <width>351</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Trebuchet MS</family>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="tabletTracking">
+       <bool>false</bool>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::StrongFocus</enum>
+      </property>
+      <property name="contextMenuPolicy">
+       <enum>Qt::DefaultContextMenu</enum>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::LeftToRight</enum>
+      </property>
+      <property name="inputMethodHints">
+       <set>Qt::ImhNone</set>
+      </property>
+      <property name="maxLength">
+       <number>24</number>
+      </property>
+      <property name="echoMode">
+       <enum>QLineEdit::Normal</enum>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+      <property name="placeholderText">
+       <string>Логин</string>
+      </property>
+      <property name="cursorMoveStyle">
+       <enum>Qt::LogicalMoveStyle</enum>
+      </property>
+      <property name="clearButtonEnabled">
+       <bool>false</bool>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_login_password">
+      <property name="geometry">
+       <rect>
+        <x>800</x>
+        <y>170</y>
+        <width>351</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Trebuchet MS</family>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::LeftToRight</enum>
+      </property>
+      <property name="text">
+       <string>Введите логин и пароль</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <zorder>line_login</zorder>
+     <zorder>line_password</zorder>
+     <zorder>autor_text</zorder>
+     <zorder>logo_721</zorder>
+     <zorder>suppot_text</zorder>
+     <zorder>btn_login</zorder>
+     <zorder>label_login_password</zorder>
+    </widget>
+    <widget class="QWidget" name="p_settings">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <widget class="QLabel" name="label_settings_title">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>50</y>
+        <width>631</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Trebuchet MS</family>
+        <pointsize>20</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Настройка подключения внешних данных</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_OLAP_P">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>120</y>
+        <width>321</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Trebuchet MS</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Укажите путь к OLAP отчету по продажам</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btn_path_OLAP_P">
+      <property name="geometry">
+       <rect>
+        <x>750</x>
+        <y>150</y>
+        <width>51</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Trebuchet MS</family>
+        <pointsize>22</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+background-color: rgb(228, 107, 134);
+border: none;
+border-radius: 10px}
+
+QPushButton:hover {
+border: 1px solid  rgb(0, 0, 0);
+background-color: rgba(228, 107, 134, 0.9)
+}
+
+QPushButton:pressed {
+border:3px solid  rgb(0, 0, 0);
+background-color: rgba(228, 107, 134, 1)
+}</string>
+      </property>
+      <property name="text">
+       <string>...</string>
+      </property>
+      <property name="checkable">
+       <bool>false</bool>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btn_path_dayWeek_bakery">
+      <property name="geometry">
+       <rect>
+        <x>750</x>
+        <y>250</y>
+        <width>51</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Trebuchet MS</family>
+        <pointsize>22</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+background-color: rgb(228, 107, 134);
+border: none;
+border-radius: 10px}
+
+QPushButton:hover {
+border: 1px solid  rgb(0, 0, 0);
+background-color: rgba(228, 107, 134, 0.9)
+}
+
+QPushButton:pressed {
+border:3px solid  rgb(0, 0, 0);
+background-color: rgba(228, 107, 134, 1)
+}</string>
+      </property>
+      <property name="text">
+       <string>...</string>
+      </property>
+      <property name="checkable">
+       <bool>false</bool>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_OLAP_dayWeek_bakery">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>220</y>
+        <width>511</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Trebuchet MS</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Укажите путь к OLAP отчету по продажам по дням недели - выпечка</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btn_path_ost_cakes">
+      <property name="geometry">
+       <rect>
+        <x>750</x>
+        <y>550</y>
+        <width>51</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Trebuchet MS</family>
+        <pointsize>22</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+background-color: rgb(228, 107, 134);
+border: none;
+border-radius: 10px}
+
+QPushButton:hover {
+border: 1px solid  rgb(0, 0, 0);
+background-color: rgba(228, 107, 134, 0.9)
+}
+
+QPushButton:pressed {
+border:3px solid  rgb(0, 0, 0);
+background-color: rgba(228, 107, 134, 1)
+}</string>
+      </property>
+      <property name="text">
+       <string>...</string>
+      </property>
+      <property name="checkable">
+       <bool>false</bool>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_ost_cakes">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>520</y>
+        <width>331</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Trebuchet MS</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Укажите путь к Остаткам по складам - торты</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btn_pie">
+      <property name="geometry">
+       <rect>
+        <x>870</x>
+        <y>180</y>
+        <width>351</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Trebuchet MS</family>
+        <pointsize>22</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+background-color: rgb(228, 107, 134);
+border: none;
+border-radius: 10px}
+
+QPushButton:hover {
+border: 1px solid  rgb(0, 0, 0);
+background-color: rgba(228, 107, 134, 0.9)
+}
+
+QPushButton:pressed {
+border:3px solid  rgb(0, 0, 0);
+background-color: rgba(228, 107, 134, 1)
+}</string>
+      </property>
+      <property name="text">
+       <string>ПИРОЖНЫЕ</string>
+      </property>
+      <property name="checkable">
+       <bool>false</bool>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btn_cakes">
+      <property name="geometry">
+       <rect>
+        <x>870</x>
+        <y>290</y>
+        <width>351</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Trebuchet MS</family>
+        <pointsize>22</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+background-color: rgb(228, 107, 134);
+border: none;
+border-radius: 10px}
+
+QPushButton:hover {
+border: 1px solid  rgb(0, 0, 0);
+background-color: rgba(228, 107, 134, 0.9)
+}
+
+QPushButton:pressed {
+border:3px solid  rgb(0, 0, 0);
+background-color: rgba(228, 107, 134, 1)
+}</string>
+      </property>
+      <property name="text">
+       <string>ТОРТЫ</string>
+      </property>
+      <property name="checkable">
+       <bool>false</bool>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btn_others">
+      <property name="geometry">
+       <rect>
+        <x>870</x>
+        <y>510</y>
+        <width>351</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Trebuchet MS</family>
+        <pointsize>22</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+background-color: rgb(228, 107, 134);
+border: none;
+border-radius: 10px}
+
+QPushButton:hover {
+border: 1px solid  rgb(0, 0, 0);
+background-color: rgba(228, 107, 134, 0.9)
+}
+
+QPushButton:pressed {
+border:3px solid  rgb(0, 0, 0);
+background-color: rgba(228, 107, 134, 1)
+}</string>
+      </property>
+      <property name="text">
+       <string>ОСТАЛЬНОЕ</string>
+      </property>
+      <property name="checkable">
+       <bool>false</bool>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btn_bakery">
+      <property name="geometry">
+       <rect>
+        <x>870</x>
+        <y>70</y>
+        <width>351</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Trebuchet MS</family>
+        <pointsize>22</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+background-color: rgb(228, 107, 134);
+border: none;
+border-radius: 10px}
+
+QPushButton:hover {
+border: 1px solid  rgb(0, 0, 0);
+background-color: rgba(228, 107, 134, 0.9)
+}
+
+QPushButton:pressed {
+border:3px solid  rgb(0, 0, 0);
+background-color: rgba(228, 107, 134, 1)
+}</string>
+      </property>
+      <property name="text">
+       <string>ВЫПЕЧКА</string>
+      </property>
+      <property name="checkable">
+       <bool>false</bool>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btn_filling">
+      <property name="geometry">
+       <rect>
+        <x>870</x>
+        <y>400</y>
+        <width>351</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Trebuchet MS</family>
+        <pointsize>22</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+background-color: rgb(228, 107, 134);
+border: none;
+border-radius: 10px}
+
+QPushButton:hover {
+border: 1px solid  rgb(0, 0, 0);
+background-color: rgba(228, 107, 134, 0.9)
+}
+
+QPushButton:pressed {
+border:3px solid  rgb(0, 0, 0);
+background-color: rgba(228, 107, 134, 1)
+}</string>
+      </property>
+      <property name="text">
+       <string>НАЧИНКИ</string>
+      </property>
+      <property name="checkable">
+       <bool>false</bool>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btn_path_dayWeek_pie">
+      <property name="geometry">
+       <rect>
+        <x>750</x>
+        <y>350</y>
+        <width>51</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Trebuchet MS</family>
+        <pointsize>22</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+background-color: rgb(228, 107, 134);
+border: none;
+border-radius: 10px}
+
+QPushButton:hover {
+border: 1px solid  rgb(0, 0, 0);
+background-color: rgba(228, 107, 134, 0.9)
+}
+
+QPushButton:pressed {
+border:3px solid  rgb(0, 0, 0);
+background-color: rgba(228, 107, 134, 1)
+}</string>
+      </property>
+      <property name="text">
+       <string>...</string>
+      </property>
+      <property name="checkable">
+       <bool>false</bool>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_OLAP_dayWeek_pie">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>320</y>
+        <width>531</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Trebuchet MS</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Укажите путь к OLAP отчету по продажам по дням недели - пирожные</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btn_path_dayWeek_cakes">
+      <property name="geometry">
+       <rect>
+        <x>750</x>
+        <y>450</y>
+        <width>51</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Trebuchet MS</family>
+        <pointsize>22</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+background-color: rgb(228, 107, 134);
+border: none;
+border-radius: 10px}
+
+QPushButton:hover {
+border: 1px solid  rgb(0, 0, 0);
+background-color: rgba(228, 107, 134, 0.9)
+}
+
+QPushButton:pressed {
+border:3px solid  rgb(0, 0, 0);
+background-color: rgba(228, 107, 134, 1)
+}</string>
+      </property>
+      <property name="text">
+       <string>...</string>
+      </property>
+      <property name="checkable">
+       <bool>false</bool>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_OLAP_dayWeek_cakes">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>420</y>
+        <width>521</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Trebuchet MS</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Укажите путь к OLAP отчету по продажам по дням недели - торты</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btn_path_ost_filling">
+      <property name="geometry">
+       <rect>
+        <x>750</x>
+        <y>650</y>
+        <width>51</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Trebuchet MS</family>
+        <pointsize>22</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+background-color: rgb(228, 107, 134);
+border: none;
+border-radius: 10px}
+
+QPushButton:hover {
+border: 1px solid  rgb(0, 0, 0);
+background-color: rgba(228, 107, 134, 0.9)
+}
+
+QPushButton:pressed {
+border:3px solid  rgb(0, 0, 0);
+background-color: rgba(228, 107, 134, 1)
+}</string>
+      </property>
+      <property name="text">
+       <string>...</string>
+      </property>
+      <property name="checkable">
+       <bool>false</bool>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_ost_filling">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>620</y>
+        <width>351</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Trebuchet MS</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Укажите путь к Остаткам по складам - начинка</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btn_exit">
+      <property name="geometry">
+       <rect>
+        <x>870</x>
+        <y>620</y>
+        <width>351</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Trebuchet MS</family>
+        <pointsize>22</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+background-color: rgb(228, 107, 134);
+border: none;
+border-radius: 10px}
+
+QPushButton:hover {
+border: 1px solid  rgb(0, 0, 0);
+background-color: rgba(228, 107, 134, 0.9)
+}
+
+QPushButton:pressed {
+border:3px solid  rgb(0, 0, 0);
+background-color: rgba(228, 107, 134, 1)
+}</string>
+      </property>
+      <property name="text">
+       <string>ВЫХОД</string>
+      </property>
+      <property name="checkable">
+       <bool>false</bool>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="lineEdit_OLAP_P">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>150</y>
+        <width>691</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Trebuchet MS</family>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">padding-left: 5px</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="lineEdit_OLAP_dayWeek_bakery">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>250</y>
+        <width>691</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Trebuchet MS</family>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">padding-left: 5px</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="lineEdit_OLAP_dayWeek_pie">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>350</y>
+        <width>691</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Trebuchet MS</family>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">padding-left: 5px</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="lineEdit_OLAP_dayWeek_cakes">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>450</y>
+        <width>691</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Trebuchet MS</family>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">padding-left: 5px</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="lineEdit_ost_filling">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>650</y>
+        <width>691</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Trebuchet MS</family>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">padding-left: 5px</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="lineEdit_ost_cakes">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>550</y>
+        <width>691</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Trebuchet MS</family>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">padding-left: 5px</string>
+      </property>
+     </widget>
+    </widget>
+   </widget>
+  </widget>
+ </widget>
+ <tabstops>
+  <tabstop>line_login</tabstop>
+  <tabstop>line_password</tabstop>
+  <tabstop>btn_path_dayWeek_bakery</tabstop>
+  <tabstop>btn_path_OLAP_P</tabstop>
+  <tabstop>btn_path_ost_cakes</tabstop>
+  <tabstop>btn_pie</tabstop>
+  <tabstop>btn_cakes</tabstop>
+  <tabstop>btn_others</tabstop>
+  <tabstop>btn_bakery</tabstop>
+  <tabstop>btn_filling</tabstop>
+  <tabstop>btn_path_dayWeek_pie</tabstop>
+  <tabstop>btn_path_dayWeek_cakes</tabstop>
+  <tabstop>btn_path_ost_filling</tabstop>
+  <tabstop>btn_exit</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>
