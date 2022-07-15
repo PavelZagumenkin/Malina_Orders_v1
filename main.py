@@ -14,7 +14,6 @@ class Interface(QtWidgets.QMainWindow):
 
         self.check_db = CheckThread()
         self.check_db.mysignal.connect(self.signal_handler)
-
         self.ui.btn_login.clicked.connect(self.login)
         self.ui.btn_path_OLAP_P.clicked.connect(self.olap_p)
         self.ui.btn_path_dayWeek_bakery.clicked.connect(self.olap_dayWeek_bakery)
