@@ -10,7 +10,7 @@ class Interface(QtWidgets.QMainWindow):
         super().__init__()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-        self.ui.btn_login.setFocus() #Фокус по умолчанию на кнопке
+        self.ui.label_login_password.setFocus() #Фокус по умолчанию на тексте
 
         self.check_db = CheckThread()
         self.check_db.mysignal.connect(self.signal_handler)
