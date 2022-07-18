@@ -128,7 +128,7 @@ class Interface(QtWidgets.QMainWindow):
         Window_BakeryOrders = QtWidgets.QMainWindow()
         ui = Ui_Window_BakeryOrders()
         ui.setupUi(Window_BakeryOrders)
-        WindowsMain.hide()
+        WindowsMain.close()
         Window_BakeryOrders.showMaximized()
         self.bakery.bakeryTable(pathOLAP_P, pathOLAP_dayWeek_bakery)
 
