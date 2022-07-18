@@ -3,6 +3,7 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtWidgets import QFileDialog
 from check_db import *
 from order import *
+from BakeryOrders import *
 from bakery import *
 
 class Interface(QtWidgets.QMainWindow):
@@ -123,11 +124,17 @@ class Interface(QtWidgets.QMainWindow):
     def bakery_start(self):
         pathOLAP_P = self.ui.lineEdit_OLAP_P.text()
         pathOLAP_dayWeek_bakery = self.ui.lineEdit_OLAP_dayWeek_bakery.text()
+        global Window_BakeryOrders
+        Window_BakeryOrders = QtWidgets.QMainWindow()
+        ui = Ui_Window_BakeryOrders()
+        ui.setupUi(Window_BakeryOrders)
+        WindowsMain.hide()
+        Window_BakeryOrders.showMaximized()
         self.bakery.bakeryTable(pathOLAP_P, pathOLAP_dayWeek_bakery)
 
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
-    mywin = Interface()
-    mywin.show()
+    WindowsMain = Interface()
+    WindowsMain.show()
     sys.exit(app.exec())
