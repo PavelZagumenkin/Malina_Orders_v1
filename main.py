@@ -14,6 +14,7 @@ class Interface(QtWidgets.QMainWindow):
 
         self.check_db = CheckThread()
         self.check_db.mysignal.connect(self.signal_handler)
+        self.bakery = BakeryOrders()
         self.ui.btn_login.clicked.connect(self.login)
         self.ui.btn_path_OLAP_P.clicked.connect(self.olap_p)
         self.ui.btn_path_dayWeek_bakery.clicked.connect(self.olap_dayWeek_bakery)
@@ -120,7 +121,10 @@ class Interface(QtWidgets.QMainWindow):
     # Обрабытываем кнопку "Выпечка"
     @check_bakeryOLAP
     def bakery_start(self):
-        print('Отчеты есть')
+        pathOLAP_P = self.ui.lineEdit_OLAP_P.text()
+        pathOLAP_dayWeek_bakery = self.ui.lineEdit_OLAP_dayWeek_bakery.text()
+        self.bakery.bakeryTable(pathOLAP_P, pathOLAP_dayWeek_bakery)
+
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)

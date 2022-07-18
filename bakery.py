@@ -1,19 +1,8 @@
-import sys
 from PyQt6 import QtCore, QtGui, QtWidgets
 
 
-# class BakeryOrders(QtWidgets.QMainWindow):
-# # Проверка наличия файлов отчета
-#     def check_fileOLAP(funct):
-#         def wrapper(self):
-#             for line_edit in self.base_fileOLAP_bakery:
-#                 if len(line_edit.text()) == 0:
-#                     print('Пустые поля')
-#                     return
-#             funct(self)
-#         return wrapper
+class BakeryOrders(QtWidgets.QMainWindow):
 
-
-#     @check_fileOLAP
-#     def bakeryVerif():
-#         print('Выпечка')
+    def bakeryTable(self, pathOLAP_P, pathOLAP_dayWeek_bakery):
+        print(pathOLAP_P)
+        print(pathOLAP_dayWeek_bakery)
