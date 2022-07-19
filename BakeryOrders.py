@@ -9,37 +9,27 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 
 
-class Ui_WindowsBakery(object):
-    def setupUi(self, WindowsBakery):
-        WindowsBakery.setObjectName("WindowsBakery")
-        WindowsBakery.resize(800, 600)
-        self.centralwidget = QtWidgets.QWidget(WindowsBakery)
+class Ui_WindowBakery(object):
+    def setupUi(self, WindowBakery):
+        WindowBakery.setObjectName("WindowBakery")
+        WindowBakery.resize(800, 600)
+        self.centralwidget = QtWidgets.QWidget(WindowBakery)
         self.centralwidget.setObjectName("centralwidget")
-        self.tableWidget = QtWidgets.QTableWidget(self.centralwidget)
-        self.tableWidget.setGeometry(QtCore.QRect(-5, -9, 821, 611))
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Maximum, QtWidgets.QSizePolicy.Policy.Maximum)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.tableWidget.sizePolicy().hasHeightForWidth())
-        self.tableWidget.setSizePolicy(sizePolicy)
-        self.tableWidget.setRowCount(30)
-        self.tableWidget.setColumnCount(10)
-        self.tableWidget.setObjectName("tableWidget")
-        WindowsBakery.setCentralWidget(self.centralwidget)
+        WindowBakery.setCentralWidget(self.centralwidget)
 
-        self.retranslateUi(WindowsBakery)
-        QtCore.QMetaObject.connectSlotsByName(WindowsBakery)
+        self.retranslateUi(WindowBakery)
+        QtCore.QMetaObject.connectSlotsByName(WindowBakery)
 
-    def retranslateUi(self, WindowsBakery):
+    def retranslateUi(self, WindowBakery):
         _translate = QtCore.QCoreApplication.translate
-        WindowsBakery.setWindowTitle(_translate("WindowsBakery", "MainWindow"))
+        WindowBakery.setWindowTitle(_translate("WindowBakery", "MainWindow"))
 
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    WindowsBakery = QtWidgets.QMainWindow()
-    ui = Ui_WindowsBakery()
-    ui.setupUi(WindowsBakery)
-    WindowsBakery.show()
+    WindowBakery = QtWidgets.QMainWindow()
+    ui = Ui_WindowBakery()
+    ui.setupUi(WindowBakery)
+    WindowBakery.show()
     sys.exit(app.exec())
