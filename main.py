@@ -1,9 +1,11 @@
+from operator import truediv
 import sys
 from PyQt6 import QtCore, QtGui, QtWidgets
+import win32com.client
 from PyQt6.QtWidgets import QFileDialog
 from check_db import *
 from order import *
-from bakery import *
+from bakeryOrders import *
 
 class Interface(QtWidgets.QMainWindow):
     def __init__(self):
@@ -11,10 +13,8 @@ class Interface(QtWidgets.QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.ui.label_login_password.setFocus() #Фокус по умолчанию на тексте
-
         self.check_db = CheckThread()
         self.check_db.mysignal.connect(self.signal_handler)
-        self.bakery = BakeryOrders()
         self.ui.btn_login.clicked.connect(self.login)
         self.ui.btn_path_OLAP_P.clicked.connect(self.olap_p)
         self.ui.btn_path_dayWeek_bakery.clicked.connect(self.olap_dayWeek_bakery)
@@ -123,13 +123,37 @@ class Interface(QtWidgets.QMainWindow):
     def bakery_start(self):
         pathOLAP_P = self.ui.lineEdit_OLAP_P.text()
         pathOLAP_dayWeek_bakery = self.ui.lineEdit_OLAP_dayWeek_bakery.text()
-        WindowsMain.hide()
-        self.bakery.bakeryTable(pathOLAP_P, pathOLAP_dayWeek_bakery)
-    
+        self.bakeryTable(pathOLAP_P, pathOLAP_dayWeek_bakery)
+
+    def bakeryTable(self, pathOLAP_P, pathOLAP_dayWeek_bakery):
+        Excel = win32com.client.Dispatch("Excel.Application")
+        wb_OLAP_P = Excel.Workbooks.Open(pathOLAP_P)
+        wb_OLAP_dayWeek_bakery = Excel.Workbooks.Open(pathOLAP_dayWeek_bakery)
+        sheet_OLAP_P = wb_OLAP_P.ActiveSheet
+        sheet_OLAP_dayWeek_bakery = wb_OLAP_dayWeek_bakery.ActiveSheet
+        if sheet_OLAP_P.Name != "OLAP по продажам ОБЩИЙ":
+            wb_OLAP_P.Close()
+            Excel.Quit()
+            self.ui.lineEdit_OLAP_P.setStyleSheet("padding-left: 5px; color: rgba(228, 107, 134, 1)")
+            self.ui.lineEdit_OLAP_P.setText('Файл отчета неверный, укажите OLAP по продажам за 7 дней')
+        elif sheet_OLAP_dayWeek_bakery.Name != "OLAP по дням недели для Пекарни":
+            wb_OLAP_P.Close()
+            Excel.Quit()
+            self.ui.lineEdit_OLAP_dayWeek_bakery.setStyleSheet("padding-left: 5px; color: rgba(228, 107, 134, 1)")
+            self.ui.lineEdit_OLAP_dayWeek_bakery.setText('Файл отчета неверный, укажите OLAP по продажам по дня недели для Выпечки пекарни')
+        else:
+            print('Работаем дальше')
+            global WindowsBakery
+            WindowsBakery = QtWidgets.QMainWindow()
+            ui = Ui_WindowsBakery()
+            ui.setupUi(WindowsBakery)
+            WindowsBakery.showMaximized()
+
+
     def closeSettings(self):
         print("Окно таблицы закрыто")
 
-        # WindowsMain.show() не работает, непонятно почему
+        WindowsMain.setEnabled(True) #не работает, непонятно почему
         print("Главное окно открыто")
 
 

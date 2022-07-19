@@ -9,11 +9,11 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 
 
-class Ui_Window_BakeryOrders(object):
-    def setupUi(self, Window_BakeryOrders):
-        Window_BakeryOrders.setObjectName("Window_BakeryOrders")
-        Window_BakeryOrders.resize(800, 600)
-        self.centralwidget = QtWidgets.QWidget(Window_BakeryOrders)
+class Ui_WindowsBakery(object):
+    def setupUi(self, WindowsBakery):
+        WindowsBakery.setObjectName("WindowsBakery")
+        WindowsBakery.resize(800, 600)
+        self.centralwidget = QtWidgets.QWidget(WindowsBakery)
         self.centralwidget.setObjectName("centralwidget")
         self.tableWidget = QtWidgets.QTableWidget(self.centralwidget)
         self.tableWidget.setGeometry(QtCore.QRect(-5, -9, 821, 611))
@@ -25,21 +25,21 @@ class Ui_Window_BakeryOrders(object):
         self.tableWidget.setRowCount(30)
         self.tableWidget.setColumnCount(10)
         self.tableWidget.setObjectName("tableWidget")
-        Window_BakeryOrders.setCentralWidget(self.centralwidget)
+        WindowsBakery.setCentralWidget(self.centralwidget)
 
-        self.retranslateUi(Window_BakeryOrders)
-        QtCore.QMetaObject.connectSlotsByName(Window_BakeryOrders)
+        self.retranslateUi(WindowsBakery)
+        QtCore.QMetaObject.connectSlotsByName(WindowsBakery)
 
-    def retranslateUi(self, Window_BakeryOrders):
+    def retranslateUi(self, WindowsBakery):
         _translate = QtCore.QCoreApplication.translate
-        Window_BakeryOrders.setWindowTitle(_translate("Window_BakeryOrders", "MainWindow"))
+        WindowsBakery.setWindowTitle(_translate("WindowsBakery", "MainWindow"))
 
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    Window_BakeryOrders = QtWidgets.QMainWindow()
-    ui = Ui_Window_BakeryOrders()
-    ui.setupUi(Window_BakeryOrders)
-    Window_BakeryOrders.show()
+    WindowsBakery = QtWidgets.QMainWindow()
+    ui = Ui_WindowsBakery()
+    ui.setupUi(WindowsBakery)
+    WindowsBakery.show()
     sys.exit(app.exec())
