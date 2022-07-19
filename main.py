@@ -3,7 +3,6 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtWidgets import QFileDialog
 from check_db import *
 from order import *
-from BakeryOrders import *
 from bakery import *
 
 class Interface(QtWidgets.QMainWindow):
@@ -124,13 +123,14 @@ class Interface(QtWidgets.QMainWindow):
     def bakery_start(self):
         pathOLAP_P = self.ui.lineEdit_OLAP_P.text()
         pathOLAP_dayWeek_bakery = self.ui.lineEdit_OLAP_dayWeek_bakery.text()
-        global Window_BakeryOrders
-        Window_BakeryOrders = QtWidgets.QMainWindow()
-        ui = Ui_Window_BakeryOrders()
-        ui.setupUi(Window_BakeryOrders)
-        WindowsMain.close()
-        Window_BakeryOrders.showMaximized()
+        WindowsMain.hide()
         self.bakery.bakeryTable(pathOLAP_P, pathOLAP_dayWeek_bakery)
+    
+    def closeSettings(self):
+        print("Окно таблицы закрыто")
+
+        # WindowsMain.show() не работает, непонятно почему
+        print("Главное окно открыто")
 
 
 if __name__ == "__main__":
