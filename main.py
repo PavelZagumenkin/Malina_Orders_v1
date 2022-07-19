@@ -153,11 +153,11 @@ class WindowMain(QtWidgets.QMainWindow):
         self.bakeryTable(pathOLAP_P, pathOLAP_dayWeek_bakery)
 
     def bakeryTable(self, pathOLAP_P, pathOLAP_dayWeek_bakery):
-        global Excel
+        global Excel #Непонятно работает, или нет
         Excel = win32com.client.Dispatch("Excel.Application")
-        global wb_OLAP_P
+        global wb_OLAP_P #Непонятно работает, или нет
         wb_OLAP_P = Excel.Workbooks.Open(pathOLAP_P)
-        global wb_OLAP_dayWeek_bakery
+        global wb_OLAP_dayWeek_bakery #Непонятно работает, или нет
         wb_OLAP_dayWeek_bakery = Excel.Workbooks.Open(pathOLAP_dayWeek_bakery)
         sheet_OLAP_P = wb_OLAP_P.ActiveSheet
         sheet_OLAP_dayWeek_bakery = wb_OLAP_dayWeek_bakery.ActiveSheet
@@ -179,9 +179,9 @@ class WindowMain(QtWidgets.QMainWindow):
 
     def closeWindowBakery(self):
         self.WindowBakery = None
-        wb_OLAP_P.Close()
-        wb_OLAP_dayWeek_bakery.Close()
-        Excel.Quit()
+        wb_OLAP_P.Close() #Непонятно работает, или нет
+        wb_OLAP_dayWeek_bakery.Close() #Непонятно работает, или нет
+        Excel.Quit() #Непонятно работает, или нет
             
     
         
