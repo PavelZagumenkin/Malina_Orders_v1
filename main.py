@@ -1,5 +1,4 @@
 import sys
-from tkinter.messagebox import QUESTION
 from PyQt6 import QtCore, QtGui, QtWidgets
 import win32com.client
 from PyQt6.QtWidgets import QMessageBox
@@ -21,7 +20,7 @@ class WindowBakery(QtWidgets.QMainWindow):
         reply.setWindowTitle("Завершение работы с таблицой")
         reply.setWindowIcon(QtGui.QIcon("image/icon.png"))
         reply.setText("Вы хотите завершить работу с таблицей?")
-        reply.setIcon(QMessageBox.Icon.Question);
+        reply.setIcon(QMessageBox.Icon.Question)
         reply.setStandardButtons(QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
         reply.setDefaultButton(QMessageBox.StandardButton.Cancel)
         otvet = reply.exec()
