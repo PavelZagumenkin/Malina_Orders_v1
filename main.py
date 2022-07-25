@@ -1,17 +1,45 @@
 import sys
 from PyQt6 import QtCore, QtGui, QtWidgets
+import win32com.client
+from PyQt6.QtWidgets import QMessageBox
 from PyQt6.QtWidgets import QFileDialog
 from check_db import *
-from order import *
-from bakery import *
+from order import Ui_WindowMain
+from bakeryOrders import Ui_WindowBakery
 
-class Interface(QtWidgets.QMainWindow):
+
+class WindowBakery(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
-        self.ui = Ui_MainWindow()
+        self.ui = Ui_WindowBakery()
         self.ui.setupUi(self)
-        self.ui.label_login_password.setFocus() #Фокус по умолчанию на тексте
+        
 
+    def closeEvent(self, event):
+        reply = QMessageBox()
+        reply.setWindowTitle("Завершение работы с таблицой")
+        reply.setWindowIcon(QtGui.QIcon("image/icon.png"))
+        reply.setText("Вы хотите завершить работу с таблицей?")
+        reply.setIcon(QMessageBox.Icon.Question)
+        reply.setStandardButtons(QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
+        reply.setDefaultButton(QMessageBox.StandardButton.Cancel)
+        otvet = reply.exec()
+        
+        if otvet == QMessageBox.StandardButton.Yes:
+            WindowMain.closeWindowBakery()
+            WindowMain.show()
+            event.accept()
+        else:
+            event.ignore()
+
+
+class WindowMain(QtWidgets.QMainWindow):
+    def __init__(self):
+        super().__init__()
+        self.ui = Ui_WindowMain()
+        self.ui.setupUi(self)
+        self.WindowBakery = None
+        self.ui.label_login_password.setFocus() #Фокус по умолчанию на тексте
         self.check_db = CheckThread()
         self.check_db.mysignal.connect(self.signal_handler)
         self.ui.btn_login.clicked.connect(self.login)
@@ -32,7 +60,6 @@ class Interface(QtWidgets.QMainWindow):
         self.base_fileOLAP_bakery = [self.ui.lineEdit_OLAP_P, self.ui.lineEdit_OLAP_dayWeek_bakery]
         # self.base_fileOLAP_pie = [self.ui.lineEdit_OLAP_P, self.ui.lineEdit_OLAP_dayWeek_pie]
         # self.base_fileOLAP_cakes = [self.ui.lineEdit_OLAP_P, self.ui.lineEdit_OLAP_dayWeek_cakes, self.ui.lineEdit_ost_cakes]
-        
 
     # Проверка пустоты логина и пароля(декоратор)
     def check_input(funct):
@@ -120,10 +147,48 @@ class Interface(QtWidgets.QMainWindow):
     # Обрабытываем кнопку "Выпечка"
     @check_bakeryOLAP
     def bakery_start(self):
-        print('Отчеты есть')
+        pathOLAP_P = self.ui.lineEdit_OLAP_P.text()
+        pathOLAP_dayWeek_bakery = self.ui.lineEdit_OLAP_dayWeek_bakery.text()
+        self.bakeryTable(pathOLAP_P, pathOLAP_dayWeek_bakery)
+
+    def bakeryTable(self, pathOLAP_P, pathOLAP_dayWeek_bakery):
+        global Excel #Непонятно работает, или нет
+        Excel = win32com.client.Dispatch("Excel.Application")
+        global wb_OLAP_P #Непонятно работает, или нет
+        wb_OLAP_P = Excel.Workbooks.Open(pathOLAP_P)
+        global wb_OLAP_dayWeek_bakery #Непонятно работает, или нет
+        wb_OLAP_dayWeek_bakery = Excel.Workbooks.Open(pathOLAP_dayWeek_bakery)
+        sheet_OLAP_P = wb_OLAP_P.ActiveSheet
+        sheet_OLAP_dayWeek_bakery = wb_OLAP_dayWeek_bakery.ActiveSheet
+        if sheet_OLAP_P.Name != "OLAP по продажам ОБЩИЙ":
+            wb_OLAP_P.Close()
+            Excel.Quit()
+            self.ui.lineEdit_OLAP_P.setStyleSheet("padding-left: 5px; color: rgba(228, 107, 134, 1)")
+            self.ui.lineEdit_OLAP_P.setText('Файл отчета неверный, укажите OLAP по продажам за 7 дней')
+        elif sheet_OLAP_dayWeek_bakery.Name != "OLAP по дням недели для Пекарни":
+            wb_OLAP_dayWeek_bakery.Close()
+            Excel.Quit()
+            self.ui.lineEdit_OLAP_dayWeek_bakery.setStyleSheet("padding-left: 5px; color: rgba(228, 107, 134, 1)")
+            self.ui.lineEdit_OLAP_dayWeek_bakery.setText('Файл отчета неверный, укажите OLAP по продажам по дня недели для Выпечки пекарни')
+        else:
+            if self.WindowBakery is None:
+                self.WindowBakery = WindowBakery()
+                self.WindowBakery.showMaximized()
+                WindowMain.hide()
+
+    def closeWindowBakery(self):
+        self.WindowBakery = None
+        wb_OLAP_P.Close() #Непонятно работает, или нет
+        wb_OLAP_dayWeek_bakery.Close() #Непонятно работает, или нет
+        Excel.Quit() #Непонятно работает, или нет
+            
+    
+        
+    
+
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
-    mywin = Interface()
-    mywin.show()
+    WindowMain = WindowMain()
+    WindowMain.show()
     sys.exit(app.exec())
