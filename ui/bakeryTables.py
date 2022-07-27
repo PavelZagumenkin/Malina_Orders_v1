@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file 'bakeryOrders.ui'
+# Form implementation generated from reading ui file 'bakeryTables.ui'
 #
 # Created by: PyQt6 UI code generator 6.3.1
 #

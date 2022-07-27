@@ -1,5 +1,6 @@
 import sqlite3
 
+
 def login(login, password, signal):
     con = sqlite3.connect('db/malina_orders.db')
     cur = con.cursor()
