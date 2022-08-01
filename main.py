@@ -44,6 +44,17 @@ class Main():
         password_text = WindowLogin.ui.line_password.text()
         self.check_db.thr_login(login_text, password_text)
 
+    def bakeryOpen(self):
+        WindowViborRazdela.close(self)
+        self.WindowBakery = WindowBakery()
+        self.WindowBakery.show()
+
+    def viborRazdelaOpen(self):
+        WindowBakery.close(self)
+        self.WindowViborRazdela = WindowViborRazdela()
+        self.WindowViborRazdela.show()
+
+
     def logout(self):
         WindowViborRazdela.close(self)
         WindowLogin.show()
@@ -69,6 +80,7 @@ class WindowViborRazdela(QtWidgets.QMainWindow, Main):
         self.ui = Ui_WindowViborRazdela()
         self.ui.setupUi(self)
         self.ui.btn_exit.clicked.connect(self.logout)
+        self.ui.btn_bakery.clicked.connect(self.bakeryOpen)
 
 
 class WindowBakery(QtWidgets.QMainWindow, Main):
@@ -76,6 +88,7 @@ class WindowBakery(QtWidgets.QMainWindow, Main):
         super().__init__()
         self.ui = Ui_WindowBakery()
         self.ui.setupUi(self)
+        self.ui.btn_exit.clicked.connect(self.viborRazdelaOpen)
 
 
 # class WindowBakeryTables(QtWidgets.QMainWindow, Main):
