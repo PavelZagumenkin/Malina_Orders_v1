@@ -4,7 +4,7 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtWidgets import QMessageBox
 from PyQt6.QtWidgets import QFileDialog
 from check_db import *
-from ui.login import Ui_WindowLogin
+from WindowLogin import *
 from ui.viborRazdela import Ui_WindowViborRazdela
 from ui.bakery import Ui_WindowBakery
 
@@ -14,6 +14,7 @@ class Main():
         super().__init__()
         self.check_db = CheckThread()
         self.check_db.mysignal.connect(self.signal_handler)
+        self.WindowsLogin = None
 
     # Проверка пустоты логина и пароля(декоратор)
     def check_input(funct):
@@ -24,7 +25,6 @@ class Main():
                     self.ui.label_login_password.setText('Поле логин или пароль пустое!')
                     return
             funct(self)
-
         return wrapper
 
     # Обработчик сигналов
@@ -58,20 +58,12 @@ class Main():
     def logout(self):
         WindowViborRazdela.close(self)
         WindowLogin.show()
+        WindowLogin.ui.label_login_password.setFocus()  # Фокус по умолчанию на тексте
         WindowLogin.ui.label_login_password.setStyleSheet("color: rgb(0, 0, 0)")
         WindowLogin.ui.label_login_password.setText('Введите логин и пароль')
         WindowLogin.ui.line_login.clear()
         WindowLogin.ui.line_password.clear()
 
-
-class WindowLogin(QtWidgets.QMainWindow, Main):
-    def __init__(self):
-        super().__init__()
-        self.ui = Ui_WindowLogin()
-        self.ui.setupUi(self)
-        self.ui.label_login_password.setFocus()  # Фокус по умолчанию на тексте
-        self.ui.btn_login.clicked.connect(self.login)
-        self.base_line_edit = [self.ui.line_login, self.ui.line_password]
 
 
 class WindowViborRazdela(QtWidgets.QMainWindow, Main):

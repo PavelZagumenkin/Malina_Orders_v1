@@ -14,7 +14,7 @@ class Ui_WindowBakery(object):
         WindowBakery.setObjectName("WindowBakery")
         WindowBakery.resize(1238, 680)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("../image/icon.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        icon.addPixmap(QtGui.QPixmap("image/icon.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         WindowBakery.setWindowIcon(icon)
         self.centralwidget = QtWidgets.QWidget(WindowBakery)
         self.centralwidget.setObjectName("centralwidget")

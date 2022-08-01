@@ -16,7 +16,7 @@ class Ui_WindowViborRazdela(object):
         WindowViborRazdela.setMinimumSize(QtCore.QSize(370, 540))
         WindowViborRazdela.setMaximumSize(QtCore.QSize(370, 540))
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("../image/icon.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        icon.addPixmap(QtGui.QPixmap("image/icon.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         WindowViborRazdela.setWindowIcon(icon)
         self.centralwidget = QtWidgets.QWidget(WindowViborRazdela)
         self.centralwidget.setObjectName("centralwidget")
