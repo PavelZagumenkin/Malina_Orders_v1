@@ -1,7 +1,6 @@
 from PyQt6 import QtCore
 from handler.db_handler import *
 
-
 class CheckThread(QtCore.QThread):
     mysignal = QtCore.pyqtSignal(str)
 

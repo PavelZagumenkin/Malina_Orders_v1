@@ -9,16 +9,16 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 
 
-class Ui_WindowsViborRazdela(object):
-    def setupUi(self, WindowsViborRazdela):
-        WindowsViborRazdela.setObjectName("WindowsViborRazdela")
-        WindowsViborRazdela.resize(370, 540)
-        WindowsViborRazdela.setMinimumSize(QtCore.QSize(370, 540))
-        WindowsViborRazdela.setMaximumSize(QtCore.QSize(370, 540))
+class Ui_WindowViborRazdela(object):
+    def setupUi(self, WindowViborRazdela):
+        WindowViborRazdela.setObjectName("WindowViborRazdela")
+        WindowViborRazdela.resize(370, 540)
+        WindowViborRazdela.setMinimumSize(QtCore.QSize(370, 540))
+        WindowViborRazdela.setMaximumSize(QtCore.QSize(370, 540))
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("../image/icon.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
-        WindowsViborRazdela.setWindowIcon(icon)
-        self.centralwidget = QtWidgets.QWidget(WindowsViborRazdela)
+        WindowViborRazdela.setWindowIcon(icon)
+        self.centralwidget = QtWidgets.QWidget(WindowViborRazdela)
         self.centralwidget.setObjectName("centralwidget")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.centralwidget)
         self.verticalLayout.setObjectName("verticalLayout")
@@ -169,27 +169,27 @@ class Ui_WindowsViborRazdela(object):
         self.btn_exit.setCheckable(False)
         self.btn_exit.setObjectName("btn_exit")
         self.verticalLayout.addWidget(self.btn_exit)
-        WindowsViborRazdela.setCentralWidget(self.centralwidget)
+        WindowViborRazdela.setCentralWidget(self.centralwidget)
 
-        self.retranslateUi(WindowsViborRazdela)
-        QtCore.QMetaObject.connectSlotsByName(WindowsViborRazdela)
+        self.retranslateUi(WindowViborRazdela)
+        QtCore.QMetaObject.connectSlotsByName(WindowViborRazdela)
 
-    def retranslateUi(self, WindowsViborRazdela):
+    def retranslateUi(self, WindowViborRazdela):
         _translate = QtCore.QCoreApplication.translate
-        WindowsViborRazdela.setWindowTitle(_translate("WindowsViborRazdela", "Выбор раздела"))
-        self.label_title.setText(_translate("WindowsViborRazdela", "Выберите раздел"))
-        self.btn_bakery.setText(_translate("WindowsViborRazdela", "ВЫПЕЧКА"))
-        self.btn_cakes.setText(_translate("WindowsViborRazdela", "ТОРТЫ"))
-        self.btn_filling.setText(_translate("WindowsViborRazdela", "НАЧИНКИ"))
-        self.btn_others.setText(_translate("WindowsViborRazdela", "ОСТАЛЬНОЕ"))
-        self.btn_exit.setText(_translate("WindowsViborRazdela", "ВЫХОД"))
+        WindowViborRazdela.setWindowTitle(_translate("WindowViborRazdela", "Выбор раздела"))
+        self.label_title.setText(_translate("WindowViborRazdela", "Выберите раздел"))
+        self.btn_bakery.setText(_translate("WindowViborRazdela", "ВЫПЕЧКА"))
+        self.btn_cakes.setText(_translate("WindowViborRazdela", "ТОРТЫ"))
+        self.btn_filling.setText(_translate("WindowViborRazdela", "НАЧИНКИ"))
+        self.btn_others.setText(_translate("WindowViborRazdela", "ОСТАЛЬНОЕ"))
+        self.btn_exit.setText(_translate("WindowViborRazdela", "ВЫХОД"))
 
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    WindowsViborRazdela = QtWidgets.QMainWindow()
-    ui = Ui_WindowsViborRazdela()
-    ui.setupUi(WindowsViborRazdela)
-    WindowsViborRazdela.show()
+    WindowViborRazdela = QtWidgets.QMainWindow()
+    ui = Ui_WindowViborRazdela()
+    ui.setupUi(WindowViborRazdela)
+    WindowViborRazdela.show()
     sys.exit(app.exec())
