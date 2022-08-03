@@ -37,7 +37,7 @@ class WindowBakery(QtWidgets.QMainWindow, Main):
         self.ui.btn_exit_bakery.clicked.connect(self.viborRazdelaOpen)
         self.ui.btn_path_OLAP_P.clicked.connect(self.olap_p)
         self.ui.btn_path_dayWeek_bakery.clicked.connect(self.olap_dayWeek_bakery)
-        self.ui.btn_koeff_bakery.clicked.connect(self.bakery_start)
+        self.ui.btn_koeff_bakery.clicked.connect(self.koeff_bakery_start)
         self.base_fileOLAP_bakery = [self.ui.lineEdit_OLAP_P, self.ui.lineEdit_OLAP_dayWeek_bakery]
 
     def olap_p(self):
@@ -54,7 +54,7 @@ class WindowBakery(QtWidgets.QMainWindow, Main):
     def check_bakeryOLAP(funct_bakery):
         def wrapper(self):
             for line_edit in self.base_fileOLAP_bakery:
-                if len(line_edit.text()) == 0:
+                if len(line_edit.text()) == 0 or line_edit.text() == 'Файл отчета неверный, укажите OLAP по продажам за 7 дней' or line_edit.text() == 'Файл отчета неверный, укажите OLAP по продажам по дня недели для Выпечки пекарни':
                     line_edit.setStyleSheet("padding-left: 5px; color: rgba(228, 107, 134, 1)")
                     line_edit.setText('Не выбран файл отчета!')
                     return
@@ -66,27 +66,32 @@ class WindowBakery(QtWidgets.QMainWindow, Main):
 
     # Обрабытываем кнопку "Выпечка"
     @check_bakeryOLAP
-    def bakery_start(self):
+    def koeff_bakery_start(self):
         pathOLAP_P = self.ui.lineEdit_OLAP_P.text()
         pathOLAP_dayWeek_bakery = self.ui.lineEdit_OLAP_dayWeek_bakery.text()
-        self.bakeryTable(pathOLAP_P, pathOLAP_dayWeek_bakery)
+        if pathOLAP_P != pathOLAP_dayWeek_bakery:
+            self.bakeryTable(pathOLAP_P, pathOLAP_dayWeek_bakery)
+        else:
+            self.ui.lineEdit_OLAP_P.setStyleSheet("padding-left: 5px; color: rgba(228, 107, 134, 1)")
+            self.ui.lineEdit_OLAP_P.setText('Вы выбрали одинаковые файлы отчета. Хватит издеваться над программой!')
+            self.ui.lineEdit_OLAP_dayWeek_bakery.setStyleSheet("padding-left: 5px; color: rgba(228, 107, 134, 1)")
+            self.ui.lineEdit_OLAP_dayWeek_bakery.setText('Вы выбрали одинаковые файлы отчета. Хватит издеваться над программой!')
 
     def bakeryTable(self, pathOLAP_P, pathOLAP_dayWeek_bakery):
-        global Excel  # Непонятно работает, или нет
         Excel = win32com.client.Dispatch("Excel.Application")
-        global wb_OLAP_P  # Непонятно работает, или нет
         wb_OLAP_P = Excel.Workbooks.Open(pathOLAP_P)
-        global wb_OLAP_dayWeek_bakery  # Непонятно работает, или нет
         wb_OLAP_dayWeek_bakery = Excel.Workbooks.Open(pathOLAP_dayWeek_bakery)
         sheet_OLAP_P = wb_OLAP_P.ActiveSheet
         sheet_OLAP_dayWeek_bakery = wb_OLAP_dayWeek_bakery.ActiveSheet
 
         if sheet_OLAP_P.Name != "OLAP по продажам ОБЩИЙ":
             wb_OLAP_P.Close()
+            wb_OLAP_dayWeek_bakery.Close()
             Excel.Quit()
             self.ui.lineEdit_OLAP_P.setStyleSheet("padding-left: 5px; color: rgba(228, 107, 134, 1)")
             self.ui.lineEdit_OLAP_P.setText('Файл отчета неверный, укажите OLAP по продажам за 7 дней')
         elif sheet_OLAP_dayWeek_bakery.Name != "OLAP по дням недели для Пекарни":
+            wb_OLAP_P.Close()
             wb_OLAP_dayWeek_bakery.Close()
             Excel.Quit()
             self.ui.lineEdit_OLAP_dayWeek_bakery.setStyleSheet("padding-left: 5px; color: rgba(228, 107, 134, 1)")
@@ -113,6 +118,9 @@ class WindowBakeryTables(QtWidgets.QMainWindow, Main):
         otvet = reply.exec()
 
         if otvet == QMessageBox.StandardButton.Yes:
+            # wb_OLAP_P.Close()
+            # wb_OLAP_dayWeek_bakery.Close()
+            # Excel.Quit()
             self.closeWindowBakeryTables()
             event.accept()
         else:
