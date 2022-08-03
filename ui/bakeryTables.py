@@ -9,27 +9,27 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 
 
-class Ui_WindowBakery(object):
-    def setupUi(self, WindowBakery):
-        WindowBakery.setObjectName("WindowBakery")
-        WindowBakery.resize(800, 600)
-        self.centralwidget = QtWidgets.QWidget(WindowBakery)
+class Ui_WindowBakeryTables(object):
+    def setupUi(self, WindowBakeryTables):
+        WindowBakeryTables.setObjectName("WindowBakeryTables")
+        WindowBakeryTables.resize(800, 600)
+        self.centralwidget = QtWidgets.QWidget(WindowBakeryTables)
         self.centralwidget.setObjectName("centralwidget")
-        WindowBakery.setCentralWidget(self.centralwidget)
+        WindowBakeryTables.setCentralWidget(self.centralwidget)
 
-        self.retranslateUi(WindowBakery)
-        QtCore.QMetaObject.connectSlotsByName(WindowBakery)
+        self.retranslateUi(WindowBakeryTables)
+        QtCore.QMetaObject.connectSlotsByName(WindowBakeryTables)
 
-    def retranslateUi(self, WindowBakery):
+    def retranslateUi(self, WindowBakeryTables):
         _translate = QtCore.QCoreApplication.translate
-        WindowBakery.setWindowTitle(_translate("WindowBakery", "MainWindow"))
+        WindowBakeryTables.setWindowTitle(_translate("WindowBakeryTables", "Работа с коэффициентами"))
 
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    WindowBakery = QtWidgets.QMainWindow()
-    ui = Ui_WindowBakery()
-    ui.setupUi(WindowBakery)
-    WindowBakery.show()
+    WindowBakeryTables = QtWidgets.QMainWindow()
+    ui = Ui_WindowBakeryTables()
+    ui.setupUi(WindowBakeryTables)
+    WindowBakeryTables.show()
     sys.exit(app.exec())

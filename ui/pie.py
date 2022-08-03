@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file 'bakery.ui'
+# Form implementation generated from reading ui file 'pie.ui'
 #
 # Created by: PyQt6 UI code generator 6.3.1
 #
@@ -9,27 +9,35 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 
 
-class Ui_WindowBakery(object):
-    def setupUi(self, WindowBakery):
-        WindowBakery.setObjectName("WindowBakery")
-        WindowBakery.resize(1240, 700)
-        WindowBakery.setMinimumSize(QtCore.QSize(1240, 700))
-        WindowBakery.setMaximumSize(QtCore.QSize(1240, 700))
+class Ui_WindowPie(object):
+    def setupUi(self, WindowPie):
+        WindowPie.setObjectName("WindowPie")
+        WindowPie.resize(1240, 700)
+        WindowPie.setMinimumSize(QtCore.QSize(1240, 700))
+        WindowPie.setMaximumSize(QtCore.QSize(1240, 700))
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("image/icon.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
-        WindowBakery.setWindowIcon(icon)
-        self.centralwidget = QtWidgets.QWidget(WindowBakery)
+        icon.addPixmap(QtGui.QPixmap("../image/icon.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        WindowPie.setWindowIcon(icon)
+        self.centralwidget = QtWidgets.QWidget(WindowPie)
         self.centralwidget.setObjectName("centralwidget")
-        self.lineEdit_OLAP_dayWeek_bakery = QtWidgets.QLineEdit(self.centralwidget)
-        self.lineEdit_OLAP_dayWeek_bakery.setEnabled(False)
-        self.lineEdit_OLAP_dayWeek_bakery.setGeometry(QtCore.QRect(20, 210, 691, 51))
+        self.label_OLAP_dayWeek_pie = QtWidgets.QLabel(self.centralwidget)
+        self.label_OLAP_dayWeek_pie.setEnabled(False)
+        self.label_OLAP_dayWeek_pie.setGeometry(QtCore.QRect(20, 280, 531, 21))
+        font = QtGui.QFont()
+        font.setFamily("Trebuchet MS")
+        font.setPointSize(12)
+        self.label_OLAP_dayWeek_pie.setFont(font)
+        self.label_OLAP_dayWeek_pie.setObjectName("label_OLAP_dayWeek_pie")
+        self.lineEdit_OLAP_dayWeek_pie = QtWidgets.QLineEdit(self.centralwidget)
+        self.lineEdit_OLAP_dayWeek_pie.setEnabled(False)
+        self.lineEdit_OLAP_dayWeek_pie.setGeometry(QtCore.QRect(20, 310, 691, 51))
         font = QtGui.QFont()
         font.setFamily("Trebuchet MS")
         font.setPointSize(10)
-        self.lineEdit_OLAP_dayWeek_bakery.setFont(font)
-        self.lineEdit_OLAP_dayWeek_bakery.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
-        self.lineEdit_OLAP_dayWeek_bakery.setStyleSheet("padding-left: 5px")
-        self.lineEdit_OLAP_dayWeek_bakery.setObjectName("lineEdit_OLAP_dayWeek_bakery")
+        self.lineEdit_OLAP_dayWeek_pie.setFont(font)
+        self.lineEdit_OLAP_dayWeek_pie.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
+        self.lineEdit_OLAP_dayWeek_pie.setStyleSheet("padding-left: 5px")
+        self.lineEdit_OLAP_dayWeek_pie.setObjectName("lineEdit_OLAP_dayWeek_pie")
         self.label_OLAP_P = QtWidgets.QLabel(self.centralwidget)
         self.label_OLAP_P.setGeometry(QtCore.QRect(20, 80, 321, 21))
         font = QtGui.QFont()
@@ -79,22 +87,15 @@ class Ui_WindowBakery(object):
         self.label_settings_title.setFont(font)
         self.label_settings_title.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.label_settings_title.setObjectName("label_settings_title")
-        self.label_OLAP_dayWeek_bakery = QtWidgets.QLabel(self.centralwidget)
-        self.label_OLAP_dayWeek_bakery.setGeometry(QtCore.QRect(20, 180, 511, 21))
-        font = QtGui.QFont()
-        font.setFamily("Trebuchet MS")
-        font.setPointSize(12)
-        self.label_OLAP_dayWeek_bakery.setFont(font)
-        self.label_OLAP_dayWeek_bakery.setObjectName("label_OLAP_dayWeek_bakery")
-        self.btn_exit_bakery = QtWidgets.QPushButton(self.centralwidget)
-        self.btn_exit_bakery.setGeometry(QtCore.QRect(860, 580, 351, 71))
+        self.btn_path_dayWeek_pie = QtWidgets.QPushButton(self.centralwidget)
+        self.btn_path_dayWeek_pie.setGeometry(QtCore.QRect(740, 310, 51, 51))
         font = QtGui.QFont()
         font.setFamily("Trebuchet MS")
         font.setPointSize(22)
         font.setBold(False)
         font.setWeight(50)
-        self.btn_exit_bakery.setFont(font)
-        self.btn_exit_bakery.setStyleSheet("QPushButton {\n"
+        self.btn_path_dayWeek_pie.setFont(font)
+        self.btn_path_dayWeek_pie.setStyleSheet("QPushButton {\n"
 "background-color: rgb(228, 107, 134);\n"
 "border: none;\n"
 "border-radius: 10px}\n"
@@ -108,17 +109,17 @@ class Ui_WindowBakery(object):
 "border:3px solid  rgb(0, 0, 0);\n"
 "background-color: rgba(228, 107, 134, 1)\n"
 "}")
-        self.btn_exit_bakery.setCheckable(False)
-        self.btn_exit_bakery.setObjectName("btn_exit_bakery")
-        self.btn_path_dayWeek_bakery = QtWidgets.QPushButton(self.centralwidget)
-        self.btn_path_dayWeek_bakery.setGeometry(QtCore.QRect(740, 210, 51, 51))
+        self.btn_path_dayWeek_pie.setCheckable(False)
+        self.btn_path_dayWeek_pie.setObjectName("btn_path_dayWeek_pie")
+        self.btn_exit_pie = QtWidgets.QPushButton(self.centralwidget)
+        self.btn_exit_pie.setGeometry(QtCore.QRect(860, 580, 351, 71))
         font = QtGui.QFont()
         font.setFamily("Trebuchet MS")
         font.setPointSize(22)
         font.setBold(False)
         font.setWeight(50)
-        self.btn_path_dayWeek_bakery.setFont(font)
-        self.btn_path_dayWeek_bakery.setStyleSheet("QPushButton {\n"
+        self.btn_exit_pie.setFont(font)
+        self.btn_exit_pie.setStyleSheet("QPushButton {\n"
 "background-color: rgb(228, 107, 134);\n"
 "border: none;\n"
 "border-radius: 10px}\n"
@@ -132,17 +133,17 @@ class Ui_WindowBakery(object):
 "border:3px solid  rgb(0, 0, 0);\n"
 "background-color: rgba(228, 107, 134, 1)\n"
 "}")
-        self.btn_path_dayWeek_bakery.setCheckable(False)
-        self.btn_path_dayWeek_bakery.setObjectName("btn_path_dayWeek_bakery")
-        self.btn_koeff_bakery = QtWidgets.QPushButton(self.centralwidget)
-        self.btn_koeff_bakery.setGeometry(QtCore.QRect(860, 30, 351, 71))
+        self.btn_exit_pie.setCheckable(False)
+        self.btn_exit_pie.setObjectName("btn_exit_pie")
+        self.btn_koeff_pie = QtWidgets.QPushButton(self.centralwidget)
+        self.btn_koeff_pie.setGeometry(QtCore.QRect(860, 30, 351, 71))
         font = QtGui.QFont()
         font.setFamily("Trebuchet MS")
         font.setPointSize(22)
         font.setBold(False)
         font.setWeight(50)
-        self.btn_koeff_bakery.setFont(font)
-        self.btn_koeff_bakery.setStyleSheet("QPushButton {\n"
+        self.btn_koeff_pie.setFont(font)
+        self.btn_koeff_pie.setStyleSheet("QPushButton {\n"
 "background-color: rgb(228, 107, 134);\n"
 "border: none;\n"
 "border-radius: 10px}\n"
@@ -156,30 +157,30 @@ class Ui_WindowBakery(object):
 "border:3px solid  rgb(0, 0, 0);\n"
 "background-color: rgba(228, 107, 134, 1)\n"
 "}")
-        self.btn_koeff_bakery.setCheckable(False)
-        self.btn_koeff_bakery.setObjectName("btn_koeff_bakery")
-        WindowBakery.setCentralWidget(self.centralwidget)
+        self.btn_koeff_pie.setCheckable(False)
+        self.btn_koeff_pie.setObjectName("btn_koeff_pie")
+        WindowPie.setCentralWidget(self.centralwidget)
 
-        self.retranslateUi(WindowBakery)
-        QtCore.QMetaObject.connectSlotsByName(WindowBakery)
+        self.retranslateUi(WindowPie)
+        QtCore.QMetaObject.connectSlotsByName(WindowPie)
 
-    def retranslateUi(self, WindowBakery):
+    def retranslateUi(self, WindowPie):
         _translate = QtCore.QCoreApplication.translate
-        WindowBakery.setWindowTitle(_translate("WindowBakery", "Настройка работы с Выпечкой"))
-        self.label_OLAP_P.setText(_translate("WindowBakery", "Укажите путь к OLAP отчету по продажам"))
-        self.btn_path_OLAP_P.setText(_translate("WindowBakery", "..."))
-        self.label_settings_title.setText(_translate("WindowBakery", "Настройка подключения внешних данных"))
-        self.label_OLAP_dayWeek_bakery.setText(_translate("WindowBakery", "Укажите путь к OLAP отчету по продажам по дням недели - выпечка"))
-        self.btn_exit_bakery.setText(_translate("WindowBakery", "К ВЫБОРУ РАЗДЕЛА"))
-        self.btn_path_dayWeek_bakery.setText(_translate("WindowBakery", "..."))
-        self.btn_koeff_bakery.setText(_translate("WindowBakery", "КОЭФФИЦИЕНТЫ"))
+        WindowPie.setWindowTitle(_translate("WindowPie", "Настройка работы с Пирожными"))
+        self.label_OLAP_dayWeek_pie.setText(_translate("WindowPie", "Укажите путь к OLAP отчету по продажам по дням недели - пирожные"))
+        self.label_OLAP_P.setText(_translate("WindowPie", "Укажите путь к OLAP отчету по продажам"))
+        self.btn_path_OLAP_P.setText(_translate("WindowPie", "..."))
+        self.label_settings_title.setText(_translate("WindowPie", "Настройка подключения внешних данных"))
+        self.btn_path_dayWeek_pie.setText(_translate("WindowPie", "..."))
+        self.btn_exit_pie.setText(_translate("WindowPie", "К ВЫБОРУ РАЗДЕЛА"))
+        self.btn_koeff_pie.setText(_translate("WindowPie", "КОЭФФИЦИЕНТЫ"))
 
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    WindowBakery = QtWidgets.QMainWindow()
-    ui = Ui_WindowBakery()
-    ui.setupUi(WindowBakery)
-    WindowBakery.show()
+    WindowPie = QtWidgets.QMainWindow()
+    ui = Ui_WindowPie()
+    ui.setupUi(WindowPie)
+    WindowPie.show()
     sys.exit(app.exec())

@@ -1,9 +1,8 @@
 import sys
+
 from PyQt6 import QtCore, QtGui, QtWidgets
-import win32com.client
 from check_db import CheckThread
-from PyQt6.QtWidgets import QMessageBox
-from PyQt6.QtWidgets import QFileDialog
+
 import Windows
 
 
@@ -43,6 +42,7 @@ class Main():
         password_text = self.ui.line_password.text()
         self.check_db.thr_login(login_text, password_text)
 
+    # Обработка логаута
     def logout(self):
         WindowViborRazdela.close()
         global WindowLogin
@@ -54,41 +54,46 @@ class Main():
         WindowLogin.ui.line_login.clear()
         WindowLogin.ui.line_password.clear()
 
+    # Закрываем выбор раздела, открываем выпечку
     def bakeryOpen(self):
-        WindowViborRazdela.close()
+        self.close()
         global WindowBakery
         WindowBakery = Windows.WindowBakery()
         WindowBakery.show()
 
+    # Закрываем окно настроек, открываем выбор раздела
     def viborRazdelaOpen(self):
-        WindowBakery.close()
-        global WindowViborRazdela
-        WindowViborRazdela = Windows.WindowViborRazdela()
+        self.close()
         WindowViborRazdela.show()
 
+    # Закрываем выпечку, открываем таблицу для работы
+    def bakeryTablesOpen(self):
+        self.hide()
+        global WindowBakeryTables
+        WindowBakeryTables = Windows.WindowBakeryTables()
+        WindowBakeryTables.showMaximized()
 
-# class WindowBakeryTables(QtWidgets.QMainWindow, Main):
-#     def __init__(self):
-#         super().__init__()
-#         self.ui = Ui_WindowBakery()
-#         self.ui.setupUi(self)
+    # Закрываем таблицу выпечки и возвращаемся к настройкам
+    def closeWindowBakeryTables(self):
+        self.close()
+        WindowBakery.show()
 
-# def closeEvent(self, event):
-#     reply = QMessageBox()
-#     reply.setWindowTitle("Завершение работы с таблицой")
-#     reply.setWindowIcon(QtGui.QIcon("image/icon.png"))
-#     reply.setText("Вы хотите завершить работу с таблицей?")
-#     reply.setIcon(QMessageBox.Icon.Question)
-#     reply.setStandardButtons(QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
-#     reply.setDefaultButton(QMessageBox.StandardButton.Cancel)
-#     otvet = reply.exec()
-#
-#     if otvet == QMessageBox.StandardButton.Yes:
-#         WindowMain.closeWindowBakery()
-#         WindowMain.show()
-#         event.accept()
-#     else:
-#         event.ignore()
+
+
+
+
+
+
+
+
+
+
+
+    # def closeWindowBakeryTables(self):
+    #     self.WindowBakeryTables = None
+    #     wb_OLAP_P.Close()  # Непонятно работает, или нет
+    #     wb_OLAP_dayWeek_bakery.Close()  # Непонятно работает, или нет
+    #     Excel.Quit()  # Непонятно работает, или нет
 
 
 if __name__ == "__main__":
