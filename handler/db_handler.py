@@ -6,7 +6,7 @@ def login(login, password, signal):
     cur = con.cursor()
 
     # Проверяем, есть ли такой пользователь
-    cur.execute(f'SELECT * FROM users WHERE login="{login}";')
+    cur.execute(f'SELECT * FROM users WHERE LOGIN="{login}";')
     value = cur.fetchall()
 
     if value != [] and value[0][2] == password:

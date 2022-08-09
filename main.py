@@ -67,10 +67,10 @@ class Main():
         WindowViborRazdela.show()
 
     # Закрываем выпечку, открываем таблицу для работы
-    def bakeryTablesOpen(self):
+    def bakeryTablesOpen(self, pathOLAP_P, pathOLAP_dayWeek_bakery):
         self.hide()
         global WindowBakeryTables
-        WindowBakeryTables = Windows.WindowBakeryTables()
+        WindowBakeryTables = Windows.WindowBakeryTables(pathOLAP_P, pathOLAP_dayWeek_bakery)
         WindowBakeryTables.showMaximized()
 
     # Закрываем таблицу выпечки и возвращаемся к настройкам
