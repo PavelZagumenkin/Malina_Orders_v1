@@ -12,9 +12,15 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 class Ui_WindowBakeryTables(object):
     def setupUi(self, WindowBakeryTables):
         WindowBakeryTables.setObjectName("WindowBakeryTables")
-        WindowBakeryTables.resize(800, 600)
         self.centralwidget = QtWidgets.QWidget(WindowBakeryTables)
         self.centralwidget.setObjectName("centralwidget")
+        self.verticalLayout = QtWidgets.QVBoxLayout(self.centralwidget)
+        self.verticalLayout.setObjectName("verticalLayout")
+        self.tableWidget = QtWidgets.QTableWidget(self.centralwidget)
+        self.tableWidget.setObjectName("tableWidget")
+        self.tableWidget.setColumnCount(0)
+        self.tableWidget.setRowCount(0)
+        self.verticalLayout.addWidget(self.tableWidget)
         WindowBakeryTables.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(WindowBakeryTables)

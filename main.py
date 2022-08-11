@@ -79,23 +79,6 @@ class Main():
         WindowBakery.show()
 
 
-
-
-
-
-
-
-
-
-
-
-    # def closeWindowBakeryTables(self):
-    #     self.WindowBakeryTables = None
-    #     wb_OLAP_P.Close()  # Непонятно работает, или нет
-    #     wb_OLAP_dayWeek_bakery.Close()  # Непонятно работает, или нет
-    #     Excel.Quit()  # Непонятно работает, или нет
-
-
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     WindowLogin = Windows.WindowLogin()

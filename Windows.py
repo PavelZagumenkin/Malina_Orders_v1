@@ -2,6 +2,7 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 import win32com.client
 from PyQt6.QtWidgets import QMessageBox
 from PyQt6.QtWidgets import QFileDialog
+from PyQt6.QtWidgets import QTableView
 from main import Main
 from ui.login import Ui_WindowLogin
 from ui.viborRazdela import Ui_WindowViborRazdela
@@ -115,8 +116,8 @@ class WindowBakeryTables(QtWidgets.QMainWindow, Main):
         wb_OLAP_dayWeek_bakery = Excel.Workbooks.Open(pathOLAP_dayWeek_bakery)
         sheet_OLAP_P = wb_OLAP_P.ActiveSheet
         sheet_OLAP_dayWeek_bakery = wb_OLAP_dayWeek_bakery.ActiveSheet
-        print(sheet_OLAP_P.Name)
-        print(sheet_OLAP_dayWeek_bakery.Name)
+
+
 
     def closeEvent(self, event):
         reply = QMessageBox()
@@ -129,9 +130,6 @@ class WindowBakeryTables(QtWidgets.QMainWindow, Main):
         otvet = reply.exec()
 
         if otvet == QMessageBox.StandardButton.Yes:
-            # wb_OLAP_P.Close()
-            # wb_OLAP_dayWeek_bakery.Close()
-            # Excel.Quit()
             self.closeWindowBakeryTables()
             event.accept()
         else:
