@@ -1,8 +1,9 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 import win32com.client
+from win32com.client import constants
 from PyQt6.QtWidgets import QMessageBox
 from PyQt6.QtWidgets import QFileDialog
-from PyQt6.QtWidgets import QTableView
+from PyQt6.QtWidgets import QTableWidgetItem
 from main import Main
 from ui.login import Ui_WindowLogin
 from ui.viborRazdela import Ui_WindowViborRazdela
@@ -116,8 +117,27 @@ class WindowBakeryTables(QtWidgets.QMainWindow, Main):
         wb_OLAP_dayWeek_bakery = Excel.Workbooks.Open(pathOLAP_dayWeek_bakery)
         sheet_OLAP_P = wb_OLAP_P.ActiveSheet
         sheet_OLAP_dayWeek_bakery = wb_OLAP_dayWeek_bakery.ActiveSheet
-
-
+        firstOLAPRow = sheet_OLAP_P.Range("A:A").Find("Код блюда").Row
+        for i in range(firstOLAPRow - 1):
+            sheet_OLAP_P.Rows(1).Delete()
+        firstOLAPRow = sheet_OLAP_P.Range("A:A").Find("Код блюда").Row
+        endOLAPRow = sheet_OLAP_P.Range("A:C").Find("Итого").Row
+        endOLAPCol = sheet_OLAP_P.Cells.Find("Итого").Column
+        for a in range(endOLAPCol, 1, -1):
+            if sheet_OLAP_P.Cells(1, a).Value is None:
+                sheet_OLAP_P.Columns(a).Delete()
+        endOLAPCol = sheet_OLAP_P.Cells.Find("Итого").Column
+        self.ui.tableWidget.setRowCount(endOLAPRow - 1)
+        self.ui.tableWidget.setColumnCount(endOLAPCol)
+        self.columnLables = list(sheet_OLAP_P.Range(sheet_OLAP_P.Cells(1, 1), sheet_OLAP_P.Cells(1, endOLAPCol - 1)).Value[0])
+        self.columnLables.insert(0, "Коэффициенты")
+        self.ui.tableWidget.setHorizontalHeaderLabels(self.columnLables)
+        for col in range(1, endOLAPCol):
+            for row in range(2, endOLAPRow):
+                item = sheet_OLAP_P.Cells(row, col).Value
+                item = QTableWidgetItem(str(item))
+                self.ui.tableWidget.setItem(row - 1, col, item)
+        self.ui.tableWidget.setColumnWidth(2, 300)
 
     def closeEvent(self, event):
         reply = QMessageBox()
