@@ -1,6 +1,6 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 import win32com.client
-from win32com.client import constants
+from PyQt6.QtGui import *
 from PyQt6.QtWidgets import QMessageBox
 from PyQt6.QtWidgets import QFileDialog
 from PyQt6.QtWidgets import QTableWidgetItem
@@ -132,12 +132,29 @@ class WindowBakeryTables(QtWidgets.QMainWindow, Main):
         self.columnLables = list(sheet_OLAP_P.Range(sheet_OLAP_P.Cells(1, 1), sheet_OLAP_P.Cells(1, endOLAPCol - 1)).Value[0])
         self.columnLables.insert(0, "Коэффициенты")
         self.ui.tableWidget.setHorizontalHeaderLabels(self.columnLables)
+        for col in range(4, endOLAPCol):
+            self.spinboxCol = QtWidgets.QDoubleSpinBox()
+            self.ui.tableWidget.setCellWidget(0, col, self.spinboxCol)
+            self.spinboxCol.setValue(1.00)
+            self.spinboxCol.setSingleStep(0.05)
+        for row in range(1, endOLAPRow):
+            self.spinboxRow = QtWidgets.QDoubleSpinBox()
+            self.ui.tableWidget.setCellWidget(row, 0, self.spinboxRow)
+            self.spinboxRow.setValue(1.00)
+            self.spinboxRow.setSingleStep(0.05)
         for col in range(1, endOLAPCol):
             for row in range(2, endOLAPRow):
                 item = sheet_OLAP_P.Cells(row, col).Value
                 item = QTableWidgetItem(str(item))
                 self.ui.tableWidget.setItem(row - 1, col, item)
-        self.ui.tableWidget.setColumnWidth(2, 300)
+        self.ui.tableWidget.setColumnWidth(0, 50)
+        self.ui.tableWidget.setColumnWidth(1, 50)
+        self.ui.tableWidget.setColumnWidth(2, 280)
+        self.ui.tableWidget.setColumnWidth(3, 120)
+        # self.spinboxRow.valueChanged().connect()
+
+    # def raschetPrognoz(self, value):
+    #     pass
 
     def closeEvent(self, event):
         reply = QMessageBox()
