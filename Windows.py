@@ -4,6 +4,7 @@ from PyQt6.QtGui import *
 from PyQt6.QtWidgets import QMessageBox
 from PyQt6.QtWidgets import QFileDialog
 from PyQt6.QtWidgets import QTableWidgetItem
+from PyQt6.QtWidgets import QDoubleSpinBox
 from main import Main
 from ui.login import Ui_WindowLogin
 from ui.viborRazdela import Ui_WindowViborRazdela
@@ -118,7 +119,7 @@ class WindowBakeryTables(QtWidgets.QMainWindow, Main):
         sheet_OLAP_P = wb_OLAP_P.ActiveSheet
         sheet_OLAP_dayWeek_bakery = wb_OLAP_dayWeek_bakery.ActiveSheet
         firstOLAPRow = sheet_OLAP_P.Range("A:A").Find("Код блюда").Row
-        for i in range(firstOLAPRow - 1):
+        for _ in range(firstOLAPRow - 1):
             sheet_OLAP_P.Rows(1).Delete()
         firstOLAPRow = sheet_OLAP_P.Range("A:A").Find("Код блюда").Row
         endOLAPRow = sheet_OLAP_P.Range("A:C").Find("Итого").Row
@@ -132,16 +133,18 @@ class WindowBakeryTables(QtWidgets.QMainWindow, Main):
         self.columnLables = list(sheet_OLAP_P.Range(sheet_OLAP_P.Cells(1, 1), sheet_OLAP_P.Cells(1, endOLAPCol - 1)).Value[0])
         self.columnLables.insert(0, "Коэффициенты")
         self.ui.tableWidget.setHorizontalHeaderLabels(self.columnLables)
-        for col in range(4, endOLAPCol):
+        for col_spin in range(4, endOLAPCol):
             self.spinboxCol = QtWidgets.QDoubleSpinBox()
-            self.ui.tableWidget.setCellWidget(0, col, self.spinboxCol)
-            self.spinboxCol.setValue(1.00)
-            self.spinboxCol.setSingleStep(0.05)
-        for row in range(1, endOLAPRow):
+            self.ui.tableWidget.setCellWidget(0, col_spin, self.spinboxCol)
+            self.ui.tableWidget.cellWidget(0, col_spin).setValue(1.00)
+            self.ui.tableWidget.cellWidget(0, col_spin).setSingleStep(0.05)
+            self.ui.tableWidget.cellWidget(0, col_spin).valueChanged.connect(self.raschetPrognoz)
+        for row_spin in range(1, endOLAPRow-1):
             self.spinboxRow = QtWidgets.QDoubleSpinBox()
-            self.ui.tableWidget.setCellWidget(row, 0, self.spinboxRow)
-            self.spinboxRow.setValue(1.00)
-            self.spinboxRow.setSingleStep(0.05)
+            self.ui.tableWidget.setCellWidget(row_spin, 0, self.spinboxRow)
+            self.ui.tableWidget.cellWidget(row_spin, 0).setValue(1.00)
+            self.ui.tableWidget.cellWidget(row_spin, 0).setSingleStep(0.05)
+            self.ui.tableWidget.cellWidget(row_spin, 0).valueChanged.connect(self.raschetPrognoz)
         for col in range(1, endOLAPCol):
             for row in range(2, endOLAPRow):
                 item = sheet_OLAP_P.Cells(row, col).Value
@@ -151,10 +154,20 @@ class WindowBakeryTables(QtWidgets.QMainWindow, Main):
         self.ui.tableWidget.setColumnWidth(1, 50)
         self.ui.tableWidget.setColumnWidth(2, 280)
         self.ui.tableWidget.setColumnWidth(3, 120)
-        # self.spinboxRow.valueChanged().connect()
 
-    # def raschetPrognoz(self, value):
-    #     pass
+    def raschetPrognoz(self):
+        buttonClickedCol = self.sender()
+        index = self.ui.tableWidget.indexAt(buttonClickedCol.pos())
+        if index.row() == 0:
+            for i in range(1, self.ui.tableWidget.rowCount()):
+                znach = float(self.ui.tableWidget.item(i, index.column()).text())
+                result = znach * float(self.ui.tableWidget.cellWidget(0, index.column()).value())
+                self.ui.tableWidget.setItem(i, index.column(), QTableWidgetItem(str(result)))
+        else:
+            for i in range(4, self.ui.tableWidget.columnCount()):
+                znach = float(self.ui.tableWidget.item(index.row(), i).text())
+                result = znach * float(self.ui.tableWidget.cellWidget(index.row(), 0).value())
+                self.ui.tableWidget.setItem(index.row(), i, QTableWidgetItem(str(result)))
 
     def closeEvent(self, event):
         reply = QMessageBox()
