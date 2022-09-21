@@ -1,3 +1,5 @@
+import copy
+
 from PyQt6 import QtCore, QtGui, QtWidgets
 import win32com.client
 from PyQt6.QtGui import *
@@ -133,6 +135,17 @@ class WindowBakeryTables(QtWidgets.QMainWindow, Main):
         self.columnLables = list(sheet_OLAP_P.Range(sheet_OLAP_P.Cells(1, 1), sheet_OLAP_P.Cells(1, endOLAPCol - 1)).Value[0])
         self.columnLables.insert(0, "Коэффициенты")
         self.ui.tableWidget.setHorizontalHeaderLabels(self.columnLables)
+        for col in range(1, endOLAPCol):
+            for row in range(2, endOLAPRow):
+                item = sheet_OLAP_P.Cells(row, col).Value
+                item = QTableWidgetItem(str(item))
+                self.ui.tableWidget.setItem(row - 1, col, item)
+        global saveZnach
+        saveZnach = {}
+        for col in range(4, self.ui.tableWidget.columnCount()):
+            saveZnach[col] = {}
+            for row in range(2, self.ui.tableWidget.rowCount()+1):
+                saveZnach[col][row] = float(self.ui.tableWidget.item(row-1, col).text())
         for col_spin in range(4, endOLAPCol):
             self.spinboxCol = QtWidgets.QDoubleSpinBox()
             self.ui.tableWidget.setCellWidget(0, col_spin, self.spinboxCol)
@@ -145,28 +158,40 @@ class WindowBakeryTables(QtWidgets.QMainWindow, Main):
             self.ui.tableWidget.cellWidget(row_spin, 0).setValue(1.00)
             self.ui.tableWidget.cellWidget(row_spin, 0).setSingleStep(0.05)
             self.ui.tableWidget.cellWidget(row_spin, 0).valueChanged.connect(self.raschetPrognoz)
-        for col in range(1, endOLAPCol):
-            for row in range(2, endOLAPRow):
-                item = sheet_OLAP_P.Cells(row, col).Value
-                item = QTableWidgetItem(str(item))
-                self.ui.tableWidget.setItem(row - 1, col, item)
-        self.ui.tableWidget.setColumnWidth(0, 50)
-        self.ui.tableWidget.setColumnWidth(1, 50)
+
+        # self.raschetButton = QtWidgets.QPushButton()
+        # self.ui.tableWidget.setCellWidget(0, 2, self.raschetButton)
+        # self.raschetButton.setText("Рассчет")
+        # self.raschetButton.setStyleSheet("QPushButton {\n"
+        #     "background-color: rgb(228, 107, 134);\n"
+        #     "border: none;\n"
+        #     "border-radius: 10px}\n"
+        #     "\n"
+        #     "QPushButton:hover {\n"
+        #     "border: 1px solid  rgb(0, 0, 0);\n"
+        #     "background-color: rgba(228, 107, 134, 0.9)\n"
+        #     "}\n"
+        #     "\n"
+        #     "QPushButton:pressed {\n"
+        #     "border:2px solid  rgb(0, 0, 0);\n"
+        #     "background-color: rgba(228, 107, 134, 1)\n"
+        #     "}")
+        # self.ui.tableWidget.cellWidget(0, 2).clicked.connect(self.raschetPrognoz)
+        self.ui.tableWidget.setColumnWidth(0, 70)
+        self.ui.tableWidget.setColumnWidth(1, 70)
         self.ui.tableWidget.setColumnWidth(2, 280)
         self.ui.tableWidget.setColumnWidth(3, 120)
 
     def raschetPrognoz(self):
-        buttonClickedCol = self.sender()
-        index = self.ui.tableWidget.indexAt(buttonClickedCol.pos())
+        buttonClicked = self.sender()
+        index = self.ui.tableWidget.indexAt(buttonClicked.pos())
         if index.row() == 0:
-            for i in range(1, self.ui.tableWidget.rowCount()):
-                znach = float(self.ui.tableWidget.item(i, index.column()).text())
-                result = znach * float(self.ui.tableWidget.cellWidget(0, index.column()).value())
-                self.ui.tableWidget.setItem(i, index.column(), QTableWidgetItem(str(result)))
+            for i in range(2, self.ui.tableWidget.rowCount()+1):
+                result = float(saveZnach[index.column()][i]) * float(self.ui.tableWidget.cellWidget(0, index.column()).value())
+                self.ui.tableWidget.setItem(i - 1, index.column(), QTableWidgetItem(str(result)))
         else:
             for i in range(4, self.ui.tableWidget.columnCount()):
-                znach = float(self.ui.tableWidget.item(index.row(), i).text())
-                result = znach * float(self.ui.tableWidget.cellWidget(index.row(), 0).value())
+                result = float(saveZnach[i][index.row()+1]) * float(self.ui.tableWidget.cellWidget(index.row(), 0).value())
                 self.ui.tableWidget.setItem(index.row(), i, QTableWidgetItem(str(result)))
 
     def closeEvent(self, event):
