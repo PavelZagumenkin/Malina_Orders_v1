@@ -187,11 +187,11 @@ class WindowBakeryTables(QtWidgets.QMainWindow, Main):
         index = self.ui.tableWidget.indexAt(buttonClicked.pos())
         if index.row() == 0:
             for i in range(2, self.ui.tableWidget.rowCount()+1):
-                result = float(saveZnach[index.column()][i]) * float(self.ui.tableWidget.cellWidget(0, index.column()).value())
+                result = float(saveZnach[index.column()][i]) * float(self.ui.tableWidget.cellWidget(0, index.column()).value()) * float(self.ui.tableWidget.cellWidget(i-1, 0).value())
                 self.ui.tableWidget.setItem(i - 1, index.column(), QTableWidgetItem(str(result)))
         else:
             for i in range(4, self.ui.tableWidget.columnCount()):
-                result = float(saveZnach[i][index.row()+1]) * float(self.ui.tableWidget.cellWidget(index.row(), 0).value())
+                result = float(saveZnach[i][index.row()+1]) * float(self.ui.tableWidget.cellWidget(index.row(), 0).value()) * float(self.ui.tableWidget.cellWidget(0, i).value())
                 self.ui.tableWidget.setItem(index.row(), i, QTableWidgetItem(str(result)))
 
     def closeEvent(self, event):
