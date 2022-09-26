@@ -1,12 +1,11 @@
 import copy
-
 from PyQt6 import QtCore, QtGui, QtWidgets
 import win32com.client
 from PyQt6.QtGui import *
 from PyQt6.QtWidgets import QMessageBox
 from PyQt6.QtWidgets import QFileDialog
 from PyQt6.QtWidgets import QTableWidgetItem
-from PyQt6.QtWidgets import QDoubleSpinBox
+from PyQt6.QtGui import QFont
 from main import Main
 from ui.login import Ui_WindowLogin
 from ui.viborRazdela import Ui_WindowViborRazdela
@@ -130,68 +129,105 @@ class WindowBakeryTables(QtWidgets.QMainWindow, Main):
             if sheet_OLAP_P.Cells(1, a).Value is None:
                 sheet_OLAP_P.Columns(a).Delete()
         endOLAPCol = sheet_OLAP_P.Cells.Find("Итого").Column
-        self.ui.tableWidget.setRowCount(endOLAPRow - 1)
-        self.ui.tableWidget.setColumnCount(endOLAPCol)
+        self.ui.tableWidget.setRowCount(endOLAPRow)
+        self.ui.tableWidget.setColumnCount(endOLAPCol + 4)
         self.columnLables = list(sheet_OLAP_P.Range(sheet_OLAP_P.Cells(1, 1), sheet_OLAP_P.Cells(1, endOLAPCol - 1)).Value[0])
-        self.columnLables.insert(0, "Коэффициенты")
+        self.columnLables.insert(0, "Выкладка")
+        self.columnLables.insert(0, "Кф. пекарни")
+        self.columnLables.insert(0, "Кф. товара")
+        self.columnLables.insert(0, "Удалить")
+        self.columnLables.insert(0, "Создать копию из...")
         self.ui.tableWidget.setHorizontalHeaderLabels(self.columnLables)
+        self.font = QtGui.QFont("Times", 10, QFont.Weight.Bold)
+        self.ui.tableWidget.horizontalHeader().setFont(self.font)
         for col in range(1, endOLAPCol):
-            for row in range(2, endOLAPRow):
+            for row in range(2, endOLAPRow + 1):
                 item = sheet_OLAP_P.Cells(row, col).Value
                 item = QTableWidgetItem(str(item))
-                self.ui.tableWidget.setItem(row - 1, col, item)
+                self.ui.tableWidget.setItem(row, col + 4, item)
         global saveZnach
         saveZnach = {}
-        for col in range(4, self.ui.tableWidget.columnCount()):
+        for col in range(8, self.ui.tableWidget.columnCount()):
             saveZnach[col] = {}
-            for row in range(2, self.ui.tableWidget.rowCount()+1):
+            for row in range(3, self.ui.tableWidget.rowCount()+1):
                 saveZnach[col][row] = float(self.ui.tableWidget.item(row-1, col).text())
-        for col_spin in range(4, endOLAPCol):
-            self.spinboxCol = QtWidgets.QDoubleSpinBox()
-            self.ui.tableWidget.setCellWidget(0, col_spin, self.spinboxCol)
+        self.ui.tableWidget.setItem(0, 7, QTableWidgetItem("Кф. кондитерской"))
+        self.ui.tableWidget.item(0, 7).setFont(self.font)
+        self.ui.tableWidget.setItem(1, 7, QTableWidgetItem("Кф. запаса дн."))
+        self.ui.tableWidget.item(1, 7).setFont(self.font)
+        for col_spin in range(8, self.ui.tableWidget.columnCount()):
+            self.DspinboxCol1 = QtWidgets.QDoubleSpinBox()
+            self.DspinboxCol2 = QtWidgets.QDoubleSpinBox()
+            self.ui.tableWidget.setCellWidget(0, col_spin, self.DspinboxCol1)
             self.ui.tableWidget.cellWidget(0, col_spin).setValue(1.00)
             self.ui.tableWidget.cellWidget(0, col_spin).setSingleStep(0.05)
             self.ui.tableWidget.cellWidget(0, col_spin).valueChanged.connect(self.raschetPrognoz)
-        for row_spin in range(1, endOLAPRow-1):
-            self.spinboxRow = QtWidgets.QDoubleSpinBox()
-            self.ui.tableWidget.setCellWidget(row_spin, 0, self.spinboxRow)
-            self.ui.tableWidget.cellWidget(row_spin, 0).setValue(1.00)
-            self.ui.tableWidget.cellWidget(row_spin, 0).setSingleStep(0.05)
-            self.ui.tableWidget.cellWidget(row_spin, 0).valueChanged.connect(self.raschetPrognoz)
-
-        # self.raschetButton = QtWidgets.QPushButton()
-        # self.ui.tableWidget.setCellWidget(0, 2, self.raschetButton)
-        # self.raschetButton.setText("Рассчет")
-        # self.raschetButton.setStyleSheet("QPushButton {\n"
-        #     "background-color: rgb(228, 107, 134);\n"
-        #     "border: none;\n"
-        #     "border-radius: 10px}\n"
-        #     "\n"
-        #     "QPushButton:hover {\n"
-        #     "border: 1px solid  rgb(0, 0, 0);\n"
-        #     "background-color: rgba(228, 107, 134, 0.9)\n"
-        #     "}\n"
-        #     "\n"
-        #     "QPushButton:pressed {\n"
-        #     "border:2px solid  rgb(0, 0, 0);\n"
-        #     "background-color: rgba(228, 107, 134, 1)\n"
-        #     "}")
-        # self.ui.tableWidget.cellWidget(0, 2).clicked.connect(self.raschetPrognoz)
-        self.ui.tableWidget.setColumnWidth(0, 70)
-        self.ui.tableWidget.setColumnWidth(1, 70)
-        self.ui.tableWidget.setColumnWidth(2, 280)
-        self.ui.tableWidget.setColumnWidth(3, 120)
+            self.ui.tableWidget.setCellWidget(1, col_spin, self.DspinboxCol2)
+            self.ui.tableWidget.cellWidget(1, col_spin).setValue(1.00)
+            self.ui.tableWidget.cellWidget(1, col_spin).setSingleStep(0.05)
+        for row_spin in range(2, self.ui.tableWidget.rowCount()):
+            self.DspinboxRow1 = QtWidgets.QDoubleSpinBox()
+            self.DspinboxRow2 = QtWidgets.QDoubleSpinBox()
+            self.spinboxRow = QtWidgets.QSpinBox()
+            self.ui.tableWidget.setCellWidget(row_spin, 2, self.DspinboxRow1)
+            self.ui.tableWidget.cellWidget(row_spin, 2).setValue(1.00)
+            self.ui.tableWidget.cellWidget(row_spin, 2).setSingleStep(0.05)
+            self.ui.tableWidget.cellWidget(row_spin, 2).valueChanged.connect(self.raschetPrognoz)
+            self.ui.tableWidget.setCellWidget(row_spin, 3, self.DspinboxRow2)
+            self.ui.tableWidget.cellWidget(row_spin, 3).setValue(1.00)
+            self.ui.tableWidget.cellWidget(row_spin, 3).setSingleStep(0.05)
+            self.ui.tableWidget.setCellWidget(row_spin, 4, self.spinboxRow)
+            self.ui.tableWidget.cellWidget(row_spin, 4).setValue(1)
+            self.ui.tableWidget.cellWidget(row_spin, 4).setSingleStep(1)
+        for row_button in range(2, self.ui.tableWidget.rowCount()):
+            self.copyRowButton = QtWidgets.QPushButton()
+            self.deleteRowButton = QtWidgets.QPushButton()
+            self.ui.tableWidget.setCellWidget(row_button, 0, self.copyRowButton)
+            self.ui.tableWidget.cellWidget(row_button, 0).setText('Копировать')
+            self.ui.tableWidget.cellWidget(row_button, 0).setStyleSheet("QPushButton {\n"
+                                         "background-color: rgb(228, 107, 134);\n"
+                                         "border: 1px solid  rgb(0, 0, 0);\n"
+                                         "border-radius: 10px}\n"
+                                         "\n"
+                                         "QPushButton:hover {\n"
+                                         "border: 2px solid  rgb(0, 0, 0);\n"
+                                         "background-color: rgba(228, 107, 134, 0.9)\n"
+                                         "}\n"
+                                         "\n"
+                                         "QPushButton:pressed {\n"
+                                         "border:3px solid  rgb(0, 0, 0);\n"
+                                         "background-color: rgba(228, 107, 134, 1)\n"
+                                         "}")
+            self.ui.tableWidget.setCellWidget(row_button, 1, self.deleteRowButton)
+            self.ui.tableWidget.cellWidget(row_button, 1).setText('Удалить')
+            self.ui.tableWidget.cellWidget(row_button, 1).setStyleSheet("QPushButton {\n"
+                                                                        "border: 1px solid  rgb(0, 0, 0);\n"
+                                                                        "border-radius: 10px}"
+                                                                        "\n"
+                                                                        "QPushButton:hover {\n"
+                                                                        "border: 2px solid  rgb(0, 0, 0);}"
+                                                                        "\n"
+                                                                        "QPushButton:pressed {\n"
+                                                                        "border:3px solid  rgb(0, 0, 0);}")
+        self.ui.tableWidget.setColumnWidth(0, 140)
+        self.ui.tableWidget.setColumnWidth(1, 80)
+        self.ui.tableWidget.setColumnWidth(2, 90)
+        self.ui.tableWidget.setColumnWidth(3, 90)
+        self.ui.tableWidget.setColumnWidth(4, 90)
+        self.ui.tableWidget.setColumnWidth(5, 90)
+        self.ui.tableWidget.setColumnWidth(6, 290)
+        self.ui.tableWidget.setColumnWidth(7, 130)
 
     def raschetPrognoz(self):
         buttonClicked = self.sender()
         index = self.ui.tableWidget.indexAt(buttonClicked.pos())
         if index.row() == 0:
-            for i in range(2, self.ui.tableWidget.rowCount()+1):
-                result = float(saveZnach[index.column()][i]) * float(self.ui.tableWidget.cellWidget(0, index.column()).value()) * float(self.ui.tableWidget.cellWidget(i-1, 0).value())
+            for i in range(3, self.ui.tableWidget.rowCount()+1):
+                result = round(float(saveZnach[index.column()][i]) * float(self.ui.tableWidget.cellWidget(0, index.column()).value()) * float(self.ui.tableWidget.cellWidget(i-1, 2).value()), 2)
                 self.ui.tableWidget.setItem(i - 1, index.column(), QTableWidgetItem(str(result)))
         else:
-            for i in range(4, self.ui.tableWidget.columnCount()):
-                result = float(saveZnach[i][index.row()+1]) * float(self.ui.tableWidget.cellWidget(index.row(), 0).value()) * float(self.ui.tableWidget.cellWidget(0, i).value())
+            for i in range(8, self.ui.tableWidget.columnCount()):
+                result = round(float(saveZnach[i][index.row()+1]) * float(self.ui.tableWidget.cellWidget(index.row(), 2).value()) * float(self.ui.tableWidget.cellWidget(0, i).value()), 2)
                 self.ui.tableWidget.setItem(index.row(), i, QTableWidgetItem(str(result)))
 
     def closeEvent(self, event):
