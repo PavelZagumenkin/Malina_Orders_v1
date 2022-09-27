@@ -191,12 +191,14 @@ class WindowBakeryTables(QtWidgets.QMainWindow, Main):
             iconCopy = QtGui.QIcon()
             iconCopy.addPixmap(QtGui.QPixmap("image/copy.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
             self.ui.tableWidget.cellWidget(row_button, 0).setIcon(iconCopy)
+            self.ui.tableWidget.cellWidget(row_button, 0).clicked.connect(self.copyRow)
             self.deleteRowButton = QtWidgets.QPushButton()
             self.ui.tableWidget.setCellWidget(row_button, 1, self.deleteRowButton)
             self.ui.tableWidget.cellWidget(row_button, 1).setText('')
             iconCross = QtGui.QIcon()
             iconCross.addPixmap(QtGui.QPixmap("image/cross.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
             self.ui.tableWidget.cellWidget(row_button, 1).setIcon(iconCross)
+            self.ui.tableWidget.cellWidget(row_button, 1).clicked.connect(self.deleteRow)
         self.ui.tableWidget.setColumnWidth(0, 20)
         self.ui.tableWidget.setColumnWidth(1, 20)
         self.ui.tableWidget.setColumnWidth(2, 90)
@@ -217,6 +219,18 @@ class WindowBakeryTables(QtWidgets.QMainWindow, Main):
             for i in range(8, self.ui.tableWidget.columnCount()):
                 result = round(float(saveZnach[i][index.row()+1]) * float(self.ui.tableWidget.cellWidget(index.row(), 2).value()) * float(self.ui.tableWidget.cellWidget(0, i).value()), 2)
                 self.ui.tableWidget.setItem(index.row(), i, QTableWidgetItem(str(result)))
+
+    def copyRow(self):
+        buttonClicked = self.sender()
+        index = self.ui.tableWidget.indexAt(buttonClicked.pos())
+        rowPosition = self.ui.tableWidget.rowCount()
+        self.ui.tableWidget.insertRow(rowPosition)
+        pass
+
+    def deleteRow(self):
+        buttonClicked = self.sender()
+        index = self.ui.tableWidget.indexAt(buttonClicked.pos())
+        self.ui.tableWidget.removeRow(index.row())
 
     def closeEvent(self, event):
         reply = QMessageBox()
