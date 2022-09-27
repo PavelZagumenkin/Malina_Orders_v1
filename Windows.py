@@ -135,8 +135,8 @@ class WindowBakeryTables(QtWidgets.QMainWindow, Main):
         self.columnLables.insert(0, "Выкладка")
         self.columnLables.insert(0, "Кф. пекарни")
         self.columnLables.insert(0, "Кф. товара")
-        self.columnLables.insert(0, "Удалить")
-        self.columnLables.insert(0, "Создать копию из...")
+        self.columnLables.insert(0, "")
+        self.columnLables.insert(0, "")
         self.ui.tableWidget.setHorizontalHeaderLabels(self.columnLables)
         self.font = QtGui.QFont("Times", 10, QFont.Weight.Bold)
         self.ui.tableWidget.horizontalHeader().setFont(self.font)
@@ -157,7 +157,9 @@ class WindowBakeryTables(QtWidgets.QMainWindow, Main):
         self.ui.tableWidget.item(1, 7).setFont(self.font)
         for col_spin in range(8, self.ui.tableWidget.columnCount()):
             self.DspinboxCol1 = QtWidgets.QDoubleSpinBox()
+            self.DspinboxCol1.wheelEvent = lambda event: None
             self.DspinboxCol2 = QtWidgets.QDoubleSpinBox()
+            self.DspinboxCol2.wheelEvent = lambda event: None
             self.ui.tableWidget.setCellWidget(0, col_spin, self.DspinboxCol1)
             self.ui.tableWidget.cellWidget(0, col_spin).setValue(1.00)
             self.ui.tableWidget.cellWidget(0, col_spin).setSingleStep(0.05)
@@ -169,6 +171,9 @@ class WindowBakeryTables(QtWidgets.QMainWindow, Main):
             self.DspinboxRow1 = QtWidgets.QDoubleSpinBox()
             self.DspinboxRow2 = QtWidgets.QDoubleSpinBox()
             self.spinboxRow = QtWidgets.QSpinBox()
+            self.DspinboxRow1.wheelEvent = lambda event: None
+            self.DspinboxRow2.wheelEvent = lambda event: None
+            self.spinboxRow.wheelEvent = lambda event: None
             self.ui.tableWidget.setCellWidget(row_spin, 2, self.DspinboxRow1)
             self.ui.tableWidget.cellWidget(row_spin, 2).setValue(1.00)
             self.ui.tableWidget.cellWidget(row_spin, 2).setSingleStep(0.05)
@@ -181,36 +186,19 @@ class WindowBakeryTables(QtWidgets.QMainWindow, Main):
             self.ui.tableWidget.cellWidget(row_spin, 4).setSingleStep(1)
         for row_button in range(2, self.ui.tableWidget.rowCount()):
             self.copyRowButton = QtWidgets.QPushButton()
-            self.deleteRowButton = QtWidgets.QPushButton()
             self.ui.tableWidget.setCellWidget(row_button, 0, self.copyRowButton)
-            self.ui.tableWidget.cellWidget(row_button, 0).setText('Копировать')
-            self.ui.tableWidget.cellWidget(row_button, 0).setStyleSheet("QPushButton {\n"
-                                         "background-color: rgb(228, 107, 134);\n"
-                                         "border: 1px solid  rgb(0, 0, 0);\n"
-                                         "border-radius: 10px}\n"
-                                         "\n"
-                                         "QPushButton:hover {\n"
-                                         "border: 2px solid  rgb(0, 0, 0);\n"
-                                         "background-color: rgba(228, 107, 134, 0.9)\n"
-                                         "}\n"
-                                         "\n"
-                                         "QPushButton:pressed {\n"
-                                         "border:3px solid  rgb(0, 0, 0);\n"
-                                         "background-color: rgba(228, 107, 134, 1)\n"
-                                         "}")
+            self.ui.tableWidget.cellWidget(row_button, 0).setText('')
+            iconCopy = QtGui.QIcon()
+            iconCopy.addPixmap(QtGui.QPixmap("image/copy.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+            self.ui.tableWidget.cellWidget(row_button, 0).setIcon(iconCopy)
+            self.deleteRowButton = QtWidgets.QPushButton()
             self.ui.tableWidget.setCellWidget(row_button, 1, self.deleteRowButton)
-            self.ui.tableWidget.cellWidget(row_button, 1).setText('Удалить')
-            self.ui.tableWidget.cellWidget(row_button, 1).setStyleSheet("QPushButton {\n"
-                                                                        "border: 1px solid  rgb(0, 0, 0);\n"
-                                                                        "border-radius: 10px}"
-                                                                        "\n"
-                                                                        "QPushButton:hover {\n"
-                                                                        "border: 2px solid  rgb(0, 0, 0);}"
-                                                                        "\n"
-                                                                        "QPushButton:pressed {\n"
-                                                                        "border:3px solid  rgb(0, 0, 0);}")
-        self.ui.tableWidget.setColumnWidth(0, 140)
-        self.ui.tableWidget.setColumnWidth(1, 80)
+            self.ui.tableWidget.cellWidget(row_button, 1).setText('')
+            iconCross = QtGui.QIcon()
+            iconCross.addPixmap(QtGui.QPixmap("image/cross.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+            self.ui.tableWidget.cellWidget(row_button, 1).setIcon(iconCross)
+        self.ui.tableWidget.setColumnWidth(0, 20)
+        self.ui.tableWidget.setColumnWidth(1, 20)
         self.ui.tableWidget.setColumnWidth(2, 90)
         self.ui.tableWidget.setColumnWidth(3, 90)
         self.ui.tableWidget.setColumnWidth(4, 90)
