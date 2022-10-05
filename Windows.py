@@ -225,12 +225,54 @@ class WindowBakeryTables(QtWidgets.QMainWindow, Main):
         index = self.ui.tableWidget.indexAt(buttonClicked.pos())
         rowPosition = self.ui.tableWidget.rowCount()
         self.ui.tableWidget.insertRow(rowPosition)
-        pass
+        self.copyRowButton = QtWidgets.QPushButton()
+        self.ui.tableWidget.setCellWidget(rowPosition, 0, self.copyRowButton)
+        self.ui.tableWidget.cellWidget(rowPosition, 0).setText('')
+        iconCopy = QtGui.QIcon()
+        iconCopy.addPixmap(QtGui.QPixmap("image/copy.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        self.ui.tableWidget.cellWidget(rowPosition, 0).setIcon(iconCopy)
+        self.ui.tableWidget.cellWidget(rowPosition, 0).clicked.connect(self.copyRow)
+        self.deleteRowButton = QtWidgets.QPushButton()
+        self.ui.tableWidget.setCellWidget(rowPosition, 1, self.deleteRowButton)
+        self.ui.tableWidget.cellWidget(rowPosition, 1).setText('')
+        iconCross = QtGui.QIcon()
+        iconCross.addPixmap(QtGui.QPixmap("image/cross.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        self.ui.tableWidget.cellWidget(rowPosition, 1).setIcon(iconCross)
+        self.ui.tableWidget.cellWidget(rowPosition, 1).clicked.connect(self.deleteRow)
+        self.DspinboxRow1 = QtWidgets.QDoubleSpinBox()
+        self.DspinboxRow2 = QtWidgets.QDoubleSpinBox()
+        self.spinboxRow = QtWidgets.QSpinBox()
+        self.DspinboxRow1.wheelEvent = lambda event: None
+        self.DspinboxRow2.wheelEvent = lambda event: None
+        self.spinboxRow.wheelEvent = lambda event: None
+        self.ui.tableWidget.setCellWidget(rowPosition, 2, self.DspinboxRow1)
+        self.ui.tableWidget.cellWidget(rowPosition, 2).setValue(1.00)
+        self.ui.tableWidget.cellWidget(rowPosition, 2).setSingleStep(0.05)
+        self.ui.tableWidget.cellWidget(rowPosition, 2).valueChanged.connect(self.raschetPrognoz)
+        self.ui.tableWidget.setCellWidget(rowPosition, 3, self.DspinboxRow2)
+        self.ui.tableWidget.cellWidget(rowPosition, 3).setValue(1.00)
+        self.ui.tableWidget.cellWidget(rowPosition, 3).setSingleStep(0.05)
+        self.ui.tableWidget.setCellWidget(rowPosition, 4, self.spinboxRow)
+        self.ui.tableWidget.cellWidget(rowPosition, 4).setValue(1)
+        self.ui.tableWidget.cellWidget(rowPosition, 4).setSingleStep(1)
+        for c in range(5, self.ui.tableWidget.columnCount()):
+            self.ui.tableWidget.setItem(rowPosition, c, QTableWidgetItem(self.ui.tableWidget.item(index.row(), c).text()))
+        for c in range(8, self.ui.tableWidget.columnCount()):
+            saveZnach[c][rowPosition + 1] = float(self.ui.tableWidget.item(rowPosition, c).text())
+
 
     def deleteRow(self):
         buttonClicked = self.sender()
         index = self.ui.tableWidget.indexAt(buttonClicked.pos())
         self.ui.tableWidget.removeRow(index.row())
+        for c in range(8, self.ui.tableWidget.columnCount()):
+            del saveZnach[c][index.row() + 1]
+        for c in range(8, self.ui.tableWidget.columnCount()):
+            counter = index.row() + 2
+            for r in range(index.row() + 1, self.ui.tableWidget.rowCount() + 1):
+                saveZnach[c][r] = saveZnach[c].pop(counter)
+                counter += 1
+
 
     def closeEvent(self, event):
         reply = QMessageBox()
