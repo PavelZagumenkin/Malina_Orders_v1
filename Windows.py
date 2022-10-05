@@ -255,11 +255,12 @@ class WindowBakeryTables(QtWidgets.QMainWindow, Main):
         self.ui.tableWidget.setCellWidget(rowPosition, 4, self.spinboxRow)
         self.ui.tableWidget.cellWidget(rowPosition, 4).setValue(1)
         self.ui.tableWidget.cellWidget(rowPosition, 4).setSingleStep(1)
-        for c in range(5, self.ui.tableWidget.columnCount()):
+        for c in range(7, 8):
             self.ui.tableWidget.setItem(rowPosition, c, QTableWidgetItem(self.ui.tableWidget.item(index.row(), c).text()))
         for c in range(8, self.ui.tableWidget.columnCount()):
+            self.ui.tableWidget.setItem(rowPosition, c, QTableWidgetItem(str(saveZnach[c][index.row()+1])))
+        for c in range(8, self.ui.tableWidget.columnCount()):
             saveZnach[c][rowPosition + 1] = float(self.ui.tableWidget.item(rowPosition, c).text())
-
 
     def deleteRow(self):
         buttonClicked = self.sender()
