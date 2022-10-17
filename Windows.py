@@ -182,7 +182,7 @@ class WindowBakeryTables(QtWidgets.QMainWindow, Main):
             self.ui.tableWidget.cellWidget(row_spin, 3).setValue(1.00)
             self.ui.tableWidget.cellWidget(row_spin, 3).setSingleStep(0.05)
             self.ui.tableWidget.setCellWidget(row_spin, 4, self.spinboxRow)
-            self.ui.tableWidget.cellWidget(row_spin, 4).setValue(1)
+            self.ui.tableWidget.cellWidget(row_spin, 4).setValue(self.poisk_kod(self.ui.tableWidget.item(row_spin, 5).text()))
             self.ui.tableWidget.cellWidget(row_spin, 4).setSingleStep(1)
         for row_button in range(2, self.ui.tableWidget.rowCount()):
             self.copyRowButton = QtWidgets.QPushButton()

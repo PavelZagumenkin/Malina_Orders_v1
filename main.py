@@ -11,6 +11,7 @@ class Main():
         super().__init__()
         self.check_db = CheckThread()
         self.check_db.mysignal.connect(self.signal_handler)
+        self.check_db.layout.connect(self.signal_layout)
 
     # Проверка пустоты логина и пароля(декоратор)
     def check_input(funct):
@@ -41,6 +42,22 @@ class Main():
         login_text = self.ui.line_login.text()
         password_text = self.ui.line_password.text()
         self.check_db.thr_login(login_text, password_text)
+
+    def signal_layout(self, value):
+        global layout
+        if value != 'Код отсутствует в БД':
+            layout = value
+            return layout
+        else:
+            layout = 0
+            return layout
+
+    # Поиск кода в базе данных
+    def poisk_kod(self, kod):
+        kod_text = kod
+        self.check_db.thr_kod(kod_text)
+        return int(layout)
+
 
     # Обработка логаута
     def logout(self):

@@ -16,3 +16,19 @@ def login(login, password, signal):
 
     cur.close()
     con.close()
+
+def seach_kod(kod, signal):
+    con = sqlite3.connect('db/malina_orders.db')
+    cur = con.cursor()
+
+    # Проверяем, есть ли такой код
+    cur.execute(f'SELECT * FROM directory_bakery WHERE KOD="{kod}";')
+    value = cur.fetchall()
+
+    if value != []:
+        signal.emit(str(value[0][3]))
+    else:
+        signal.emit('Код отсутствует в БД')
+
+    cur.close()
+    con.close()
