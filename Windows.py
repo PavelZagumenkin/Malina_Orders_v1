@@ -42,7 +42,7 @@ class WindowBakery(QtWidgets.QMainWindow, Main):
         self.ui.btn_koeff_bakery.clicked.connect(self.koeff_bakery_start)
         self.base_fileOLAP_bakery = [self.ui.lineEdit_OLAP_P, self.ui.lineEdit_OLAP_dayWeek_bakery]
         TodayDate = datetime.datetime.today()
-        EndDay = datetime.datetime.today() + datetime.timedelta(days=7)
+        EndDay = datetime.datetime.today() + datetime.timedelta(days=6)
         self.ui.dateEdit_startDay.setDate(QtCore.QDate(TodayDate.year, TodayDate.month, TodayDate.day))
         self.ui.dateEdit_EndDay.setDate(QtCore.QDate(EndDay.year, EndDay.month, EndDay.day))
         self.ui.dateEdit_startDay.userDateChanged['QDate'].connect(self.setEndDay)
