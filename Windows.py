@@ -1,7 +1,6 @@
-import copy
+import datetime
 from PyQt6 import QtCore, QtGui, QtWidgets
 import win32com.client
-from PyQt6.QtGui import *
 from PyQt6.QtWidgets import QMessageBox
 from PyQt6.QtWidgets import QFileDialog
 from PyQt6.QtWidgets import QTableWidgetItem
@@ -42,6 +41,14 @@ class WindowBakery(QtWidgets.QMainWindow, Main):
         self.ui.btn_path_dayWeek_bakery.clicked.connect(self.olap_dayWeek_bakery)
         self.ui.btn_koeff_bakery.clicked.connect(self.koeff_bakery_start)
         self.base_fileOLAP_bakery = [self.ui.lineEdit_OLAP_P, self.ui.lineEdit_OLAP_dayWeek_bakery]
+        TodayDate = datetime.datetime.today()
+        EndDay = datetime.datetime.today() + datetime.timedelta(days=7)
+        self.ui.dateEdit_startDay.setDate(QtCore.QDate(TodayDate.year, TodayDate.month, TodayDate.day))
+        self.ui.dateEdit_EndDay.setDate(QtCore.QDate(EndDay.year, EndDay.month, EndDay.day))
+        self.ui.dateEdit_startDay.userDateChanged['QDate'].connect(self.setEndDay)
+
+    def setEndDay(self):
+        self.ui.dateEdit_EndDay.setDate(self.ui.dateEdit_startDay.date().addDays(6))
 
     def olap_p(self):
         fileName = QFileDialog.getOpenFileName(self, 'Выберите файл OLAP по продажам', 'Отчеты', 'Excel файл (*.xlsx)')
@@ -199,6 +206,47 @@ class WindowBakeryTables(QtWidgets.QMainWindow, Main):
             iconCross.addPixmap(QtGui.QPixmap("image/cross.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
             self.ui.tableWidget.cellWidget(row_button, 1).setIcon(iconCross)
             self.ui.tableWidget.cellWidget(row_button, 1).clicked.connect(self.deleteRow)
+        self.SaveAndNext = QtWidgets.QPushButton()
+        self.SaveAndClose = QtWidgets.QPushButton()
+        self.ui.tableWidget.setCellWidget(0, 6, self.SaveAndNext)
+        self.ui.tableWidget.cellWidget(0, 6).setText('Сохранить и продолжить')
+        font = QtGui.QFont()
+        font.setFamily("Trebuchet MS")
+        font.setPointSize(12)
+        font.bold()
+        font.setWeight(50)
+        self.ui.tableWidget.cellWidget(0, 6).setFont(font)
+        self.ui.tableWidget.cellWidget(0, 6).setStyleSheet("QPushButton {\n"
+                                            "background-color: rgb(228, 107, 134);\n"
+                                            "border: none;\n"
+                                            "border-radius: 10px}\n"
+                                            "\n"
+                                            "QPushButton:hover {\n"
+                                            "border: 1px solid  rgb(0, 0, 0);\n"
+                                            "background-color: rgba(228, 107, 134, 0.9)\n"
+                                            "}\n"
+                                            "\n"
+                                            "QPushButton:pressed {\n"
+                                            "border:3px solid  rgb(0, 0, 0);\n"
+                                            "background-color: rgba(228, 107, 134, 1)\n"
+                                            "}")
+        self.ui.tableWidget.setCellWidget(1, 6, self.SaveAndClose)
+        self.ui.tableWidget.cellWidget(1, 6).setText('Сохранить и закрыть')
+        self.ui.tableWidget.cellWidget(1, 6).setFont(font)
+        self.ui.tableWidget.cellWidget(1, 6).setStyleSheet("QPushButton {\n"
+                                            "background-color: rgb(228, 107, 134);\n"
+                                            "border: none;\n"
+                                            "border-radius: 10px}\n"
+                                            "\n"
+                                            "QPushButton:hover {\n"
+                                            "border: 1px solid  rgb(0, 0, 0);\n"
+                                            "background-color: rgba(228, 107, 134, 0.9)\n"
+                                            "}\n"
+                                            "\n"
+                                            "QPushButton:pressed {\n"
+                                            "border:3px solid  rgb(0, 0, 0);\n"
+                                            "background-color: rgba(228, 107, 134, 1)\n"
+                                            "}")
         self.ui.tableWidget.setColumnWidth(0, 20)
         self.ui.tableWidget.setColumnWidth(1, 20)
         self.ui.tableWidget.setColumnWidth(2, 90)
