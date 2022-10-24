@@ -241,18 +241,17 @@ class WindowBakeryTables(QtWidgets.QMainWindow, Main):
         self.ui.tableWidget.setColumnWidth(4, 110)
         self.ui.tableWidget.setColumnWidth(5, 290)
         self.ui.tableWidget.setColumnWidth(6, 130)
-        print(saveZnach)
 
     def raschetPrognoz(self):
         buttonClicked = self.sender()
         index = self.ui.tableWidget.indexAt(buttonClicked.pos())
         if index.row() == 0:
-            for i in range(3, self.ui.tableWidget.rowCount()+1):
-                result = round(float(saveZnach[index.column()][i]) * float(self.ui.tableWidget.cellWidget(0, index.column()).value()) * float(self.ui.tableWidget.cellWidget(i-1, 2).value()), 2)
-                self.ui.tableWidget.setItem(i - 1, index.column(), QTableWidgetItem(str(result)))
+            for i in range(1, self.ui.tableWidget.rowCount()):
+                result = round(float(saveZnach[index.column()][i]) * float(self.ui.tableWidget.cellWidget(0, index.column()).value()) * float(self.ui.tableWidget.cellWidget(i, 2).value()), 2)
+                self.ui.tableWidget.setItem(i, index.column(), QTableWidgetItem(str(result)))
         else:
-            for i in range(8, self.ui.tableWidget.columnCount()):
-                result = round(float(saveZnach[i][index.row()+1]) * float(self.ui.tableWidget.cellWidget(index.row(), 2).value()) * float(self.ui.tableWidget.cellWidget(0, i).value()), 2)
+            for i in range(7, self.ui.tableWidget.columnCount()):
+                result = round(float(saveZnach[i][index.row()]) * float(self.ui.tableWidget.cellWidget(index.row(), 2).value()) * float(self.ui.tableWidget.cellWidget(0, i).value()), 2)
                 self.ui.tableWidget.setItem(index.row(), i, QTableWidgetItem(str(result)))
 
     def copyRow(self):
