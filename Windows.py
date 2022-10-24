@@ -136,11 +136,10 @@ class WindowBakeryTables(QtWidgets.QMainWindow, Main):
             if sheet_OLAP_P.Cells(1, a).Value is None:
                 sheet_OLAP_P.Columns(a).Delete()
         endOLAPCol = sheet_OLAP_P.Cells.Find("Итого").Column
-        self.ui.tableWidget.setRowCount(endOLAPRow)
-        self.ui.tableWidget.setColumnCount(endOLAPCol + 4)
+        self.ui.tableWidget.setRowCount(endOLAPRow - 1)
+        self.ui.tableWidget.setColumnCount(endOLAPCol + 3)
         self.columnLables = list(sheet_OLAP_P.Range(sheet_OLAP_P.Cells(1, 1), sheet_OLAP_P.Cells(1, endOLAPCol - 1)).Value[0])
         self.columnLables.insert(0, "Выкладка")
-        self.columnLables.insert(0, "Кф. пекарни")
         self.columnLables.insert(0, "Кф. товара")
         self.columnLables.insert(0, "")
         self.columnLables.insert(0, "")
@@ -148,50 +147,38 @@ class WindowBakeryTables(QtWidgets.QMainWindow, Main):
         self.font = QtGui.QFont("Times", 10, QFont.Weight.Bold)
         self.ui.tableWidget.horizontalHeader().setFont(self.font)
         for col in range(1, endOLAPCol):
-            for row in range(2, endOLAPRow + 1):
+            for row in range(2, endOLAPRow):
                 item = sheet_OLAP_P.Cells(row, col).Value
                 item = QTableWidgetItem(str(item))
-                self.ui.tableWidget.setItem(row, col + 4, item)
+                self.ui.tableWidget.setItem(row - 1, col + 3, item)
         global saveZnach
         saveZnach = {}
-        for col in range(8, self.ui.tableWidget.columnCount()):
+        for col in range(7, self.ui.tableWidget.columnCount()):
             saveZnach[col] = {}
-            for row in range(3, self.ui.tableWidget.rowCount()+1):
-                saveZnach[col][row] = float(self.ui.tableWidget.item(row-1, col).text())
+            for row in range(1, self.ui.tableWidget.rowCount()):
+                saveZnach[col][row] = float(self.ui.tableWidget.item(row, col).text())
         self.ui.tableWidget.setItem(0, 7, QTableWidgetItem("Кф. кондитерской"))
         self.ui.tableWidget.item(0, 7).setFont(self.font)
-        self.ui.tableWidget.setItem(1, 7, QTableWidgetItem("Кф. запаса дн."))
-        self.ui.tableWidget.item(1, 7).setFont(self.font)
-        for col_spin in range(8, self.ui.tableWidget.columnCount()):
-            self.DspinboxCol1 = QtWidgets.QDoubleSpinBox()
-            self.DspinboxCol1.wheelEvent = lambda event: None
-            self.DspinboxCol2 = QtWidgets.QDoubleSpinBox()
-            self.DspinboxCol2.wheelEvent = lambda event: None
-            self.ui.tableWidget.setCellWidget(0, col_spin, self.DspinboxCol1)
+        for col_spin in range(7, self.ui.tableWidget.columnCount()):
+            self.DspinboxCol = QtWidgets.QDoubleSpinBox()
+            self.DspinboxCol.wheelEvent = lambda event: None
+            self.ui.tableWidget.setCellWidget(0, col_spin, self.DspinboxCol)
             self.ui.tableWidget.cellWidget(0, col_spin).setValue(1.00)
             self.ui.tableWidget.cellWidget(0, col_spin).setSingleStep(0.05)
             self.ui.tableWidget.cellWidget(0, col_spin).valueChanged.connect(self.raschetPrognoz)
-            self.ui.tableWidget.setCellWidget(1, col_spin, self.DspinboxCol2)
-            self.ui.tableWidget.cellWidget(1, col_spin).setValue(1.00)
-            self.ui.tableWidget.cellWidget(1, col_spin).setSingleStep(0.05)
-        for row_spin in range(2, self.ui.tableWidget.rowCount()):
-            self.DspinboxRow1 = QtWidgets.QDoubleSpinBox()
-            self.DspinboxRow2 = QtWidgets.QDoubleSpinBox()
-            self.spinboxRow = QtWidgets.QSpinBox()
-            self.DspinboxRow1.wheelEvent = lambda event: None
-            self.DspinboxRow2.wheelEvent = lambda event: None
-            self.spinboxRow.wheelEvent = lambda event: None
-            self.ui.tableWidget.setCellWidget(row_spin, 2, self.DspinboxRow1)
+        for row_spin in range(1, self.ui.tableWidget.rowCount()):
+            self.DspinboxRow = QtWidgets.QDoubleSpinBox()
+            self.SpinboxRow = QtWidgets.QSpinBox()
+            self.DspinboxRow.wheelEvent = lambda event: None
+            self.SpinboxRow.wheelEvent = lambda event: None
+            self.ui.tableWidget.setCellWidget(row_spin, 2, self.DspinboxRow)
             self.ui.tableWidget.cellWidget(row_spin, 2).setValue(1.00)
             self.ui.tableWidget.cellWidget(row_spin, 2).setSingleStep(0.05)
             self.ui.tableWidget.cellWidget(row_spin, 2).valueChanged.connect(self.raschetPrognoz)
-            self.ui.tableWidget.setCellWidget(row_spin, 3, self.DspinboxRow2)
-            self.ui.tableWidget.cellWidget(row_spin, 3).setValue(1.00)
-            self.ui.tableWidget.cellWidget(row_spin, 3).setSingleStep(0.05)
-            self.ui.tableWidget.setCellWidget(row_spin, 4, self.spinboxRow)
-            self.ui.tableWidget.cellWidget(row_spin, 4).setValue(self.poisk_kod(self.ui.tableWidget.item(row_spin, 5).text()))
-            self.ui.tableWidget.cellWidget(row_spin, 4).setSingleStep(1)
-        for row_button in range(2, self.ui.tableWidget.rowCount()):
+            self.ui.tableWidget.setCellWidget(row_spin, 3, self.SpinboxRow)
+            self.ui.tableWidget.cellWidget(row_spin, 3).setValue(self.poisk_kod(self.ui.tableWidget.item(row_spin, 5).text()))
+            self.ui.tableWidget.cellWidget(row_spin, 3).setSingleStep(1)
+        for row_button in range(1, self.ui.tableWidget.rowCount()):
             self.copyRowButton = QtWidgets.QPushButton()
             self.ui.tableWidget.setCellWidget(row_button, 0, self.copyRowButton)
             self.ui.tableWidget.cellWidget(row_button, 0).setText('')
@@ -208,15 +195,15 @@ class WindowBakeryTables(QtWidgets.QMainWindow, Main):
             self.ui.tableWidget.cellWidget(row_button, 1).clicked.connect(self.deleteRow)
         self.SaveAndNext = QtWidgets.QPushButton()
         self.SaveAndClose = QtWidgets.QPushButton()
-        self.ui.tableWidget.setCellWidget(0, 6, self.SaveAndNext)
-        self.ui.tableWidget.cellWidget(0, 6).setText('Сохранить и продолжить')
+        self.ui.tableWidget.setCellWidget(0, 4, self.SaveAndNext)
+        self.ui.tableWidget.cellWidget(0, 4).setText('Продолжить')
         font = QtGui.QFont()
         font.setFamily("Trebuchet MS")
         font.setPointSize(12)
         font.bold()
         font.setWeight(50)
-        self.ui.tableWidget.cellWidget(0, 6).setFont(font)
-        self.ui.tableWidget.cellWidget(0, 6).setStyleSheet("QPushButton {\n"
+        self.ui.tableWidget.cellWidget(0, 4).setFont(font)
+        self.ui.tableWidget.cellWidget(0, 4).setStyleSheet("QPushButton {\n"
                                             "background-color: rgb(228, 107, 134);\n"
                                             "border: none;\n"
                                             "border-radius: 10px}\n"
@@ -230,10 +217,10 @@ class WindowBakeryTables(QtWidgets.QMainWindow, Main):
                                             "border:3px solid  rgb(0, 0, 0);\n"
                                             "background-color: rgba(228, 107, 134, 1)\n"
                                             "}")
-        self.ui.tableWidget.setCellWidget(1, 6, self.SaveAndClose)
-        self.ui.tableWidget.cellWidget(1, 6).setText('Сохранить и закрыть')
-        self.ui.tableWidget.cellWidget(1, 6).setFont(font)
-        self.ui.tableWidget.cellWidget(1, 6).setStyleSheet("QPushButton {\n"
+        self.ui.tableWidget.setCellWidget(0, 5, self.SaveAndClose)
+        self.ui.tableWidget.cellWidget(0, 5).setText('Сохранить и закрыть')
+        self.ui.tableWidget.cellWidget(0, 5).setFont(font)
+        self.ui.tableWidget.cellWidget(0, 5).setStyleSheet("QPushButton {\n"
                                             "background-color: rgb(228, 107, 134);\n"
                                             "border: none;\n"
                                             "border-radius: 10px}\n"
@@ -251,10 +238,10 @@ class WindowBakeryTables(QtWidgets.QMainWindow, Main):
         self.ui.tableWidget.setColumnWidth(1, 20)
         self.ui.tableWidget.setColumnWidth(2, 90)
         self.ui.tableWidget.setColumnWidth(3, 90)
-        self.ui.tableWidget.setColumnWidth(4, 90)
-        self.ui.tableWidget.setColumnWidth(5, 90)
-        self.ui.tableWidget.setColumnWidth(6, 290)
-        self.ui.tableWidget.setColumnWidth(7, 130)
+        self.ui.tableWidget.setColumnWidth(4, 110)
+        self.ui.tableWidget.setColumnWidth(5, 290)
+        self.ui.tableWidget.setColumnWidth(6, 130)
+        print(saveZnach)
 
     def raschetPrognoz(self):
         buttonClicked = self.sender()
