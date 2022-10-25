@@ -242,6 +242,27 @@ class WindowBakeryTables(QtWidgets.QMainWindow, Main):
         self.ui.tableWidget.setColumnWidth(5, 290)
         self.ui.tableWidget.setColumnWidth(6, 130)
 
+    def saveAndNextDef(self):
+        saveDB = {}
+        for col in range(2, self.ui.tableWidget.columnCount()):
+            saveDB[col] = {}
+            for row in range(0, self.ui.tableWidget.rowCount()):
+                if col == 2 or col == 3 or col == 4 or row == 0 or row == 1:
+                    if self.ui.tableWidget.cellWidget(row, col) == None:
+                        saveDB[col][row] = 0
+                    elif (row == 0 and col == 6) or (row == 1 and col == 6):
+                        saveDB[col][row] = 0
+                    else:
+                        saveDB[col][row] = float(self.ui.tableWidget.cellWidget(row, col).value())
+                elif col == 5 or col == 6 or col == 7:
+                    saveDB[col][row] = self.ui.tableWidget.item(row, col).text()
+                else:
+                    saveDB[col][row] = float(self.ui.tableWidget.item(row, col).text())
+        print(saveDB)
+
+    def saveAndCloseDef(self):
+        pass
+
     def raschetPrognoz(self):
         buttonClicked = self.sender()
         index = self.ui.tableWidget.indexAt(buttonClicked.pos())
