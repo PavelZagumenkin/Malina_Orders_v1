@@ -58,6 +58,8 @@ class Main():
         self.check_db.thr_kod(kod_text)
         return int(layout)
 
+    def insertInDB(self, savePeriod, saveHeaders, saveDB):
+        self.check_db.thr_savePrognoz(savePeriod, saveHeaders, saveDB)
 
     # Обработка логаута
     def logout(self):

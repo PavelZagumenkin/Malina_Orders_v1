@@ -11,3 +11,6 @@ class CheckThread(QtCore.QThread):
     def thr_kod(self, kod_text):
         seach_kod(kod_text, self.layout)
 
+    def thr_savePrognoz(self, savePeriod, saveHeaders, saveDB):
+        pass
+

@@ -36,19 +36,22 @@ class WindowBakery(QtWidgets.QMainWindow, Main):
         super().__init__()
         self.ui = Ui_WindowBakery()
         self.ui.setupUi(self)
-        self.ui.btn_exit_bakery.clicked.connect(self.viborRazdelaOpen)
-        self.ui.btn_path_OLAP_P.clicked.connect(self.olap_p)
-        self.ui.btn_path_dayWeek_bakery.clicked.connect(self.olap_dayWeek_bakery)
-        self.ui.btn_koeff_bakery.clicked.connect(self.koeff_bakery_start)
         self.base_fileOLAP_bakery = [self.ui.lineEdit_OLAP_P, self.ui.lineEdit_OLAP_dayWeek_bakery]
         TodayDate = datetime.datetime.today()
         EndDay = datetime.datetime.today() + datetime.timedelta(days=6)
         self.ui.dateEdit_startDay.setDate(QtCore.QDate(TodayDate.year, TodayDate.month, TodayDate.day))
         self.ui.dateEdit_EndDay.setDate(QtCore.QDate(EndDay.year, EndDay.month, EndDay.day))
         self.ui.dateEdit_startDay.userDateChanged['QDate'].connect(self.setEndDay)
+        global periodDay
+        periodDay = [self.ui.dateEdit_startDay.date(), self.ui.dateEdit_EndDay.date()]
+        self.ui.btn_exit_bakery.clicked.connect(self.viborRazdelaOpen)
+        self.ui.btn_path_OLAP_P.clicked.connect(self.olap_p)
+        self.ui.btn_path_dayWeek_bakery.clicked.connect(self.olap_dayWeek_bakery)
+        self.ui.btn_koeff_bakery.clicked.connect(self.koeff_bakery_start)
 
     def setEndDay(self):
         self.ui.dateEdit_EndDay.setDate(self.ui.dateEdit_startDay.date().addDays(6))
+        periodDay = [self.ui.dateEdit_startDay.date(), self.ui.dateEdit_EndDay.date()]
 
     def olap_p(self):
         fileName = QFileDialog.getOpenFileName(self, 'Выберите файл OLAP по продажам', 'Отчеты', 'Excel файл (*.xlsx)')
@@ -176,7 +179,7 @@ class WindowBakeryTables(QtWidgets.QMainWindow, Main):
             self.ui.tableWidget.cellWidget(row_spin, 2).setSingleStep(0.05)
             self.ui.tableWidget.cellWidget(row_spin, 2).valueChanged.connect(self.raschetPrognoz)
             self.ui.tableWidget.setCellWidget(row_spin, 3, self.SpinboxRow)
-            self.ui.tableWidget.cellWidget(row_spin, 3).setValue(self.poisk_kod(self.ui.tableWidget.item(row_spin, 5).text()))
+            self.ui.tableWidget.cellWidget(row_spin, 3).setValue(self.poisk_kod(self.ui.tableWidget.item(row_spin, 4).text()))
             self.ui.tableWidget.cellWidget(row_spin, 3).setSingleStep(1)
         for row_button in range(1, self.ui.tableWidget.rowCount()):
             self.copyRowButton = QtWidgets.QPushButton()
@@ -217,6 +220,7 @@ class WindowBakeryTables(QtWidgets.QMainWindow, Main):
                                             "border:3px solid  rgb(0, 0, 0);\n"
                                             "background-color: rgba(228, 107, 134, 1)\n"
                                             "}")
+        self.ui.tableWidget.cellWidget(0, 4).clicked.connect(self.saveAndNextDef)
         self.ui.tableWidget.setCellWidget(0, 5, self.SaveAndClose)
         self.ui.tableWidget.cellWidget(0, 5).setText('Сохранить и закрыть')
         self.ui.tableWidget.cellWidget(0, 5).setFont(font)
@@ -234,6 +238,7 @@ class WindowBakeryTables(QtWidgets.QMainWindow, Main):
                                             "border:3px solid  rgb(0, 0, 0);\n"
                                             "background-color: rgba(228, 107, 134, 1)\n"
                                             "}")
+        self.ui.tableWidget.cellWidget(0, 5).clicked.connect(self.saveAndCloseDef)
         self.ui.tableWidget.setColumnWidth(0, 20)
         self.ui.tableWidget.setColumnWidth(1, 20)
         self.ui.tableWidget.setColumnWidth(2, 90)
@@ -243,25 +248,45 @@ class WindowBakeryTables(QtWidgets.QMainWindow, Main):
         self.ui.tableWidget.setColumnWidth(6, 130)
 
     def saveAndNextDef(self):
+        savePeriod = periodDay
+        saveHeaders = self.columnLables
         saveDB = {}
         for col in range(2, self.ui.tableWidget.columnCount()):
             saveDB[col] = {}
             for row in range(0, self.ui.tableWidget.rowCount()):
-                if col == 2 or col == 3 or col == 4 or row == 0 or row == 1:
+                if col == 2 or col == 3 or row == 0:
                     if self.ui.tableWidget.cellWidget(row, col) == None:
                         saveDB[col][row] = 0
-                    elif (row == 0 and col == 6) or (row == 1 and col == 6):
+                    elif (row == 0 and col == 4) or (row == 0 and col == 5):
                         saveDB[col][row] = 0
                     else:
                         saveDB[col][row] = float(self.ui.tableWidget.cellWidget(row, col).value())
-                elif col == 5 or col == 6 or col == 7:
+                elif col == 4 or col == 5 or col == 6:
                     saveDB[col][row] = self.ui.tableWidget.item(row, col).text()
                 else:
                     saveDB[col][row] = float(self.ui.tableWidget.item(row, col).text())
-        print(saveDB)
+        self.insertInDB(savePeriod, saveHeaders, saveDB)
 
     def saveAndCloseDef(self):
-        pass
+        savePeriod = periodDay
+        saveHeaders = self.columnLables
+        saveDB = {}
+        for col in range(2, self.ui.tableWidget.columnCount()):
+            saveDB[col] = {}
+            for row in range(0, self.ui.tableWidget.rowCount()):
+                if col == 2 or col == 3 or row == 0:
+                    if self.ui.tableWidget.cellWidget(row, col) == None:
+                        saveDB[col][row] = 0
+                    elif (row == 0 and col == 4) or (row == 0 and col == 5):
+                        saveDB[col][row] = 0
+                    else:
+                        saveDB[col][row] = float(self.ui.tableWidget.cellWidget(row, col).value())
+                elif col == 4 or col == 5 or col == 6:
+                    saveDB[col][row] = self.ui.tableWidget.item(row, col).text()
+                else:
+                    saveDB[col][row] = float(self.ui.tableWidget.item(row, col).text())
+        self.insertInDB(savePeriod, saveHeaders, saveDB)
+        self.closeWindowBakeryTables()
 
     def raschetPrognoz(self):
         buttonClicked = self.sender()
