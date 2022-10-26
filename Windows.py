@@ -160,8 +160,8 @@ class WindowBakeryTables(QtWidgets.QMainWindow, Main):
             saveZnach[col] = {}
             for row in range(1, self.ui.tableWidget.rowCount()):
                 saveZnach[col][row] = float(self.ui.tableWidget.item(row, col).text())
-        self.ui.tableWidget.setItem(0, 7, QTableWidgetItem("Кф. кондитерской"))
-        self.ui.tableWidget.item(0, 7).setFont(self.font)
+        self.ui.tableWidget.setItem(0, 6, QTableWidgetItem("Кф. кондитерской"))
+        self.ui.tableWidget.item(0, 6).setFont(self.font)
         for col_spin in range(7, self.ui.tableWidget.columnCount()):
             self.DspinboxCol = QtWidgets.QDoubleSpinBox()
             self.DspinboxCol.wheelEvent = lambda event: None
@@ -265,6 +265,7 @@ class WindowBakeryTables(QtWidgets.QMainWindow, Main):
                     saveDB[col][row] = self.ui.tableWidget.item(row, col).text()
                 else:
                     saveDB[col][row] = float(self.ui.tableWidget.item(row, col).text())
+        print(saveHeaders)
         self.insertInDB(savePeriod, saveHeaders, saveDB)
 
     def saveAndCloseDef(self):

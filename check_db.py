@@ -4,6 +4,7 @@ from handler.db_handler import *
 class CheckThread(QtCore.QThread):
     mysignal = QtCore.pyqtSignal(str)
     layout = QtCore.pyqtSignal(str)
+    prognoz = QtCore.pyqtSignal(str)
 
     def thr_login(self, login_text, password_text):
         login(login_text, password_text, self.mysignal)
@@ -12,5 +13,5 @@ class CheckThread(QtCore.QThread):
         seach_kod(kod_text, self.layout)
 
     def thr_savePrognoz(self, savePeriod, saveHeaders, saveDB):
-        pass
+        addInPrognoz(savePeriod, saveHeaders, saveDB, self.prognoz)
 
