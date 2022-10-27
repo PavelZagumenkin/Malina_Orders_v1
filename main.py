@@ -12,7 +12,6 @@ class Main():
         self.check_db = CheckThread()
         self.check_db.mysignal.connect(self.signal_handler)
         self.check_db.layout.connect(self.signal_layout)
-        self.check_db.prognoz.connect(self.signal_prognoz)
 
     # Проверка пустоты логина и пароля(декоратор)
     def check_input(funct):
@@ -58,9 +57,6 @@ class Main():
         kod_text = kod
         self.check_db.thr_kod(kod_text)
         return int(layout)
-
-    def signal_prognoz(self, value):
-        pass
 
     def insertInDB(self, savePeriod, saveHeaders, saveDB):
         self.check_db.thr_savePrognoz(savePeriod, saveHeaders, saveDB)

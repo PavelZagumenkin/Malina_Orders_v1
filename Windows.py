@@ -265,7 +265,6 @@ class WindowBakeryTables(QtWidgets.QMainWindow, Main):
                     saveDB[col][row] = self.ui.tableWidget.item(row, col).text()
                 else:
                     saveDB[col][row] = float(self.ui.tableWidget.item(row, col).text())
-        print(saveHeaders)
         self.insertInDB(savePeriod, saveHeaders, saveDB)
 
     def saveAndCloseDef(self):
