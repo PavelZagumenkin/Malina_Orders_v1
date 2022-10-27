@@ -116,6 +116,7 @@ class WindowBakery(QtWidgets.QMainWindow, Main):
             wb_OLAP_P.Close()
             wb_OLAP_dayWeek_bakery.Close()
             Excel.Quit()
+            self.proverkaPerioda(periodDay)
             self.bakeryTablesOpen(pathOLAP_P, pathOLAP_dayWeek_bakery)
 
 

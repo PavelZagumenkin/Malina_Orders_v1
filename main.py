@@ -12,6 +12,7 @@ class Main():
         self.check_db = CheckThread()
         self.check_db.mysignal.connect(self.signal_handler)
         self.check_db.layout.connect(self.signal_layout)
+        self.check_db.period.connect(self.signal_period)
 
     # Проверка пустоты логина и пароля(декоратор)
     def check_input(funct):
@@ -84,6 +85,12 @@ class Main():
     def viborRazdelaOpen(self):
         self.close()
         WindowViborRazdela.show()
+
+    def signal_period(self):
+        pass
+
+    def proverkaPerioda(self, period):
+        self.check_db.thr_proverkaPerioda(period)
 
     # Закрываем выпечку, открываем таблицу для работы
     def bakeryTablesOpen(self, pathOLAP_P, pathOLAP_dayWeek_bakery):

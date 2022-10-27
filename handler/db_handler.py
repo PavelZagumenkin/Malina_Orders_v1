@@ -33,6 +33,19 @@ def seach_kod(kod, signal):
     cur.close()
     con.close()
 
+def poiskPeriodaInDB(period, signal):
+    con = sqlite3.connect('db/malina_orders.db')
+    cur = con.cursor()
+    cur.execute(f'SELECT * FROM prognoz_bakery WHERE PERIOD="{period}";')
+    value = cur.fetchall()
+
+    if value == []:
+        signal.emit('Пусто')
+    else:
+        signal.emit('За этот период есть прогноз')
+    cur.close()
+    con.close()
+
 def addInPrognoz(savePeriod, saveHeaders, saveDB):
     con = sqlite3.connect('db/malina_orders.db')
     cur = con.cursor()
