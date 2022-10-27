@@ -12,6 +12,7 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 class Ui_WindowBakery(object):
     def setupUi(self, WindowBakery):
         WindowBakery.setObjectName("WindowBakery")
+        WindowBakery.setEnabled(True)
         WindowBakery.resize(1240, 700)
         WindowBakery.setMinimumSize(QtCore.QSize(1240, 700))
         WindowBakery.setMaximumSize(QtCore.QSize(1240, 700))
@@ -205,6 +206,31 @@ class Ui_WindowBakery(object):
         self.dateEdit_EndDay.setFont(font)
         self.dateEdit_EndDay.setCalendarPopup(True)
         self.dateEdit_EndDay.setObjectName("dateEdit_EndDay")
+        self.btn_prosmotrPrognoz = QtWidgets.QPushButton(self.centralwidget)
+        self.btn_prosmotrPrognoz.setEnabled(False)
+        self.btn_prosmotrPrognoz.setGeometry(QtCore.QRect(650, 320, 141, 41))
+        font = QtGui.QFont()
+        font.setFamily("Trebuchet MS")
+        font.setPointSize(16)
+        font.setBold(False)
+        font.setWeight(50)
+        self.btn_prosmotrPrognoz.setFont(font)
+        self.btn_prosmotrPrognoz.setStyleSheet("QPushButton {\n"
+"background-color: rgb(228, 107, 134);\n"
+"border: none;\n"
+"border-radius: 10px}\n"
+"\n"
+"QPushButton:hover {\n"
+"border: 1px solid  rgb(0, 0, 0);\n"
+"background-color: rgba(228, 107, 134, 0.9)\n"
+"}\n"
+"\n"
+"QPushButton:pressed {\n"
+"border:3px solid  rgb(0, 0, 0);\n"
+"background-color: rgba(228, 107, 134, 1)\n"
+"}")
+        self.btn_prosmotrPrognoz.setCheckable(False)
+        self.btn_prosmotrPrognoz.setObjectName("btn_prosmotrPrognoz")
         WindowBakery.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(WindowBakery)
@@ -223,6 +249,7 @@ class Ui_WindowBakery(object):
         self.label_startDay_and_endDay.setText(_translate("WindowBakery", "Укажите начало периода для формирования данных"))
         self.label_startDay.setText(_translate("WindowBakery", "Начало периода"))
         self.label_EndDay.setText(_translate("WindowBakery", "Конец периода"))
+        self.btn_prosmotrPrognoz.setText(_translate("WindowBakery", "Посмотреть"))
 
 
 if __name__ == "__main__":

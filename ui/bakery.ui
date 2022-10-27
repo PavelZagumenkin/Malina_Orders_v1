@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>WindowBakery</class>
  <widget class="QMainWindow" name="WindowBakery">
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -415,6 +418,49 @@ background-color: rgba(228, 107, 134, 1)
     </property>
     <property name="calendarPopup">
      <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_prosmotrPrognoz">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>650</x>
+      <y>320</y>
+      <width>141</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Trebuchet MS</family>
+      <pointsize>16</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+background-color: rgb(228, 107, 134);
+border: none;
+border-radius: 10px}
+
+QPushButton:hover {
+border: 1px solid  rgb(0, 0, 0);
+background-color: rgba(228, 107, 134, 0.9)
+}
+
+QPushButton:pressed {
+border:3px solid  rgb(0, 0, 0);
+background-color: rgba(228, 107, 134, 1)
+}</string>
+    </property>
+    <property name="text">
+     <string>Посмотреть</string>
+    </property>
+    <property name="checkable">
+     <bool>false</bool>
     </property>
    </widget>
   </widget>

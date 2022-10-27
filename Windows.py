@@ -41,17 +41,32 @@ class WindowBakery(QtWidgets.QMainWindow, Main):
         EndDay = datetime.datetime.today() + datetime.timedelta(days=6)
         self.ui.dateEdit_startDay.setDate(QtCore.QDate(TodayDate.year, TodayDate.month, TodayDate.day))
         self.ui.dateEdit_EndDay.setDate(QtCore.QDate(EndDay.year, EndDay.month, EndDay.day))
+        self.periodDay = [self.ui.dateEdit_startDay.date(), self.ui.dateEdit_EndDay.date()]
         self.ui.dateEdit_startDay.userDateChanged['QDate'].connect(self.setEndDay)
-        global periodDay
-        periodDay = [self.ui.dateEdit_startDay.date(), self.ui.dateEdit_EndDay.date()]
         self.ui.btn_exit_bakery.clicked.connect(self.viborRazdelaOpen)
         self.ui.btn_path_OLAP_P.clicked.connect(self.olap_p)
         self.ui.btn_path_dayWeek_bakery.clicked.connect(self.olap_dayWeek_bakery)
         self.ui.btn_koeff_bakery.clicked.connect(self.koeff_bakery_start)
+        if self.proverkaPerioda(self.periodDay) == 0:
+            self.ui.label_startDay_and_endDay.setText("Укажите начало периода для формирования данных")
+            self.ui.label_startDay_and_endDay.setStyleSheet("color: rgba(0, 0, 0, 1)")
+            self.ui.btn_prosmotrPrognoz.setEnabled(False)
+        elif self.proverkaPerioda(self.periodDay) == 1:
+            self.ui.label_startDay_and_endDay.setText('За данный период уже создан прогноз!')
+            self.ui.label_startDay_and_endDay.setStyleSheet("color: rgba(228, 107, 134, 1)")
+            self.ui.btn_prosmotrPrognoz.setEnabled(True)
 
     def setEndDay(self):
         self.ui.dateEdit_EndDay.setDate(self.ui.dateEdit_startDay.date().addDays(6))
-        periodDay = [self.ui.dateEdit_startDay.date(), self.ui.dateEdit_EndDay.date()]
+        self.periodDay = [self.ui.dateEdit_startDay.date(), self.ui.dateEdit_EndDay.date()]
+        if self.proverkaPerioda(self.periodDay) == 0:
+            self.ui.label_startDay_and_endDay.setText("Укажите начало периода для формирования данных")
+            self.ui.label_startDay_and_endDay.setStyleSheet("color: rgba(0, 0, 0, 1)")
+            self.ui.btn_prosmotrPrognoz.setEnabled(False)
+        elif self.proverkaPerioda(self.periodDay) == 1:
+            self.ui.label_startDay_and_endDay.setText('За данный период уже создан прогноз!')
+            self.ui.label_startDay_and_endDay.setStyleSheet("color: rgba(228, 107, 134, 1)")
+            self.ui.btn_prosmotrPrognoz.setEnabled(True)
 
     def olap_p(self):
         fileName = QFileDialog.getOpenFileName(self, 'Выберите файл OLAP по продажам', 'Отчеты', 'Excel файл (*.xlsx)')
@@ -116,12 +131,11 @@ class WindowBakery(QtWidgets.QMainWindow, Main):
             wb_OLAP_P.Close()
             wb_OLAP_dayWeek_bakery.Close()
             Excel.Quit()
-            self.proverkaPerioda(periodDay)
-            self.bakeryTablesOpen(pathOLAP_P, pathOLAP_dayWeek_bakery)
-
+            if self.ui.label_startDay_and_endDay.text() != 'За данный период уже создан прогноз!':
+                self.bakeryTablesOpen(pathOLAP_P, pathOLAP_dayWeek_bakery, self.periodDay)
 
 class WindowBakeryTables(QtWidgets.QMainWindow, Main):
-    def __init__(self, pathOLAP_P, pathOLAP_dayWeek_bakery):
+    def __init__(self, pathOLAP_P, pathOLAP_dayWeek_bakery, periodDay):
         super().__init__()
         self.ui = Ui_WindowBakeryTables()
         self.ui.setupUi(self)
@@ -197,6 +211,7 @@ class WindowBakeryTables(QtWidgets.QMainWindow, Main):
             iconCross.addPixmap(QtGui.QPixmap("image/cross.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
             self.ui.tableWidget.cellWidget(row_button, 1).setIcon(iconCross)
             self.ui.tableWidget.cellWidget(row_button, 1).clicked.connect(self.deleteRow)
+        self.periodDay = periodDay
         self.SaveAndNext = QtWidgets.QPushButton()
         self.SaveAndClose = QtWidgets.QPushButton()
         self.ui.tableWidget.setCellWidget(0, 4, self.SaveAndNext)
@@ -249,7 +264,7 @@ class WindowBakeryTables(QtWidgets.QMainWindow, Main):
         self.ui.tableWidget.setColumnWidth(6, 130)
 
     def saveAndNextDef(self):
-        savePeriod = periodDay
+        savePeriod = self.periodDay
         saveHeaders = self.columnLables
         saveDB = {}
         for col in range(2, self.ui.tableWidget.columnCount()):
@@ -269,7 +284,7 @@ class WindowBakeryTables(QtWidgets.QMainWindow, Main):
         self.insertInDB(savePeriod, saveHeaders, saveDB)
 
     def saveAndCloseDef(self):
-        savePeriod = periodDay
+        savePeriod = self.periodDay
         saveHeaders = self.columnLables
         saveDB = {}
         for col in range(2, self.ui.tableWidget.columnCount()):

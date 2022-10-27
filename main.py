@@ -48,10 +48,8 @@ class Main():
         global layout
         if value != 'Код отсутствует в БД':
             layout = value
-            return layout
         else:
             layout = 0
-            return layout
 
     # Поиск кода в базе данных
     def poisk_kod(self, kod):
@@ -86,17 +84,22 @@ class Main():
         self.close()
         WindowViborRazdela.show()
 
-    def signal_period(self):
-        pass
+    def signal_period(self, value):
+        global otvetPeriod
+        if value == 'Пусто':
+            otvetPeriod = 0
+        elif value == 'За этот период есть прогноз':
+            otvetPeriod = 1
 
     def proverkaPerioda(self, period):
         self.check_db.thr_proverkaPerioda(period)
+        return otvetPeriod
 
     # Закрываем выпечку, открываем таблицу для работы
-    def bakeryTablesOpen(self, pathOLAP_P, pathOLAP_dayWeek_bakery):
+    def bakeryTablesOpen(self, pathOLAP_P, pathOLAP_dayWeek_bakery, periodDay):
         self.hide()
         global WindowBakeryTables
-        WindowBakeryTables = Windows.WindowBakeryTables(pathOLAP_P, pathOLAP_dayWeek_bakery)
+        WindowBakeryTables = Windows.WindowBakeryTables(pathOLAP_P, pathOLAP_dayWeek_bakery, periodDay)
         WindowBakeryTables.showMaximized()
 
     # Закрываем таблицу выпечки и возвращаемся к настройкам
