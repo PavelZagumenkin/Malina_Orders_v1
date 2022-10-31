@@ -3,9 +3,9 @@ import win32com.client
 from PyQt6 import QtCore, QtWidgets
 from PyQt6.QtWidgets import QFileDialog
 from ui.bakery import Ui_WindowBakery
-from check_db import CheckThread
-import WindowsViborRazdela
-import WindowsBakeryTables
+from handler.check_db import CheckThread
+import Windows.WindowsViborRazdela
+import Windows.WindowsBakeryTables
 
 class WindowBakery(QtWidgets.QMainWindow):
     def __init__(self):
@@ -50,7 +50,7 @@ class WindowBakery(QtWidgets.QMainWindow):
     def viborRazdelaOpen(self):
         self.close()
         global WindowViborRazdela
-        WindowViborRazdela = WindowsViborRazdela.WindowViborRazdela()
+        WindowViborRazdela = Windows.WindowsViborRazdela.WindowViborRazdela()
         WindowViborRazdela.show()
 
     def olap_p(self):
@@ -134,5 +134,5 @@ class WindowBakery(QtWidgets.QMainWindow):
     def bakeryTablesOpen(self, pathOLAP_P, pathOLAP_dayWeek_bakery, periodDay):
         self.hide()
         global WindowBakeryTables
-        WindowBakeryTables = WindowsBakeryTables.WindowBakeryTables(pathOLAP_P, pathOLAP_dayWeek_bakery, periodDay)
+        WindowBakeryTables = Windows.WindowsBakeryTables.WindowBakeryTables(pathOLAP_P, pathOLAP_dayWeek_bakery, periodDay)
         WindowBakeryTables.showMaximized()

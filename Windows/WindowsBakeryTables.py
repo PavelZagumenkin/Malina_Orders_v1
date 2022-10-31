@@ -4,8 +4,9 @@ import win32com.client
 from PyQt6.QtGui import QFont
 from PyQt6.QtWidgets import QTableWidgetItem
 from PyQt6.QtWidgets import QMessageBox
-from check_db import CheckThread
-import WindowsBakery
+from handler.check_db import CheckThread
+import Windows.WindowsBakery
+
 
 class WindowBakeryTables(QtWidgets.QMainWindow):
     def __init__(self, pathOLAP_P, pathOLAP_dayWeek_bakery, periodDay):
@@ -76,14 +77,14 @@ class WindowBakeryTables(QtWidgets.QMainWindow):
             self.ui.tableWidget.setCellWidget(row_button, 0, self.copyRowButton)
             self.ui.tableWidget.cellWidget(row_button, 0).setText('')
             iconCopy = QtGui.QIcon()
-            iconCopy.addPixmap(QtGui.QPixmap("image/copy.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+            iconCopy.addPixmap(QtGui.QPixmap("../image/copy.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
             self.ui.tableWidget.cellWidget(row_button, 0).setIcon(iconCopy)
             self.ui.tableWidget.cellWidget(row_button, 0).clicked.connect(self.copyRow)
             self.deleteRowButton = QtWidgets.QPushButton()
             self.ui.tableWidget.setCellWidget(row_button, 1, self.deleteRowButton)
             self.ui.tableWidget.cellWidget(row_button, 1).setText('')
             iconCross = QtGui.QIcon()
-            iconCross.addPixmap(QtGui.QPixmap("image/cross.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+            iconCross.addPixmap(QtGui.QPixmap("../image/cross.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
             self.ui.tableWidget.cellWidget(row_button, 1).setIcon(iconCross)
             self.ui.tableWidget.cellWidget(row_button, 1).clicked.connect(self.deleteRow)
         self.periodDay = periodDay
@@ -200,14 +201,14 @@ class WindowBakeryTables(QtWidgets.QMainWindow):
         self.ui.tableWidget.setCellWidget(rowPosition, 0, self.copyRowButton)
         self.ui.tableWidget.cellWidget(rowPosition, 0).setText('')
         iconCopy = QtGui.QIcon()
-        iconCopy.addPixmap(QtGui.QPixmap("image/copy.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        iconCopy.addPixmap(QtGui.QPixmap("../image/copy.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.ui.tableWidget.cellWidget(rowPosition, 0).setIcon(iconCopy)
         self.ui.tableWidget.cellWidget(rowPosition, 0).clicked.connect(self.copyRow)
         self.deleteRowButton = QtWidgets.QPushButton()
         self.ui.tableWidget.setCellWidget(rowPosition, 1, self.deleteRowButton)
         self.ui.tableWidget.cellWidget(rowPosition, 1).setText('')
         iconCross = QtGui.QIcon()
-        iconCross.addPixmap(QtGui.QPixmap("image/cross.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        iconCross.addPixmap(QtGui.QPixmap("../image/cross.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.ui.tableWidget.cellWidget(rowPosition, 1).setIcon(iconCross)
         self.ui.tableWidget.cellWidget(rowPosition, 1).clicked.connect(self.deleteRow)
         self.DspinboxRow = QtWidgets.QDoubleSpinBox()
@@ -260,13 +261,13 @@ class WindowBakeryTables(QtWidgets.QMainWindow):
     def closeWindowBakeryTables(self):
         self.close()
         global WindowBakery
-        WindowBakery = WindowsBakery.WindowBakery()
+        WindowBakery = Windows.WindowsBakery.WindowBakery()
         WindowBakery.show()
 
     def closeEvent(self, event):
         reply = QMessageBox()
         reply.setWindowTitle("Завершение работы с таблицой")
-        reply.setWindowIcon(QtGui.QIcon("image/icon.png"))
+        reply.setWindowIcon(QtGui.QIcon("../image/icon.png"))
         reply.setText("Вы хотите завершить работу с таблицей?")
         reply.setIcon(QMessageBox.Icon.Question)
         reply.setStandardButtons(QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)

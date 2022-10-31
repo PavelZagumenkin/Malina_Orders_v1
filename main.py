@@ -1,6 +1,6 @@
 import sys
 from PyQt6 import QtWidgets
-from WindowsLogin import WindowLogin
+from Windows.WindowsLogin import WindowLogin
 
 class Main():
     def __init__(self):

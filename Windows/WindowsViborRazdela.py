@@ -1,7 +1,7 @@
 from PyQt6 import QtWidgets
 from ui.viborRazdela import Ui_WindowViborRazdela
-import WindowsLogin
-import WindowsBakery
+import Windows.WindowsBakery, Windows.WindowsLogin
+
 
 class WindowViborRazdela(QtWidgets.QMainWindow):
     def __init__(self):
@@ -15,7 +15,7 @@ class WindowViborRazdela(QtWidgets.QMainWindow):
     def logout(self):
         self.close()
         global WindowLogin
-        WindowLogin = WindowsLogin.WindowLogin()
+        WindowLogin = Windows.WindowsLogin.WindowLogin()
         WindowLogin.show()
         WindowLogin.ui.label_login_password.setFocus()  # Фокус по умолчанию на тексте
         WindowLogin.ui.label_login_password.setStyleSheet("color: rgb(0, 0, 0)")
@@ -27,5 +27,5 @@ class WindowViborRazdela(QtWidgets.QMainWindow):
     def bakeryOpen(self):
         self.close()
         global WindowBakery
-        WindowBakery = WindowsBakery.WindowBakery()
+        WindowBakery = Windows.WindowsBakery.WindowBakery()
         WindowBakery.show()

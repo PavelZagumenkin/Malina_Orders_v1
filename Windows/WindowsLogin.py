@@ -1,7 +1,7 @@
 from PyQt6 import QtWidgets
 from ui.login import Ui_WindowLogin
-from check_db import CheckThread
-import WindowsViborRazdela
+from handler.check_db import CheckThread
+import Windows.WindowsViborRazdela
 
 class WindowLogin(QtWidgets.QMainWindow):
     def __init__(self):
@@ -39,7 +39,7 @@ class WindowLogin(QtWidgets.QMainWindow):
         if value == 'Успешная авторизация':
             self.close()
             global WindowViborRazdela
-            WindowViborRazdela = WindowsViborRazdela.WindowViborRazdela()
+            WindowViborRazdela = Windows.WindowsViborRazdela.WindowViborRazdela()
             WindowViborRazdela.show()
         else:
             self.ui.label_login_password.setStyleSheet("color: rgba(228, 107, 134, 1)");
