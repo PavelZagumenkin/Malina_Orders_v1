@@ -12,6 +12,9 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 class Ui_WindowBakeryTables(object):
     def setupUi(self, WindowBakeryTables):
         WindowBakeryTables.setObjectName("WindowBakeryTables")
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("image/icon.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        WindowBakeryTables.setWindowIcon(icon)
         self.centralwidget = QtWidgets.QWidget(WindowBakeryTables)
         self.centralwidget.setObjectName("centralwidget")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.centralwidget)
