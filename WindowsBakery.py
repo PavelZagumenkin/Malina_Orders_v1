@@ -1,9 +1,11 @@
 import datetime
+import win32com.client
 from PyQt6 import QtCore, QtWidgets
 from PyQt6.QtWidgets import QFileDialog
 from ui.bakery import Ui_WindowBakery
 from check_db import CheckThread
 import WindowsViborRazdela
+import WindowsBakeryTables
 
 class WindowBakery(QtWidgets.QMainWindow):
     def __init__(self):
@@ -11,7 +13,6 @@ class WindowBakery(QtWidgets.QMainWindow):
         self.ui = Ui_WindowBakery()
         self.ui.setupUi(self)
         self.check_db = CheckThread()
-        self.check_db.layout.connect(self.signal_layout)
         self.check_db.period.connect(self.signal_period)
         self.base_fileOLAP_bakery = [self.ui.lineEdit_OLAP_P, self.ui.lineEdit_OLAP_dayWeek_bakery]
         TodayDate = datetime.datetime.today()
@@ -95,22 +96,43 @@ class WindowBakery(QtWidgets.QMainWindow):
         self.check_db.thr_proverkaPerioda(period)
         return otvetPeriod
 
-    def signal_layout(self, value):
-        global layout
-        if value != 'Код отсутствует в БД':
-            layout = value
-        else:
-            layout = 0
-
-    # Поиск кода в базе данных
-    def poisk_kod(self, kod):
-        kod_text = kod
-        self.check_db.thr_kod(kod_text)
-        return int(layout)
-
     def signal_period(self, value):
         global otvetPeriod
         if value == 'Пусто':
             otvetPeriod = 0
         elif value == 'За этот период есть прогноз':
             otvetPeriod = 1
+
+    def bakeryTable(self, pathOLAP_P, pathOLAP_dayWeek_bakery):
+        Excel = win32com.client.Dispatch("Excel.Application")
+        wb_OLAP_P = Excel.Workbooks.Open(pathOLAP_P)
+        wb_OLAP_dayWeek_bakery = Excel.Workbooks.Open(pathOLAP_dayWeek_bakery)
+        sheet_OLAP_P = wb_OLAP_P.ActiveSheet
+        sheet_OLAP_dayWeek_bakery = wb_OLAP_dayWeek_bakery.ActiveSheet
+
+        if sheet_OLAP_P.Name != "OLAP по продажам ОБЩИЙ":
+            wb_OLAP_P.Close()
+            wb_OLAP_dayWeek_bakery.Close()
+            Excel.Quit()
+            self.ui.lineEdit_OLAP_P.setStyleSheet("padding-left: 5px; color: rgba(228, 107, 134, 1)")
+            self.ui.lineEdit_OLAP_P.setText('Файл отчета неверный, укажите OLAP по продажам за 7 дней')
+        elif sheet_OLAP_dayWeek_bakery.Name != "OLAP по дням недели для Пекарни":
+            wb_OLAP_P.Close()
+            wb_OLAP_dayWeek_bakery.Close()
+            Excel.Quit()
+            self.ui.lineEdit_OLAP_dayWeek_bakery.setStyleSheet("padding-left: 5px; color: rgba(228, 107, 134, 1)")
+            self.ui.lineEdit_OLAP_dayWeek_bakery.setText(
+                'Файл отчета неверный, укажите OLAP по продажам по дня недели для Выпечки пекарни')
+        else:
+            wb_OLAP_P.Close()
+            wb_OLAP_dayWeek_bakery.Close()
+            Excel.Quit()
+            if self.ui.label_startDay_and_endDay.text() != 'За данный период уже создан прогноз!':
+                self.bakeryTablesOpen(pathOLAP_P, pathOLAP_dayWeek_bakery, self.periodDay)
+
+    # Закрываем выпечку, открываем таблицу для работы
+    def bakeryTablesOpen(self, pathOLAP_P, pathOLAP_dayWeek_bakery, periodDay):
+        self.hide()
+        global WindowBakeryTables
+        WindowBakeryTables = WindowsBakeryTables.WindowBakeryTables(pathOLAP_P, pathOLAP_dayWeek_bakery, periodDay)
+        WindowBakeryTables.showMaximized()
