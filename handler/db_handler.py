@@ -53,3 +53,12 @@ def addInPrognoz(savePeriod, saveHeaders, saveDB):
     con.commit()
     cur.close()
     con.close()
+
+def poiskDataPerioda(period, prognoz):
+    con = sqlite3.connect('db/malina_orders.db')
+    cur = con.cursor()
+    cur.execute(f'SELECT * FROM prognoz_bakery WHERE PERIOD="{period}";')
+    value = cur.fetchall()
+    prognoz.emit(value)
+    cur.close()
+    con.close()

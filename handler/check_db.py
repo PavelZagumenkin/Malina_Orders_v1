@@ -5,6 +5,8 @@ class CheckThread(QtCore.QThread):
     mysignal = QtCore.pyqtSignal(str)
     layout = QtCore.pyqtSignal(str)
     period = QtCore.pyqtSignal(str)
+    prognoz = QtCore.pyqtSignal(list)
+
 
     def thr_login(self, login_text, password_text):
         login(login_text, password_text, self.mysignal)
@@ -17,3 +19,6 @@ class CheckThread(QtCore.QThread):
 
     def thr_proverkaPerioda(self, period):
         poiskPeriodaInDB(period, self.period)
+
+    def thr_poiskPrognoza(self, period):
+        poiskDataPerioda(period, self.prognoz)
