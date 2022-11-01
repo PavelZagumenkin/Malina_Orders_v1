@@ -6,6 +6,7 @@ from ui.bakery import Ui_WindowBakery
 from handler.check_db import CheckThread
 import Windows.WindowsViborRazdela
 import Windows.WindowsBakeryTables
+import Windows.WindowsBakeryTablesView
 
 class WindowBakery(QtWidgets.QMainWindow):
     def __init__(self):
@@ -33,6 +34,7 @@ class WindowBakery(QtWidgets.QMainWindow):
             self.ui.label_startDay_and_endDay.setText('За данный период уже создан прогноз!')
             self.ui.label_startDay_and_endDay.setStyleSheet("color: rgba(228, 107, 134, 1)")
             self.ui.btn_prosmotrPrognoz.setEnabled(True)
+        self.ui.btn_prosmotrPrognoz.clicked.connect(self.bakeryTablesView(self.periodDay))
 
     def setEndDay(self):
         self.ui.dateEdit_EndDay.setDate(self.ui.dateEdit_startDay.date().addDays(6))
@@ -136,3 +138,9 @@ class WindowBakery(QtWidgets.QMainWindow):
         global WindowBakeryTables
         WindowBakeryTables = Windows.WindowsBakeryTables.WindowBakeryTables(pathOLAP_P, pathOLAP_dayWeek_bakery, periodDay)
         WindowBakeryTables.showMaximized()
+
+    def bakeryTablesView(self, periodDay):
+        self.hide()
+        global WindowBakeryTablesView
+        WindowBakeryTablesView = Windows.WindowsBakeryTablesView.WindowBakeryTableView(periodDay)
+        WindowBakeryTablesView.showMaximized()
