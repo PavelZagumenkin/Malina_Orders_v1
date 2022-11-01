@@ -15,14 +15,12 @@ class WindowBakeryTableView(QtWidgets.QMainWindow):
         self.check_db = CheckThread()
         self.check_db.prognoz.connect(self.signal_prognoz)
         self.setWindowTitle("Просмотр прогноза продаж")
-        self.poiskPrognoza(periodDay)
-
-        # self.ui.tableWidget.setRowCount(endOLAPRow - 1)
-        # self.ui.tableWidget.setColumnCount(endOLAPCol + 3)
-        # self.columnLables = list(sheet_OLAP_P.Range(sheet_OLAP_P.Cells(1, 1), sheet_OLAP_P.Cells(1, endOLAPCol - 1)).Value[0])
-        # self.columnLables.insert(0, "Выкладка")
-        # self.columnLables.insert(0, "Кф. товара")
-        # self.ui.tableWidget.setHorizontalHeaderLabels(self.columnLables)
+        # self.prognoz = self.poiskPrognoza(periodDay)
+        # self.headers = self.prognoz[0].split(sep="', '")
+        # self.data = self.prognoz[1].split()
+        # self.ui.tableWidget.setRowCount(3)
+        # self.ui.tableWidget.setColumnCount(len(self.headers))
+        # self.ui.tableWidget.setHorizontalHeaderLabels(self.headers)
         # self.font = QtGui.QFont("Times", 10, QFont.Weight.Bold)
         # self.ui.tableWidget.horizontalHeader().setFont(self.font)
         # for col in range(1, endOLAPCol):
@@ -127,10 +125,12 @@ class WindowBakeryTableView(QtWidgets.QMainWindow):
     def signal_prognoz(self, value):
         headers = value[0][2]
         data = value[0][3]
-        print(headers, data)
+        global prognoz
+        prognoz = [headers, data]
 
     def poiskPrognoza(self, periodDay):
         self.check_db.thr_poiskPrognoza(periodDay)
+        return(prognoz)
 
     # Закрываем таблицу выпечки и возвращаемся к настройкам
     def closeWindowBakeryTables(self):
