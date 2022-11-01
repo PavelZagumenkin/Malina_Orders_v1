@@ -1,6 +1,5 @@
 from PyQt6 import QtWidgets, QtGui
 from ui.bakeryTables import Ui_WindowBakeryTables
-import win32com.client
 from PyQt6.QtGui import QFont
 from PyQt6.QtWidgets import QTableWidgetItem
 from PyQt6.QtWidgets import QMessageBox

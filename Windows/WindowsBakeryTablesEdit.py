@@ -141,7 +141,9 @@ class WindowBakeryTables(QtWidgets.QMainWindow):
 
     def saveAndNextDef(self):
         savePeriod = self.periodDay
-        saveHeaders = self.columnLables
+        headers = self.columnLables.copy()
+        del headers[0:2]
+        saveHeaders = headers
         saveDB = {}
         for col in range(2, self.ui.tableWidget.columnCount()):
             saveDB[col] = {}
@@ -161,7 +163,9 @@ class WindowBakeryTables(QtWidgets.QMainWindow):
 
     def saveAndCloseDef(self):
         savePeriod = self.periodDay
-        saveHeaders = self.columnLables
+        headers = self.columnLables.copy()
+        del headers[0:2]
+        saveHeaders = headers
         saveDB = {}
         for col in range(2, self.ui.tableWidget.columnCount()):
             saveDB[col] = {}
