@@ -17,13 +17,11 @@ class WindowBakeryTableView(QtWidgets.QMainWindow):
         self.check_db.prognoz.connect(self.signal_prognoz)
         self.setWindowTitle("Просмотр прогноза продаж")
         self.prognoz = self.poiskPrognoza(periodDay)
-                # self.headers = json.loads(self.prognoz[0].encode('utf8'))
-                # self.data = self.prognoz[1]
-                # print(type(self.headers))
-                # print(self.data)
-        # self.ui.tableWidget.setRowCount(3)
-        # self.ui.tableWidget.setColumnCount(len(self.headers))
-        # self.ui.tableWidget.setHorizontalHeaderLabels(self.headers)
+        self.headers = json.loads(self.prognoz[0].strip("\'"))
+        self.data = json.loads(self.prognoz[1].strip("\'"))
+        self.ui.tableWidget.setRowCount(3)
+        self.ui.tableWidget.setColumnCount(len(self.headers))
+        self.ui.tableWidget.setHorizontalHeaderLabels(self.headers)
         # self.font = QtGui.QFont("Times", 10, QFont.Weight.Bold)
         # self.ui.tableWidget.horizontalHeader().setFont(self.font)
         # for col in range(1, endOLAPCol):
