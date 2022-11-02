@@ -1,4 +1,5 @@
 from PyQt6 import QtWidgets, QtGui
+import json
 from ui.bakeryTables import Ui_WindowBakeryTables
 import win32com.client
 from PyQt6.QtGui import QFont
@@ -159,7 +160,7 @@ class WindowBakeryTables(QtWidgets.QMainWindow):
                     saveDB[col][row] = self.ui.tableWidget.item(row, col).text()
                 else:
                     saveDB[col][row] = float(self.ui.tableWidget.item(row, col).text())
-        self.insertInDB(savePeriod, saveHeaders, saveDB)
+        self.insertInDB(savePeriod, json.dumps(saveHeaders, ensure_ascii=False), json.dumps(saveDB, ensure_ascii=False))
 
     def saveAndCloseDef(self):
         savePeriod = self.periodDay
@@ -181,7 +182,7 @@ class WindowBakeryTables(QtWidgets.QMainWindow):
                     saveDB[col][row] = self.ui.tableWidget.item(row, col).text()
                 else:
                     saveDB[col][row] = float(self.ui.tableWidget.item(row, col).text())
-        self.insertInDB(savePeriod, saveHeaders, saveDB)
+        self.insertInDB(savePeriod, json.dumps(saveHeaders, ensure_ascii=False), json.dumps(saveDB, ensure_ascii=False))
         self.closeWindowBakeryTables()
 
     def raschetPrognoz(self):

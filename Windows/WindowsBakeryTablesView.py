@@ -15,9 +15,11 @@ class WindowBakeryTableView(QtWidgets.QMainWindow):
         self.check_db = CheckThread()
         self.check_db.prognoz.connect(self.signal_prognoz)
         self.setWindowTitle("Просмотр прогноза продаж")
-        # self.prognoz = self.poiskPrognoza(periodDay)
-        # self.headers = self.prognoz[0].split(sep="', '")
-        # self.data = self.prognoz[1].split()
+        self.prognoz = self.poiskPrognoza(periodDay)
+        self.headers = self.prognoz[0]
+        self.data = self.prognoz[1]
+        print(type(self.headers))
+        print(type(self.data))
         # self.ui.tableWidget.setRowCount(3)
         # self.ui.tableWidget.setColumnCount(len(self.headers))
         # self.ui.tableWidget.setHorizontalHeaderLabels(self.headers)

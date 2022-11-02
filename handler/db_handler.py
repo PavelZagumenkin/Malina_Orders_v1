@@ -36,9 +36,8 @@ def seach_kod(kod, signal):
 def poiskPeriodaInDB(period, signal):
     con = sqlite3.connect('db/malina_orders.db')
     cur = con.cursor()
-    cur.execute(f'SELECT * FROM prognoz_bakery WHERE PERIOD="{period}";')
+    cur.execute(f"SELECT * FROM prognoz_bakery WHERE PERIOD='''{period}''';")
     value = cur.fetchall()
-
     if value == []:
         signal.emit('Пусто')
     else:
@@ -49,7 +48,7 @@ def poiskPeriodaInDB(period, signal):
 def addInPrognoz(savePeriod, saveHeaders, saveDB):
     con = sqlite3.connect('db/malina_orders.db')
     cur = con.cursor()
-    cur.execute(f'INSERT INTO prognoz_bakery (PERIOD, HEADERS, DATA) VALUES ("{savePeriod}", "{saveHeaders}", "{saveDB}")')
+    cur.execute(f"INSERT INTO prognoz_bakery (PERIOD, HEADERS, DATA) VALUES ('''{savePeriod}''', '''{saveHeaders}''', '''{saveDB}''');")
     con.commit()
     cur.close()
     con.close()
@@ -57,7 +56,7 @@ def addInPrognoz(savePeriod, saveHeaders, saveDB):
 def poiskDataPerioda(period, prognoz):
     con = sqlite3.connect('db/malina_orders.db')
     cur = con.cursor()
-    cur.execute(f'SELECT * FROM prognoz_bakery WHERE PERIOD="{period}";')
+    cur.execute(f"SELECT * FROM prognoz_bakery WHERE PERIOD='''{period}''';")
     value = cur.fetchall()
     prognoz.emit(value)
     cur.close()
