@@ -161,6 +161,7 @@ class WindowBakeryTables(QtWidgets.QMainWindow):
                 else:
                     saveDB[col][row] = float(self.ui.tableWidget.item(row, col).text())
         self.insertInDB(savePeriod, json.dumps(saveHeaders, ensure_ascii=False), json.dumps(saveDB, ensure_ascii=False))
+        # Продолжение работы с коэффициентами дня недели
 
     def saveAndCloseDef(self):
         savePeriod = self.periodDay
