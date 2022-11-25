@@ -1,7 +1,6 @@
 from PyQt6 import QtWidgets, QtGui
 import json
 from ui.bakeryTables import Ui_WindowBakeryTables
-import win32com.client
 from PyQt6.QtGui import QFont
 from PyQt6.QtWidgets import QTableWidgetItem
 from PyQt6.QtWidgets import QMessageBox
@@ -9,48 +8,36 @@ from handler.check_db import CheckThread
 import Windows.WindowsBakery
 
 
-class WindowBakeryTablesEdit(QtWidgets.QMainWindow):
-    def __init__(self, pathOLAP_P, pathOLAP_dayWeek_bakery, periodDay):
+class WindowBakeryTablesRedact(QtWidgets.QMainWindow):
+    def __init__(self, periodDay):
         super().__init__()
         self.ui = Ui_WindowBakeryTables()
         self.ui.setupUi(self)
         self.check_db = CheckThread()
-        self.check_db.layout.connect(self.signal_layout)
-        Excel = win32com.client.Dispatch("Excel.Application")
-        wb_OLAP_P = Excel.Workbooks.Open(pathOLAP_P)
-        wb_OLAP_dayWeek_bakery = Excel.Workbooks.Open(pathOLAP_dayWeek_bakery)
-        sheet_OLAP_P = wb_OLAP_P.ActiveSheet
-        sheet_OLAP_dayWeek_bakery = wb_OLAP_dayWeek_bakery.ActiveSheet
-        firstOLAPRow = sheet_OLAP_P.Range("A:A").Find("Код блюда").Row
-        for _ in range(firstOLAPRow - 1):
-            sheet_OLAP_P.Rows(1).Delete()
-        firstOLAPRow = sheet_OLAP_P.Range("A:A").Find("Код блюда").Row
-        endOLAPRow = sheet_OLAP_P.Range("A:C").Find("Итого").Row
-        endOLAPCol = sheet_OLAP_P.Cells.Find("Итого").Column
-        for a in range(endOLAPCol, 1, -1):
-            if sheet_OLAP_P.Cells(1, a).Value is None:
-                sheet_OLAP_P.Columns(a).Delete()
-        endOLAPCol = sheet_OLAP_P.Cells.Find("Итого").Column
-        self.ui.tableWidget.setRowCount(endOLAPRow - 1)
-        self.ui.tableWidget.setColumnCount(endOLAPCol + 3)
-        self.columnLables = list(sheet_OLAP_P.Range(sheet_OLAP_P.Cells(1, 1), sheet_OLAP_P.Cells(1, endOLAPCol - 1)).Value[0])
-        self.columnLables.insert(0, "Выкладка")
-        self.columnLables.insert(0, "Кф. товара")
-        self.columnLables.insert(0, "")
-        self.columnLables.insert(0, "")
-        self.ui.tableWidget.setHorizontalHeaderLabels(self.columnLables)
+        self.check_db.prognoz.connect(self.signal_prognoz)
+        self.setWindowTitle("Редактирование прогноза")
+        self.prognoz = self.poiskPrognoza(periodDay)
+        self.headers = json.loads(self.prognoz[0].strip("\'"))
+        self.data = json.loads(self.prognoz[1].strip("\'"))
+        self.headers.insert(0, "")
+        self.headers.insert(0, "")
+        self.ui.tableWidget.setRowCount(len(self.data['2']))
+        self.ui.tableWidget.setColumnCount(len(self.headers))
+        self.ui.tableWidget.setHorizontalHeaderLabels(self.headers)
         self.font = QtGui.QFont("Times", 10, QFont.Weight.Bold)
         self.ui.tableWidget.horizontalHeader().setFont(self.font)
-        for col in range(1, endOLAPCol):
-            for row in range(2, endOLAPRow):
-                item = sheet_OLAP_P.Cells(row, col).Value
-                item = QTableWidgetItem(str(item))
-                self.ui.tableWidget.setItem(row - 1, col + 3, item)
+        for col in self.data:
+            for row in self.data.get(col):
+                if self.data[col][row] == 0:
+                    item = QTableWidgetItem('')
+                else:
+                    item = QTableWidgetItem(str(self.data[col][row]))
+                self.ui.tableWidget.setItem(int(row), int(col), item)
         global saveZnach
         saveZnach = {}
         for col in range(7, self.ui.tableWidget.columnCount()):
             saveZnach[col] = {}
-            for row in range(1, self.ui.tableWidget.rowCount()):
+            for row in range(2, self.ui.tableWidget.rowCount()):
                 saveZnach[col][row] = float(self.ui.tableWidget.item(row, col).text())
         self.ui.tableWidget.setItem(0, 6, QTableWidgetItem("Кф. кондитерской"))
         self.ui.tableWidget.item(0, 6).setFont(self.font)
@@ -58,7 +45,7 @@ class WindowBakeryTablesEdit(QtWidgets.QMainWindow):
             self.DspinboxCol = QtWidgets.QDoubleSpinBox()
             self.DspinboxCol.wheelEvent = lambda event: None
             self.ui.tableWidget.setCellWidget(0, col_spin, self.DspinboxCol)
-            self.ui.tableWidget.cellWidget(0, col_spin).setValue(1.00)
+            self.ui.tableWidget.cellWidget(0, col_spin).setValue(float(self.ui.tableWidget.item(0, col_spin).text()))
             self.ui.tableWidget.cellWidget(0, col_spin).setSingleStep(0.05)
             self.ui.tableWidget.cellWidget(0, col_spin).valueChanged.connect(self.raschetPrognoz)
         for row_spin in range(1, self.ui.tableWidget.rowCount()):
@@ -67,11 +54,11 @@ class WindowBakeryTablesEdit(QtWidgets.QMainWindow):
             self.DspinboxRow.wheelEvent = lambda event: None
             self.SpinboxRow.wheelEvent = lambda event: None
             self.ui.tableWidget.setCellWidget(row_spin, 2, self.DspinboxRow)
-            self.ui.tableWidget.cellWidget(row_spin, 2).setValue(1.00)
+            self.ui.tableWidget.cellWidget(row_spin, 2).setValue(float(self.ui.tableWidget.item(row_spin, 2).text()))
             self.ui.tableWidget.cellWidget(row_spin, 2).setSingleStep(0.05)
             self.ui.tableWidget.cellWidget(row_spin, 2).valueChanged.connect(self.raschetPrognoz)
             self.ui.tableWidget.setCellWidget(row_spin, 3, self.SpinboxRow)
-            self.ui.tableWidget.cellWidget(row_spin, 3).setValue(self.poisk_kod(self.ui.tableWidget.item(row_spin, 4).text()))
+            self.ui.tableWidget.cellWidget(row_spin, 3).setValue(int(float(self.ui.tableWidget.item(row_spin, 3).text())))
             self.ui.tableWidget.cellWidget(row_spin, 3).setSingleStep(1)
         for row_button in range(1, self.ui.tableWidget.rowCount()):
             self.copyRowButton = QtWidgets.QPushButton()
@@ -140,9 +127,19 @@ class WindowBakeryTablesEdit(QtWidgets.QMainWindow):
         self.ui.tableWidget.setColumnWidth(5, 290)
         self.ui.tableWidget.setColumnWidth(6, 130)
 
+    def signal_prognoz(self, value):
+        headers = value[0][2]
+        data = value[0][3]
+        global prognoz
+        prognoz = [headers, data]
+
+    def poiskPrognoza(self, periodDay):
+        self.check_db.thr_poiskPrognoza(periodDay)
+        return(prognoz)
+
     def saveAndNextDef(self):
         savePeriod = self.periodDay
-        headers = self.columnLables.copy()
+        headers = self.headers.copy()
         del headers[0:2]
         saveHeaders = headers
         saveDB = {}
@@ -160,12 +157,12 @@ class WindowBakeryTablesEdit(QtWidgets.QMainWindow):
                     saveDB[col][row] = self.ui.tableWidget.item(row, col).text()
                 else:
                     saveDB[col][row] = float(self.ui.tableWidget.item(row, col).text())
-        self.insertInDB(savePeriod, json.dumps(saveHeaders, ensure_ascii=False), json.dumps(saveDB, ensure_ascii=False))
+        self.updateInDB(savePeriod, json.dumps(saveHeaders, ensure_ascii=False), json.dumps(saveDB, ensure_ascii=False))
         # Продолжение работы с коэффициентами дня недели
 
     def saveAndCloseDef(self):
         savePeriod = self.periodDay
-        headers = self.columnLables.copy()
+        headers = self.headers.copy()
         del headers[0:2]
         saveHeaders = headers
         saveDB = {}
@@ -183,7 +180,7 @@ class WindowBakeryTablesEdit(QtWidgets.QMainWindow):
                     saveDB[col][row] = self.ui.tableWidget.item(row, col).text()
                 else:
                     saveDB[col][row] = float(self.ui.tableWidget.item(row, col).text())
-        self.insertInDB(savePeriod, json.dumps(saveHeaders, ensure_ascii=False), json.dumps(saveDB, ensure_ascii=False))
+        self.updateInDB(savePeriod, json.dumps(saveHeaders, ensure_ascii=False), json.dumps(saveDB, ensure_ascii=False))
         self.closeWindowBakeryTables()
 
     def raschetPrognoz(self):
@@ -260,8 +257,8 @@ class WindowBakeryTablesEdit(QtWidgets.QMainWindow):
         self.check_db.thr_kod(kod_text)
         return int(layout)
 
-    def insertInDB(self, savePeriod, saveHeaders, saveDB):
-        self.check_db.thr_savePrognoz(savePeriod, saveHeaders, saveDB)
+    def updateInDB(self, savePeriod, saveHeaders, saveDB):
+        self.check_db.thr_updatePrognoz(savePeriod, saveHeaders, saveDB)
 
     # Закрываем таблицу выпечки и возвращаемся к настройкам
     def closeWindowBakeryTables(self):

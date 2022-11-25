@@ -17,7 +17,7 @@ class Ui_WindowBakery(object):
         WindowBakery.setMinimumSize(QtCore.QSize(1240, 700))
         WindowBakery.setMaximumSize(QtCore.QSize(1240, 700))
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("image/icon.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        icon.addPixmap(QtGui.QPixmap("../image/icon.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         WindowBakery.setWindowIcon(icon)
         self.centralwidget = QtWidgets.QWidget(WindowBakery)
         self.centralwidget.setObjectName("centralwidget")
@@ -88,7 +88,7 @@ class Ui_WindowBakery(object):
         self.label_OLAP_dayWeek_bakery.setFont(font)
         self.label_OLAP_dayWeek_bakery.setObjectName("label_OLAP_dayWeek_bakery")
         self.btn_exit_bakery = QtWidgets.QPushButton(self.centralwidget)
-        self.btn_exit_bakery.setGeometry(QtCore.QRect(860, 580, 351, 71))
+        self.btn_exit_bakery.setGeometry(QtCore.QRect(820, 610, 391, 71))
         font = QtGui.QFont()
         font.setFamily("Trebuchet MS")
         font.setPointSize(22)
@@ -136,7 +136,7 @@ class Ui_WindowBakery(object):
         self.btn_path_dayWeek_bakery.setCheckable(False)
         self.btn_path_dayWeek_bakery.setObjectName("btn_path_dayWeek_bakery")
         self.btn_koeff_bakery = QtWidgets.QPushButton(self.centralwidget)
-        self.btn_koeff_bakery.setGeometry(QtCore.QRect(860, 30, 351, 71))
+        self.btn_koeff_bakery.setGeometry(QtCore.QRect(820, 20, 391, 121))
         font = QtGui.QFont()
         font.setFamily("Trebuchet MS")
         font.setPointSize(22)
@@ -208,7 +208,7 @@ class Ui_WindowBakery(object):
         self.dateEdit_EndDay.setObjectName("dateEdit_EndDay")
         self.btn_prosmotrPrognoz = QtWidgets.QPushButton(self.centralwidget)
         self.btn_prosmotrPrognoz.setEnabled(False)
-        self.btn_prosmotrPrognoz.setGeometry(QtCore.QRect(650, 320, 141, 41))
+        self.btn_prosmotrPrognoz.setGeometry(QtCore.QRect(20, 380, 371, 41))
         font = QtGui.QFont()
         font.setFamily("Trebuchet MS")
         font.setPointSize(16)
@@ -231,6 +231,263 @@ class Ui_WindowBakery(object):
 "}")
         self.btn_prosmotrPrognoz.setCheckable(False)
         self.btn_prosmotrPrognoz.setObjectName("btn_prosmotrPrognoz")
+        self.btn_editPrognoz = QtWidgets.QPushButton(self.centralwidget)
+        self.btn_editPrognoz.setEnabled(False)
+        self.btn_editPrognoz.setGeometry(QtCore.QRect(820, 170, 391, 71))
+        font = QtGui.QFont()
+        font.setFamily("Trebuchet MS")
+        font.setPointSize(22)
+        font.setBold(False)
+        font.setWeight(50)
+        self.btn_editPrognoz.setFont(font)
+        self.btn_editPrognoz.setStyleSheet("QPushButton {\n"
+"background-color: rgb(228, 107, 134);\n"
+"border: none;\n"
+"border-radius: 10px}\n"
+"\n"
+"QPushButton:hover {\n"
+"border: 1px solid  rgb(0, 0, 0);\n"
+"background-color: rgba(228, 107, 134, 0.9)\n"
+"}\n"
+"\n"
+"QPushButton:pressed {\n"
+"border:3px solid  rgb(0, 0, 0);\n"
+"background-color: rgba(228, 107, 134, 1)\n"
+"}")
+        self.btn_editPrognoz.setCheckable(False)
+        self.btn_editPrognoz.setObjectName("btn_editPrognoz")
+        self.btn_editNormativ = QtWidgets.QPushButton(self.centralwidget)
+        self.btn_editNormativ.setEnabled(False)
+        self.btn_editNormativ.setGeometry(QtCore.QRect(820, 410, 391, 71))
+        font = QtGui.QFont()
+        font.setFamily("Trebuchet MS")
+        font.setPointSize(22)
+        font.setBold(False)
+        font.setWeight(50)
+        self.btn_editNormativ.setFont(font)
+        self.btn_editNormativ.setStyleSheet("QPushButton {\n"
+"background-color: rgb(228, 107, 134);\n"
+"border: none;\n"
+"border-radius: 10px}\n"
+"\n"
+"QPushButton:hover {\n"
+"border: 1px solid  rgb(0, 0, 0);\n"
+"background-color: rgba(228, 107, 134, 0.9)\n"
+"}\n"
+"\n"
+"QPushButton:pressed {\n"
+"border:3px solid  rgb(0, 0, 0);\n"
+"background-color: rgba(228, 107, 134, 1)\n"
+"}")
+        self.btn_editNormativ.setCheckable(False)
+        self.btn_editNormativ.setObjectName("btn_editNormativ")
+        self.btn_prosmotrNormativ = QtWidgets.QPushButton(self.centralwidget)
+        self.btn_prosmotrNormativ.setEnabled(False)
+        self.btn_prosmotrNormativ.setGeometry(QtCore.QRect(420, 380, 371, 41))
+        font = QtGui.QFont()
+        font.setFamily("Trebuchet MS")
+        font.setPointSize(16)
+        font.setBold(False)
+        font.setWeight(50)
+        self.btn_prosmotrNormativ.setFont(font)
+        self.btn_prosmotrNormativ.setStyleSheet("QPushButton {\n"
+"background-color: rgb(228, 107, 134);\n"
+"border: none;\n"
+"border-radius: 10px}\n"
+"\n"
+"QPushButton:hover {\n"
+"border: 1px solid  rgb(0, 0, 0);\n"
+"background-color: rgba(228, 107, 134, 0.9)\n"
+"}\n"
+"\n"
+"QPushButton:pressed {\n"
+"border:3px solid  rgb(0, 0, 0);\n"
+"background-color: rgba(228, 107, 134, 1)\n"
+"}")
+        self.btn_prosmotrNormativ.setCheckable(False)
+        self.btn_prosmotrNormativ.setObjectName("btn_prosmotrNormativ")
+        self.btn_editKdayWeek = QtWidgets.QPushButton(self.centralwidget)
+        self.btn_editKdayWeek.setEnabled(False)
+        self.btn_editKdayWeek.setGeometry(QtCore.QRect(820, 270, 391, 111))
+        font = QtGui.QFont()
+        font.setFamily("Trebuchet MS")
+        font.setPointSize(20)
+        font.setBold(False)
+        font.setWeight(50)
+        self.btn_editKdayWeek.setFont(font)
+        self.btn_editKdayWeek.setStyleSheet("QPushButton {\n"
+"background-color: rgb(228, 107, 134);\n"
+"border: none;\n"
+"border-radius: 10px}\n"
+"\n"
+"QPushButton:hover {\n"
+"border: 1px solid  rgb(0, 0, 0);\n"
+"background-color: rgba(228, 107, 134, 0.9)\n"
+"}\n"
+"\n"
+"QPushButton:pressed {\n"
+"border:3px solid  rgb(0, 0, 0);\n"
+"background-color: rgba(228, 107, 134, 1)\n"
+"}")
+        self.btn_editKdayWeek.setCheckable(False)
+        self.btn_editKdayWeek.setObjectName("btn_editKdayWeek")
+        self.btn_download = QtWidgets.QPushButton(self.centralwidget)
+        self.btn_download.setEnabled(False)
+        self.btn_download.setGeometry(QtCore.QRect(820, 510, 391, 71))
+        font = QtGui.QFont()
+        font.setFamily("Trebuchet MS")
+        font.setPointSize(28)
+        font.setBold(True)
+        font.setWeight(75)
+        self.btn_download.setFont(font)
+        self.btn_download.setStyleSheet("QPushButton {\n"
+"background-color: rgb(228, 107, 134);\n"
+"border: none;\n"
+"border-radius: 10px}\n"
+"\n"
+"QPushButton:hover {\n"
+"border: 1px solid  rgb(0, 0, 0);\n"
+"background-color: rgba(228, 107, 134, 0.9)\n"
+"}\n"
+"\n"
+"QPushButton:pressed {\n"
+"border:3px solid  rgb(0, 0, 0);\n"
+"background-color: rgba(228, 107, 134, 1)\n"
+"}")
+        self.btn_download.setCheckable(False)
+        self.btn_download.setObjectName("btn_download")
+        self.gridLayoutWidget = QtWidgets.QWidget(self.centralwidget)
+        self.gridLayoutWidget.setGeometry(QtCore.QRect(20, 460, 771, 221))
+        self.gridLayoutWidget.setObjectName("gridLayoutWidget")
+        self.gridPoints = QtWidgets.QGridLayout(self.gridLayoutWidget)
+        self.gridPoints.setContentsMargins(0, 0, 0, 0)
+        self.gridPoints.setObjectName("gridPoints")
+        self.cb_begovaya = QtWidgets.QCheckBox(self.gridLayoutWidget)
+        self.cb_begovaya.setChecked(True)
+        self.cb_begovaya.setObjectName("cb_begovaya")
+        self.gridPoints.addWidget(self.cb_begovaya, 0, 0, 1, 1)
+        self.cb_magazin = QtWidgets.QCheckBox(self.gridLayoutWidget)
+        self.cb_magazin.setChecked(True)
+        self.cb_magazin.setObjectName("cb_magazin")
+        self.gridPoints.addWidget(self.cb_magazin, 5, 0, 1, 1)
+        self.cb_gorkogo = QtWidgets.QCheckBox(self.gridLayoutWidget)
+        self.cb_gorkogo.setChecked(True)
+        self.cb_gorkogo.setObjectName("cb_gorkogo")
+        self.gridPoints.addWidget(self.cb_gorkogo, 2, 0, 1, 1)
+        self.cb_lenina = QtWidgets.QCheckBox(self.gridLayoutWidget)
+        self.cb_lenina.setChecked(True)
+        self.cb_lenina.setObjectName("cb_lenina")
+        self.gridPoints.addWidget(self.cb_lenina, 4, 0, 1, 1)
+        self.cb_grand = QtWidgets.QCheckBox(self.gridLayoutWidget)
+        self.cb_grand.setChecked(True)
+        self.cb_grand.setObjectName("cb_grand")
+        self.gridPoints.addWidget(self.cb_grand, 3, 0, 1, 1)
+        self.cb_volsk = QtWidgets.QCheckBox(self.gridLayoutWidget)
+        self.cb_volsk.setChecked(True)
+        self.cb_volsk.setObjectName("cb_volsk")
+        self.gridPoints.addWidget(self.cb_volsk, 1, 0, 1, 1)
+        self.cb_svoboda = QtWidgets.QCheckBox(self.gridLayoutWidget)
+        self.cb_svoboda.setChecked(True)
+        self.cb_svoboda.setObjectName("cb_svoboda")
+        self.gridPoints.addWidget(self.cb_svoboda, 1, 2, 1, 1)
+        self.cb_marks = QtWidgets.QCheckBox(self.gridLayoutWidget)
+        self.cb_marks.setChecked(True)
+        self.cb_marks.setObjectName("cb_marks")
+        self.gridPoints.addWidget(self.cb_marks, 0, 1, 1, 1)
+        self.cb_michurina = QtWidgets.QCheckBox(self.gridLayoutWidget)
+        self.cb_michurina.setChecked(True)
+        self.cb_michurina.setObjectName("cb_michurina")
+        self.gridPoints.addWidget(self.cb_michurina, 1, 1, 1, 1)
+        self.cb_madonna = QtWidgets.QCheckBox(self.gridLayoutWidget)
+        self.cb_madonna.setObjectName("cb_madonna")
+        self.gridPoints.addWidget(self.cb_madonna, 6, 0, 1, 1)
+        self.cb_moskovskaya = QtWidgets.QCheckBox(self.gridLayoutWidget)
+        self.cb_moskovskaya.setChecked(True)
+        self.cb_moskovskaya.setObjectName("cb_moskovskaya")
+        self.gridPoints.addWidget(self.cb_moskovskaya, 2, 1, 1, 1)
+        self.cb_orang = QtWidgets.QCheckBox(self.gridLayoutWidget)
+        self.cb_orang.setChecked(True)
+        self.cb_orang.setObjectName("cb_orang")
+        self.gridPoints.addWidget(self.cb_orang, 3, 1, 1, 1)
+        self.cb_rokot = QtWidgets.QCheckBox(self.gridLayoutWidget)
+        self.cb_rokot.setChecked(False)
+        self.cb_rokot.setObjectName("cb_rokot")
+        self.gridPoints.addWidget(self.cb_rokot, 0, 2, 1, 1)
+        self.cb_rahova = QtWidgets.QCheckBox(self.gridLayoutWidget)
+        self.cb_rahova.setChecked(True)
+        self.cb_rahova.setObjectName("cb_rahova")
+        self.gridPoints.addWidget(self.cb_rahova, 6, 1, 1, 1)
+        self.cb_pavilon = QtWidgets.QCheckBox(self.gridLayoutWidget)
+        self.cb_pavilon.setObjectName("cb_pavilon")
+        self.gridPoints.addWidget(self.cb_pavilon, 5, 1, 1, 1)
+        self.cb_stargrad = QtWidgets.QCheckBox(self.gridLayoutWidget)
+        self.cb_stargrad.setChecked(True)
+        self.cb_stargrad.setObjectName("cb_stargrad")
+        self.gridPoints.addWidget(self.cb_stargrad, 3, 2, 1, 1)
+        self.cb_pobeda = QtWidgets.QCheckBox(self.gridLayoutWidget)
+        self.cb_pobeda.setChecked(True)
+        self.cb_pobeda.setObjectName("cb_pobeda")
+        self.gridPoints.addWidget(self.cb_pobeda, 4, 1, 1, 1)
+        self.cb_solnechnii = QtWidgets.QCheckBox(self.gridLayoutWidget)
+        self.cb_solnechnii.setChecked(True)
+        self.cb_solnechnii.setObjectName("cb_solnechnii")
+        self.gridPoints.addWidget(self.cb_solnechnii, 2, 2, 1, 1)
+        self.cb_stepnaya = QtWidgets.QCheckBox(self.gridLayoutWidget)
+        self.cb_stepnaya.setChecked(True)
+        self.cb_stepnaya.setObjectName("cb_stepnaya")
+        self.gridPoints.addWidget(self.cb_stepnaya, 4, 2, 1, 1)
+        self.cb_tarhova = QtWidgets.QCheckBox(self.gridLayoutWidget)
+        self.cb_tarhova.setChecked(False)
+        self.cb_tarhova.setObjectName("cb_tarhova")
+        self.gridPoints.addWidget(self.cb_tarhova, 5, 2, 1, 1)
+        self.cb_trnavskaya = QtWidgets.QCheckBox(self.gridLayoutWidget)
+        self.cb_trnavskaya.setChecked(True)
+        self.cb_trnavskaya.setObjectName("cb_trnavskaya")
+        self.gridPoints.addWidget(self.cb_trnavskaya, 6, 2, 1, 1)
+        self.cb_ust_kurdym = QtWidgets.QCheckBox(self.gridLayoutWidget)
+        self.cb_ust_kurdym.setChecked(True)
+        self.cb_ust_kurdym.setObjectName("cb_ust_kurdym")
+        self.gridPoints.addWidget(self.cb_ust_kurdym, 0, 3, 1, 1)
+        self.cb_entuziastov = QtWidgets.QCheckBox(self.gridLayoutWidget)
+        self.cb_entuziastov.setChecked(True)
+        self.cb_entuziastov.setObjectName("cb_entuziastov")
+        self.gridPoints.addWidget(self.cb_entuziastov, 3, 3, 1, 1)
+        self.cb_fridriha = QtWidgets.QCheckBox(self.gridLayoutWidget)
+        self.cb_fridriha.setChecked(True)
+        self.cb_fridriha.setObjectName("cb_fridriha")
+        self.gridPoints.addWidget(self.cb_fridriha, 1, 3, 1, 1)
+        self.cb_chehova = QtWidgets.QCheckBox(self.gridLayoutWidget)
+        self.cb_chehova.setChecked(True)
+        self.cb_chehova.setObjectName("cb_chehova")
+        self.gridPoints.addWidget(self.cb_chehova, 2, 3, 1, 1)
+        self.label_OLAP_P_2 = QtWidgets.QLabel(self.centralwidget)
+        self.label_OLAP_P_2.setGeometry(QtCore.QRect(20, 430, 771, 21))
+        font = QtGui.QFont()
+        font.setFamily("Trebuchet MS")
+        font.setPointSize(12)
+        self.label_OLAP_P_2.setFont(font)
+        self.label_OLAP_P_2.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.label_OLAP_P_2.setObjectName("label_OLAP_P_2")
+        self.line = QtWidgets.QFrame(self.centralwidget)
+        self.line.setGeometry(QtCore.QRect(10, 420, 791, 21))
+        self.line.setFrameShape(QtWidgets.QFrame.Shape.HLine)
+        self.line.setFrameShadow(QtWidgets.QFrame.Shadow.Sunken)
+        self.line.setObjectName("line")
+        self.line_2 = QtWidgets.QFrame(self.centralwidget)
+        self.line_2.setGeometry(QtCore.QRect(9, 670, 791, 21))
+        self.line_2.setFrameShape(QtWidgets.QFrame.Shape.HLine)
+        self.line_2.setFrameShadow(QtWidgets.QFrame.Shadow.Sunken)
+        self.line_2.setObjectName("line_2")
+        self.line_3 = QtWidgets.QFrame(self.centralwidget)
+        self.line_3.setGeometry(QtCore.QRect(791, 429, 20, 251))
+        self.line_3.setFrameShape(QtWidgets.QFrame.Shape.VLine)
+        self.line_3.setFrameShadow(QtWidgets.QFrame.Shadow.Sunken)
+        self.line_3.setObjectName("line_3")
+        self.line_4 = QtWidgets.QFrame(self.centralwidget)
+        self.line_4.setGeometry(QtCore.QRect(1, 430, 20, 251))
+        self.line_4.setFrameShape(QtWidgets.QFrame.Shape.VLine)
+        self.line_4.setFrameShadow(QtWidgets.QFrame.Shadow.Sunken)
+        self.line_4.setObjectName("line_4")
         WindowBakery.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(WindowBakery)
@@ -245,11 +502,44 @@ class Ui_WindowBakery(object):
         self.label_OLAP_dayWeek_bakery.setText(_translate("WindowBakery", "Укажите путь к OLAP отчету по продажам по дням недели - выпечка"))
         self.btn_exit_bakery.setText(_translate("WindowBakery", "К ВЫБОРУ РАЗДЕЛА"))
         self.btn_path_dayWeek_bakery.setText(_translate("WindowBakery", "..."))
-        self.btn_koeff_bakery.setText(_translate("WindowBakery", "КОЭФФИЦИЕНТЫ"))
+        self.btn_koeff_bakery.setText(_translate("WindowBakery", "Установить \n"
+" коэффициенты на прогноз"))
         self.label_startDay_and_endDay.setText(_translate("WindowBakery", "Укажите начало периода для формирования данных"))
         self.label_startDay.setText(_translate("WindowBakery", "Начало периода"))
         self.label_EndDay.setText(_translate("WindowBakery", "Конец периода"))
-        self.btn_prosmotrPrognoz.setText(_translate("WindowBakery", "Посмотреть"))
+        self.btn_prosmotrPrognoz.setText(_translate("WindowBakery", "Посмотреть прогноз"))
+        self.btn_editPrognoz.setText(_translate("WindowBakery", "Редактировать прогноз"))
+        self.btn_editNormativ.setText(_translate("WindowBakery", "Редактировать нормативы"))
+        self.btn_prosmotrNormativ.setText(_translate("WindowBakery", "Посмотреть нормативы"))
+        self.btn_editKdayWeek.setText(_translate("WindowBakery", "Редактировать \n"
+" коэффициенты дней недели"))
+        self.btn_download.setText(_translate("WindowBakery", "ВЫГРУЗИТЬ ПЛАНЫ"))
+        self.cb_begovaya.setText(_translate("WindowBakery", "Беговая"))
+        self.cb_magazin.setText(_translate("WindowBakery", "Магазин"))
+        self.cb_gorkogo.setText(_translate("WindowBakery", "Горького"))
+        self.cb_lenina.setText(_translate("WindowBakery", "Ленина"))
+        self.cb_grand.setText(_translate("WindowBakery", "Гранд"))
+        self.cb_volsk.setText(_translate("WindowBakery", "Вольск"))
+        self.cb_svoboda.setText(_translate("WindowBakery", "Свобода"))
+        self.cb_marks.setText(_translate("WindowBakery", "Маркс"))
+        self.cb_michurina.setText(_translate("WindowBakery", "Мичурина"))
+        self.cb_madonna.setText(_translate("WindowBakery", "Мадонна"))
+        self.cb_moskovskaya.setText(_translate("WindowBakery", "Московская"))
+        self.cb_orang.setText(_translate("WindowBakery", "Оранж"))
+        self.cb_rokot.setText(_translate("WindowBakery", "Рокот"))
+        self.cb_rahova.setText(_translate("WindowBakery", "Рахова"))
+        self.cb_pavilon.setText(_translate("WindowBakery", "ПП(павильон)"))
+        self.cb_stargrad.setText(_translate("WindowBakery", "Старград"))
+        self.cb_pobeda.setText(_translate("WindowBakery", "Победа"))
+        self.cb_solnechnii.setText(_translate("WindowBakery", "Солнечный"))
+        self.cb_stepnaya.setText(_translate("WindowBakery", "Степная"))
+        self.cb_tarhova.setText(_translate("WindowBakery", "Тархова"))
+        self.cb_trnavskaya.setText(_translate("WindowBakery", "Трнавская"))
+        self.cb_ust_kurdym.setText(_translate("WindowBakery", "Усть-Курдюмская"))
+        self.cb_entuziastov.setText(_translate("WindowBakery", "Энтузиастов"))
+        self.cb_fridriha.setText(_translate("WindowBakery", "Фридриха 11"))
+        self.cb_chehova.setText(_translate("WindowBakery", "Чехова"))
+        self.label_OLAP_P_2.setText(_translate("WindowBakery", "Выберите кондитерские для автозаказа"))
 
 
 if __name__ == "__main__":
