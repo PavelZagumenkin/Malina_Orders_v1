@@ -17,8 +17,8 @@ class CheckThread(QtCore.QThread):
     def thr_savePrognoz(self, savePeriod, saveHeaders, saveDB, saveNull):
         addInPrognoz(savePeriod, saveHeaders, saveDB, saveNull)
 
-    def thr_updatePrognoz(self, savePeriod, saveHeaders, saveDB):
-        updatePrognoz(savePeriod, saveHeaders, saveDB)
+    def thr_updatePrognoz(self, savePeriod, saveHeaders, saveDB, saveNull):
+        updatePrognoz(savePeriod, saveHeaders, saveDB, saveNull)
 
     def thr_proverkaPerioda(self, period):
         poiskPeriodaInDB(period, self.period)

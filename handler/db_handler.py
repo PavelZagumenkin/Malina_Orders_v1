@@ -53,10 +53,10 @@ def addInPrognoz(savePeriod, saveHeaders, saveDB, saveNull):
     cur.close()
     con.close()
 
-def updatePrognoz(savePeriod, saveHeaders, saveDB):
+def updatePrognoz(savePeriod, saveHeaders, saveDB, saveNull):
     con = sqlite3.connect('db/malina_orders.db')
     cur = con.cursor()
-    cur.execute(f"UPDATE prognoz_bakery set HEADERS = '''{saveHeaders}''', DATA = '''{saveDB}''' where PERIOD = '''{savePeriod}'''")
+    cur.execute(f"UPDATE prognoz_bakery set HEADERS = '''{saveHeaders}''', DATA = '''{saveDB}''', SAVENULL = '''{saveNull}''' where PERIOD = '''{savePeriod}'''")
     con.commit()
     cur.close()
     con.close()

@@ -19,6 +19,8 @@ class WindowBakeryTablesRedact(QtWidgets.QMainWindow):
         self.prognoz = self.poiskPrognoza(periodDay)
         self.headers = json.loads(self.prognoz[0].strip("\'"))
         self.data = json.loads(self.prognoz[1].strip("\'"))
+        global saveZnach
+        saveZnach = json.loads(self.prognoz[2].strip("\'"))
         self.headers.insert(0, "")
         self.headers.insert(0, "")
         self.ui.tableWidget.setRowCount(len(self.data['2']))
@@ -33,12 +35,6 @@ class WindowBakeryTablesRedact(QtWidgets.QMainWindow):
                 else:
                     item = QTableWidgetItem(str(self.data[col][row]))
                 self.ui.tableWidget.setItem(int(row), int(col), item)
-        global saveZnach
-        saveZnach = {}
-        for col in range(7, self.ui.tableWidget.columnCount()):
-            saveZnach[col] = {}
-            for row in range(1, self.ui.tableWidget.rowCount()):
-                saveZnach[col][row] = float(self.ui.tableWidget.item(row, col).text())
         self.ui.tableWidget.setItem(0, 6, QTableWidgetItem("Кф. кондитерской"))
         self.ui.tableWidget.item(0, 6).setFont(self.font)
         for col_spin in range(7, self.ui.tableWidget.columnCount()):
@@ -127,11 +123,13 @@ class WindowBakeryTablesRedact(QtWidgets.QMainWindow):
         self.ui.tableWidget.setColumnWidth(5, 290)
         self.ui.tableWidget.setColumnWidth(6, 130)
 
+
     def signal_prognoz(self, value):
         headers = value[0][2]
         data = value[0][3]
+        saveNull = value[0][4]
         global prognoz
-        prognoz = [headers, data]
+        prognoz = [headers, data, saveNull]
 
     def poiskPrognoza(self, periodDay):
         self.check_db.thr_poiskPrognoza(periodDay)
@@ -140,6 +138,7 @@ class WindowBakeryTablesRedact(QtWidgets.QMainWindow):
     def saveAndNextDef(self):
         savePeriod = self.periodDay
         headers = self.headers.copy()
+        saveNull = saveZnach.copy()
         del headers[0:2]
         saveHeaders = headers
         saveDB = {}
@@ -157,12 +156,13 @@ class WindowBakeryTablesRedact(QtWidgets.QMainWindow):
                     saveDB[col][row] = self.ui.tableWidget.item(row, col).text()
                 else:
                     saveDB[col][row] = float(self.ui.tableWidget.item(row, col).text())
-        self.updateInDB(savePeriod, json.dumps(saveHeaders, ensure_ascii=False), json.dumps(saveDB, ensure_ascii=False))
+        self.updateInDB(savePeriod, json.dumps(saveHeaders, ensure_ascii=False), json.dumps(saveDB, ensure_ascii=False), json.dumps(saveNull, ensure_ascii=False))
         # Продолжение работы с коэффициентами дня недели
 
     def saveAndCloseDef(self):
         savePeriod = self.periodDay
         headers = self.headers.copy()
+        saveNull = saveZnach.copy()
         del headers[0:2]
         saveHeaders = headers
         saveDB = {}
@@ -180,7 +180,7 @@ class WindowBakeryTablesRedact(QtWidgets.QMainWindow):
                     saveDB[col][row] = self.ui.tableWidget.item(row, col).text()
                 else:
                     saveDB[col][row] = float(self.ui.tableWidget.item(row, col).text())
-        self.updateInDB(savePeriod, json.dumps(saveHeaders, ensure_ascii=False), json.dumps(saveDB, ensure_ascii=False))
+        self.updateInDB(savePeriod, json.dumps(saveHeaders, ensure_ascii=False), json.dumps(saveDB, ensure_ascii=False), json.dumps(saveNull, ensure_ascii=False))
         self.closeWindowBakeryTables()
 
     def raschetPrognoz(self):
@@ -188,11 +188,11 @@ class WindowBakeryTablesRedact(QtWidgets.QMainWindow):
         index = self.ui.tableWidget.indexAt(buttonClicked.pos())
         if index.row() == 0:
             for i in range(1, self.ui.tableWidget.rowCount()):
-                result = round(float(saveZnach[index.column()][i]) * float(self.ui.tableWidget.cellWidget(0, index.column()).value()) * float(self.ui.tableWidget.cellWidget(i, 2).value()), 2)
+                result = round(float(saveZnach[str(index.column())][str(i)]) * float(self.ui.tableWidget.cellWidget(0, index.column()).value()) * float(self.ui.tableWidget.cellWidget(i, 2).value()), 2)
                 self.ui.tableWidget.setItem(i, index.column(), QTableWidgetItem(str(result)))
         else:
             for i in range(7, self.ui.tableWidget.columnCount()):
-                result = round(float(saveZnach[i][index.row()]) * float(self.ui.tableWidget.cellWidget(index.row(), 2).value()) * float(self.ui.tableWidget.cellWidget(0, i).value()), 2)
+                result = round(float(saveZnach[str(i)][str(index.row())]) * float(self.ui.tableWidget.cellWidget(index.row(), 2).value()) * float(self.ui.tableWidget.cellWidget(0, i).value()), 2)
                 self.ui.tableWidget.setItem(index.row(), i, QTableWidgetItem(str(result)))
 
     def copyRow(self):
@@ -228,37 +228,24 @@ class WindowBakeryTablesRedact(QtWidgets.QMainWindow):
         for c in range(6, 7):
             self.ui.tableWidget.setItem(rowPosition, c, QTableWidgetItem(self.ui.tableWidget.item(index.row(), c).text()))
         for c in range(7, self.ui.tableWidget.columnCount()):
-            self.ui.tableWidget.setItem(rowPosition, c, QTableWidgetItem(str(round(saveZnach[c][index.row()] * float(self.ui.tableWidget.cellWidget(0, c).value()), 2))))
+            self.ui.tableWidget.setItem(rowPosition, c, QTableWidgetItem(str(round(saveZnach[str(c)][str(index.row())] * float(self.ui.tableWidget.cellWidget(0, c).value()), 2))))
         for c in range(7, self.ui.tableWidget.columnCount()):
-            saveZnach[c][rowPosition] = round(float(self.ui.tableWidget.item(rowPosition, c).text()) / float(self.ui.tableWidget.cellWidget(0, c).value()), 2)
+            saveZnach[str(c)][str(rowPosition)] = round(float(self.ui.tableWidget.item(rowPosition, c).text()) / float(self.ui.tableWidget.cellWidget(0, c).value()), 2)
 
     def deleteRow(self):
         buttonClicked = self.sender()
         index = self.ui.tableWidget.indexAt(buttonClicked.pos())
         self.ui.tableWidget.removeRow(index.row())
         for c in range(7, self.ui.tableWidget.columnCount()):
-            del saveZnach[c][index.row()]
+            del saveZnach[str(c)][str(index.row())]
         for c in range(7, self.ui.tableWidget.columnCount()):
             counter = index.row() + 1
             for r in range(index.row(), self.ui.tableWidget.rowCount()):
-                saveZnach[c][r] = saveZnach[c].pop(counter)
+                saveZnach[str(c)][str(r)] = saveZnach[str(c)].pop(str(counter))
                 counter += 1
 
-    def signal_layout(self, value):
-        global layout
-        if value != 'Код отсутствует в БД':
-            layout = value
-        else:
-            layout = 0
-
-    # Поиск кода в базе данных
-    def poisk_kod(self, kod):
-        kod_text = kod
-        self.check_db.thr_kod(kod_text)
-        return int(layout)
-
-    def updateInDB(self, savePeriod, saveHeaders, saveDB):
-        self.check_db.thr_updatePrognoz(savePeriod, saveHeaders, saveDB)
+    def updateInDB(self, savePeriod, saveHeaders, saveDB, saveNull):
+        self.check_db.thr_updatePrognoz(savePeriod, saveHeaders, saveDB, saveNull)
 
     # Закрываем таблицу выпечки и возвращаемся к настройкам
     def closeWindowBakeryTables(self):
