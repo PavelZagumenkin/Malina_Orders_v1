@@ -37,7 +37,7 @@ class WindowBakeryTablesRedact(QtWidgets.QMainWindow):
         saveZnach = {}
         for col in range(7, self.ui.tableWidget.columnCount()):
             saveZnach[col] = {}
-            for row in range(2, self.ui.tableWidget.rowCount()):
+            for row in range(1, self.ui.tableWidget.rowCount()):
                 saveZnach[col][row] = float(self.ui.tableWidget.item(row, col).text())
         self.ui.tableWidget.setItem(0, 6, QTableWidgetItem("Кф. кондитерской"))
         self.ui.tableWidget.item(0, 6).setFont(self.font)

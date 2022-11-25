@@ -142,6 +142,7 @@ class WindowBakeryTablesEdit(QtWidgets.QMainWindow):
 
     def saveAndNextDef(self):
         savePeriod = self.periodDay
+        saveNull = saveZnach.copy()
         headers = self.columnLables.copy()
         del headers[0:2]
         saveHeaders = headers
@@ -160,11 +161,12 @@ class WindowBakeryTablesEdit(QtWidgets.QMainWindow):
                     saveDB[col][row] = self.ui.tableWidget.item(row, col).text()
                 else:
                     saveDB[col][row] = float(self.ui.tableWidget.item(row, col).text())
-        self.insertInDB(savePeriod, json.dumps(saveHeaders, ensure_ascii=False), json.dumps(saveDB, ensure_ascii=False))
+        self.insertInDB(savePeriod, json.dumps(saveHeaders, ensure_ascii=False), json.dumps(saveDB, ensure_ascii=False), json.dumps(saveNull, ensure_ascii=False))
         # Продолжение работы с коэффициентами дня недели
 
     def saveAndCloseDef(self):
         savePeriod = self.periodDay
+        saveNull = saveZnach.copy()
         headers = self.columnLables.copy()
         del headers[0:2]
         saveHeaders = headers
@@ -183,7 +185,7 @@ class WindowBakeryTablesEdit(QtWidgets.QMainWindow):
                     saveDB[col][row] = self.ui.tableWidget.item(row, col).text()
                 else:
                     saveDB[col][row] = float(self.ui.tableWidget.item(row, col).text())
-        self.insertInDB(savePeriod, json.dumps(saveHeaders, ensure_ascii=False), json.dumps(saveDB, ensure_ascii=False))
+        self.insertInDB(savePeriod, json.dumps(saveHeaders, ensure_ascii=False), json.dumps(saveDB, ensure_ascii=False), json.dumps(saveNull, ensure_ascii=False))
         self.closeWindowBakeryTables()
 
     def raschetPrognoz(self):
@@ -260,8 +262,8 @@ class WindowBakeryTablesEdit(QtWidgets.QMainWindow):
         self.check_db.thr_kod(kod_text)
         return int(layout)
 
-    def insertInDB(self, savePeriod, saveHeaders, saveDB):
-        self.check_db.thr_savePrognoz(savePeriod, saveHeaders, saveDB)
+    def insertInDB(self, savePeriod, saveHeaders, saveDB, saveNull):
+        self.check_db.thr_savePrognoz(savePeriod, saveHeaders, saveDB, saveNull)
 
     # Закрываем таблицу выпечки и возвращаемся к настройкам
     def closeWindowBakeryTables(self):

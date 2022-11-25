@@ -45,10 +45,10 @@ def poiskPeriodaInDB(period, signal):
     cur.close()
     con.close()
 
-def addInPrognoz(savePeriod, saveHeaders, saveDB):
+def addInPrognoz(savePeriod, saveHeaders, saveDB, saveNull):
     con = sqlite3.connect('db/malina_orders.db')
     cur = con.cursor()
-    cur.execute(f"INSERT INTO prognoz_bakery (PERIOD, HEADERS, DATA) VALUES ('''{savePeriod}''', '''{saveHeaders}''', '''{saveDB}''');")
+    cur.execute(f"INSERT INTO prognoz_bakery (PERIOD, HEADERS, DATA, SAVENULL) VALUES ('''{savePeriod}''', '''{saveHeaders}''', '''{saveDB}''', '''{saveNull}''');")
     con.commit()
     cur.close()
     con.close()
