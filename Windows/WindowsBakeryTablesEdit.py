@@ -10,7 +10,7 @@ import Windows.WindowsBakery
 
 
 class WindowBakeryTablesEdit(QtWidgets.QMainWindow):
-    def __init__(self, pathOLAP_P, pathOLAP_dayWeek_bakery, periodDay):
+    def __init__(self, pathOLAP_P, pathOLAP_dayWeek_bakery, periodDay, points):
         super().__init__()
         self.ui = Ui_WindowBakeryTables()
         self.ui.setupUi(self)

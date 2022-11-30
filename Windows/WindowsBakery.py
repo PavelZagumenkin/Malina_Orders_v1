@@ -42,6 +42,7 @@ class WindowBakery(QtWidgets.QMainWindow):
         self.ui.btn_prosmotrPrognoz.clicked.connect(self.bakeryTablesView)
         self.ui.btn_editPrognoz.clicked.connect(self.bakeryTablesRedact)
 
+
     def setEndDay(self):
         self.ui.dateEdit_EndDay.setDate(self.ui.dateEdit_startDay.date().addDays(6))
         self.periodDay = [self.ui.dateEdit_startDay.date(), self.ui.dateEdit_EndDay.date()]
@@ -139,14 +140,15 @@ class WindowBakery(QtWidgets.QMainWindow):
             wb_OLAP_P.Close()
             wb_OLAP_dayWeek_bakery.Close()
             Excel.Quit()
+            points = self.ui.gridLayoutWidget.findChildren(QtWidgets.QCheckBox)
             if self.ui.label_startDay_and_endDay.text() != 'За данный период уже создан прогноз!':
-                self.bakeryTablesOpen(pathOLAP_P, pathOLAP_dayWeek_bakery, self.periodDay)
+                self.bakeryTablesOpen(pathOLAP_P, pathOLAP_dayWeek_bakery, self.periodDay, points)
 
     # Закрываем выпечку, открываем таблицу для работы
-    def bakeryTablesOpen(self, pathOLAP_P, pathOLAP_dayWeek_bakery, periodDay):
+    def bakeryTablesOpen(self, pathOLAP_P, pathOLAP_dayWeek_bakery, periodDay, points):
         self.hide()
         global WindowBakeryTablesEdit
-        WindowBakeryTablesEdit = Windows.WindowsBakeryTablesEdit.WindowBakeryTablesEdit(pathOLAP_P, pathOLAP_dayWeek_bakery, periodDay)
+        WindowBakeryTablesEdit = Windows.WindowsBakeryTablesEdit.WindowBakeryTablesEdit(pathOLAP_P, pathOLAP_dayWeek_bakery, periodDay, points)
         WindowBakeryTablesEdit.showMaximized()
 
     def bakeryTablesView(self):

@@ -958,7 +958,7 @@ background-color: rgba(228, 107, 134, 1)
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="Line" name="line">
+   <widget class="Line" name="line_1">
     <property name="geometry">
      <rect>
       <x>10</x>
