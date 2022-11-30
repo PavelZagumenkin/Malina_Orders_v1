@@ -1,4 +1,4 @@
-from PyQt6 import QtWidgets, QtGui
+from PyQt6 import QtWidgets, QtGui, QtCore
 import json
 from ui.bakeryTables import Ui_WindowBakeryTables
 from PyQt6.QtGui import QFont
@@ -36,8 +36,11 @@ class WindowBakeryTableView(QtWidgets.QMainWindow):
                 else:
                     item = QTableWidgetItem(str(self.data[col][row]))
                 self.ui.tableWidget.setItem(int(row), int(col) - 2, item)
+                if (int(col) != 0 and int(row) != 0) or (int(col) != 1 and int(row) != 0) or (int(col) != 2 and int(row) != 0) or (int(col) != 3 and int(row) != 0):
+                    self.ui.tableWidget.item(int(row), int(col) - 2).setFlags(QtCore.Qt.ItemFlag.ItemIsEnabled)
         self.ui.tableWidget.setItem(0, 4, QTableWidgetItem("Кф. кондитерской"))
         self.ui.tableWidget.item(0, 4).setFont(self.font)
+        self.ui.tableWidget.item(0, 4).setFlags(QtCore.Qt.ItemFlag.ItemIsEnabled)
 
     def signal_prognoz(self, value):
         headers = value[0][2]

@@ -24,7 +24,6 @@ class WindowBakeryTablesEdit(QtWidgets.QMainWindow):
         firstOLAPRow = sheet_OLAP_P.Range("A:A").Find("Код блюда").Row
         for _ in range(firstOLAPRow - 1):
             sheet_OLAP_P.Rows(1).Delete()
-        firstOLAPRow = sheet_OLAP_P.Range("A:A").Find("Код блюда").Row
         endOLAPRow = sheet_OLAP_P.Range("A:C").Find("Итого").Row
         endOLAPCol = sheet_OLAP_P.Cells.Find("Итого").Column
         for a in range(endOLAPCol, 1, -1):
