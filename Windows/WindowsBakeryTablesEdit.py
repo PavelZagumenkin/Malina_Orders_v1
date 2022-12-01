@@ -21,10 +21,18 @@ class WindowBakeryTablesEdit(QtWidgets.QMainWindow):
         wb_OLAP_dayWeek_bakery = Excel.Workbooks.Open(pathOLAP_dayWeek_bakery)
         sheet_OLAP_P = wb_OLAP_P.ActiveSheet
         sheet_OLAP_dayWeek_bakery = wb_OLAP_dayWeek_bakery.ActiveSheet
+        firstOLAPRow = sheet_OLAP_P.Range("A:A").Find("Код блюда").Row
+
+
+
         for i in range(len(points)):
             if points[i].isChecked():
-                print(points[i].text())
-        firstOLAPRow = sheet_OLAP_P.Range("A:A").Find("Код блюда").Row
+                ValidPoints = sheet_OLAP_P.Rows(firstOLAPRow).Find(points[i].text())
+                print(ValidPoints, points[i].text())
+
+
+
+
         for _ in range(firstOLAPRow - 1):
             sheet_OLAP_P.Rows(1).Delete()
         endOLAPRow = sheet_OLAP_P.Range("A:C").Find("Итого").Row
