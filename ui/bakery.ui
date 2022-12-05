@@ -595,7 +595,7 @@ background-color: rgba(228, 107, 134, 1)
    </widget>
    <widget class="QPushButton" name="btn_editKdayWeek">
     <property name="enabled">
-     <bool>false</bool>
+     <bool>true</bool>
     </property>
     <property name="geometry">
      <rect>
@@ -775,8 +775,11 @@ background-color: rgba(228, 107, 134, 1)
        <property name="text">
         <string>Мичурина</string>
        </property>
-       <property name="checked">
+       <property name="checkable">
         <bool>true</bool>
+       </property>
+       <property name="checked">
+        <bool>false</bool>
        </property>
       </widget>
      </item>
@@ -840,7 +843,7 @@ background-color: rgba(228, 107, 134, 1)
         <string>Старград</string>
        </property>
        <property name="checked">
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
       </widget>
      </item>
@@ -850,7 +853,7 @@ background-color: rgba(228, 107, 134, 1)
         <string>Победа</string>
        </property>
        <property name="checked">
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
       </widget>
      </item>

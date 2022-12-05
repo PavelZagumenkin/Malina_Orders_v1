@@ -7,6 +7,7 @@ from PyQt6.QtWidgets import QTableWidgetItem
 from PyQt6.QtWidgets import QMessageBox
 from handler.check_db import CheckThread
 import Windows.WindowsBakery
+import Windows.WindowsBakeryTablesSevenDay
 
 
 class WindowBakeryTablesEdit(QtWidgets.QMainWindow):
@@ -18,21 +19,15 @@ class WindowBakeryTablesEdit(QtWidgets.QMainWindow):
         self.check_db.layout.connect(self.signal_layout)
         Excel = win32com.client.Dispatch("Excel.Application")
         wb_OLAP_P = Excel.Workbooks.Open(pathOLAP_P)
-        wb_OLAP_dayWeek_bakery = Excel.Workbooks.Open(pathOLAP_dayWeek_bakery)
         sheet_OLAP_P = wb_OLAP_P.ActiveSheet
-        sheet_OLAP_dayWeek_bakery = wb_OLAP_dayWeek_bakery.ActiveSheet
         firstOLAPRow = sheet_OLAP_P.Range("A:A").Find("Код блюда").Row
-
-
-
+        # Фильтруем точки по Checkbox-сам
         for i in range(len(points)):
-            if points[i].isChecked():
+            if not points[i].isChecked():
                 ValidPoints = sheet_OLAP_P.Rows(firstOLAPRow).Find(points[i].text())
-                print(ValidPoints, points[i].text())
-
-
-
-
+                if ValidPoints != None:
+                    sheet_OLAP_P.Columns(ValidPoints.Column).Delete()
+        # Удаляем пустые столбцы
         for _ in range(firstOLAPRow - 1):
             sheet_OLAP_P.Rows(1).Delete()
         endOLAPRow = sheet_OLAP_P.Range("A:C").Find("Итого").Row
@@ -54,6 +49,8 @@ class WindowBakeryTablesEdit(QtWidgets.QMainWindow):
         for col in range(1, endOLAPCol):
             for row in range(2, endOLAPRow):
                 item = sheet_OLAP_P.Cells(row, col).Value
+                if item == None:
+                    item = 0
                 item = QTableWidgetItem(str(item))
                 self.ui.tableWidget.setItem(row - 1, col + 3, item)
         global saveZnach
@@ -99,6 +96,7 @@ class WindowBakeryTablesEdit(QtWidgets.QMainWindow):
             self.ui.tableWidget.cellWidget(row_button, 1).setIcon(iconCross)
             self.ui.tableWidget.cellWidget(row_button, 1).clicked.connect(self.deleteRow)
         self.periodDay = periodDay
+        self.pathOLAP_dayWeek_bakery = pathOLAP_dayWeek_bakery
         self.SaveAndNext = QtWidgets.QPushButton()
         self.SaveAndClose = QtWidgets.QPushButton()
         self.ui.tableWidget.setCellWidget(0, 4, self.SaveAndNext)
@@ -172,6 +170,8 @@ class WindowBakeryTablesEdit(QtWidgets.QMainWindow):
                 else:
                     saveDB[col][row] = float(self.ui.tableWidget.item(row, col).text())
         self.insertInDB(savePeriod, json.dumps(saveHeaders, ensure_ascii=False), json.dumps(saveDB, ensure_ascii=False), json.dumps(saveNull, ensure_ascii=False))
+        self.openWindowBakeryTableSevenDay(self.pathOLAP_dayWeek_bakery, self.periodDay)
+
         # Продолжение работы с коэффициентами дня недели
 
     def saveAndCloseDef(self):
@@ -282,6 +282,12 @@ class WindowBakeryTablesEdit(QtWidgets.QMainWindow):
         WindowBakery = Windows.WindowsBakery.WindowBakery()
         WindowBakery.show()
 
+    def openWindowBakeryTableSevenDay(self, pathOLAP_dayWeek_bakery, periodDay):
+        self.close()
+        global WindowBakerySevenDay
+        WindowBakerySevenDay = Windows.WindowsBakeryTablesSevenDay.WindowBakeryTableSevenDay(pathOLAP_dayWeek_bakery, periodDay)
+        WindowBakerySevenDay.showMaximized()
+
     def closeEvent(self, event):
         reply = QMessageBox()
         reply.setWindowTitle("Завершение работы с таблицой")
@@ -293,7 +299,6 @@ class WindowBakeryTablesEdit(QtWidgets.QMainWindow):
         otvet = reply.exec()
 
         if otvet == QMessageBox.StandardButton.Yes:
-            self.closeWindowBakeryTables()
             event.accept()
         else:
             event.ignore()
