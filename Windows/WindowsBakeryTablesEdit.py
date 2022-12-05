@@ -5,6 +5,7 @@ import win32com.client
 from PyQt6.QtGui import QFont
 from PyQt6.QtWidgets import QTableWidgetItem
 from PyQt6.QtWidgets import QMessageBox
+from PyQt6.QtWidgets import QInputDialog
 from handler.check_db import CheckThread
 import Windows.WindowsBakery
 import Windows.WindowsBakeryTablesSevenDay
@@ -78,7 +79,7 @@ class WindowBakeryTablesEdit(QtWidgets.QMainWindow):
             self.ui.tableWidget.cellWidget(row_spin, 2).setSingleStep(0.05)
             self.ui.tableWidget.cellWidget(row_spin, 2).valueChanged.connect(self.raschetPrognoz)
             self.ui.tableWidget.setCellWidget(row_spin, 3, self.SpinboxRow)
-            self.ui.tableWidget.cellWidget(row_spin, 3).setValue(self.poisk_kod(self.ui.tableWidget.item(row_spin, 4).text()))
+            self.ui.tableWidget.cellWidget(row_spin, 3).setValue(self.poisk_kod(self.ui.tableWidget.item(row_spin, 4).text(), self.ui.tableWidget.item(row_spin, 5).text()))
             self.ui.tableWidget.cellWidget(row_spin, 3).setSingleStep(1)
         for row_button in range(1, self.ui.tableWidget.rowCount()):
             self.copyRowButton = QtWidgets.QPushButton()
@@ -264,16 +265,26 @@ class WindowBakeryTablesEdit(QtWidgets.QMainWindow):
         if value != 'Код отсутствует в БД':
             layout = value
         else:
-            layout = 0
+            layout = self.dialogAddLayout()
 
     # Поиск кода в базе данных
-    def poisk_kod(self, kod):
+    def poisk_kod(self, kod, tovar):
+        global kod_text
         kod_text = kod
+        global tovar_text
+        tovar_text = tovar
         self.check_db.thr_kod(kod_text)
         return int(layout)
 
     def insertInDB(self, savePeriod, saveHeaders, saveDB, saveNull):
         self.check_db.thr_savePrognoz(savePeriod, saveHeaders, saveDB, saveNull)
+
+    def dialogAddLayout(self):
+        text, ok = QInputDialog.getText(self, "Отсуствует норма выкладки", f"Введите норму выкладки для {tovar_text} код изделия {kod_text}:")
+        if ok:
+            self.check_db.thr_updateLayout(kod_text, tovar_text, int(text))
+            return(int(text))
+        return 1
 
     # Закрываем таблицу выпечки и возвращаемся к настройкам
     def closeWindowBakeryTables(self):

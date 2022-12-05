@@ -33,6 +33,14 @@ def seach_kod(kod, signal):
     cur.close()
     con.close()
 
+def update_Layout(kod_text, tovar_text, layout):
+    con = sqlite3.connect('db/malina_orders.db')
+    cur = con.cursor()
+    cur.execute(f"INSERT INTO directory_bakery (KOD, NAME, LAYOUT) VALUES ('{kod_text}', '{tovar_text}', '{layout}');")
+    con.commit()
+    cur.close()
+    con.close()
+
 def poiskPeriodaInDB(period, signal):
     con = sqlite3.connect('db/malina_orders.db')
     cur = con.cursor()
