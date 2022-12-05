@@ -280,10 +280,10 @@ class WindowBakeryTablesEdit(QtWidgets.QMainWindow):
         self.check_db.thr_savePrognoz(savePeriod, saveHeaders, saveDB, saveNull)
 
     def dialogAddLayout(self):
-        text, ok = QInputDialog.getText(self, "Отсуствует норма выкладки", f"Введите норму выкладки для {tovar_text} код изделия {kod_text}:")
+        kol, ok = QInputDialog.getInt(self, "Отсуствует норма выкладки", f"Введите норму выкладки для {tovar_text} код изделия {kod_text}:")
         if ok:
-            self.check_db.thr_updateLayout(kod_text, tovar_text, int(text))
-            return(int(text))
+            self.check_db.thr_updateLayout(kod_text, tovar_text, int(kol))
+            return(int(kol))
         return 1
 
     # Закрываем таблицу выпечки и возвращаемся к настройкам
