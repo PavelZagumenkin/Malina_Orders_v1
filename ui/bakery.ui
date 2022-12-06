@@ -187,9 +187,9 @@ background-color: rgba(228, 107, 134, 1)
     <property name="geometry">
      <rect>
       <x>820</x>
-      <y>610</y>
+      <y>620</y>
       <width>391</width>
-      <height>71</height>
+      <height>61</height>
      </rect>
     </property>
     <property name="font">
@@ -269,13 +269,13 @@ background-color: rgba(228, 107, 134, 1)
       <x>820</x>
       <y>20</y>
       <width>391</width>
-      <height>121</height>
+      <height>81</height>
      </rect>
     </property>
     <property name="font">
      <font>
       <family>Trebuchet MS</family>
-      <pointsize>22</pointsize>
+      <pointsize>20</pointsize>
       <weight>50</weight>
       <bold>false</bold>
      </font>
@@ -428,9 +428,9 @@ background-color: rgba(228, 107, 134, 1)
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>380</y>
-      <width>371</width>
-      <height>41</height>
+      <y>370</y>
+      <width>231</width>
+      <height>51</height>
      </rect>
     </property>
     <property name="font">
@@ -471,9 +471,9 @@ background-color: rgba(228, 107, 134, 1)
     <property name="geometry">
      <rect>
       <x>820</x>
-      <y>170</y>
+      <y>120</y>
       <width>391</width>
-      <height>71</height>
+      <height>51</height>
      </rect>
     </property>
     <property name="font">
@@ -514,9 +514,9 @@ background-color: rgba(228, 107, 134, 1)
     <property name="geometry">
      <rect>
       <x>820</x>
-      <y>410</y>
+      <y>450</y>
       <width>391</width>
-      <height>71</height>
+      <height>61</height>
      </rect>
     </property>
     <property name="font">
@@ -556,10 +556,10 @@ background-color: rgba(228, 107, 134, 1)
     </property>
     <property name="geometry">
      <rect>
-      <x>420</x>
-      <y>380</y>
-      <width>371</width>
-      <height>41</height>
+      <x>540</x>
+      <y>370</y>
+      <width>251</width>
+      <height>51</height>
      </rect>
     </property>
     <property name="font">
@@ -595,14 +595,14 @@ background-color: rgba(228, 107, 134, 1)
    </widget>
    <widget class="QPushButton" name="btn_editKdayWeek">
     <property name="enabled">
-     <bool>true</bool>
+     <bool>false</bool>
     </property>
     <property name="geometry">
      <rect>
       <x>820</x>
-      <y>270</y>
+      <y>260</y>
       <width>391</width>
-      <height>111</height>
+      <height>81</height>
      </rect>
     </property>
     <property name="font">
@@ -630,8 +630,8 @@ background-color: rgba(228, 107, 134, 1)
 }</string>
     </property>
     <property name="text">
-     <string>Редактировать 
- коэффициенты дней недели</string>
+     <string>Редактировать долю 
+ продаж по дням недели</string>
     </property>
     <property name="checkable">
      <bool>false</bool>
@@ -644,7 +644,7 @@ background-color: rgba(228, 107, 134, 1)
     <property name="geometry">
      <rect>
       <x>820</x>
-      <y>510</y>
+      <y>530</y>
       <width>391</width>
       <height>71</height>
      </rect>
@@ -690,40 +690,47 @@ background-color: rgba(228, 107, 134, 1)
      </rect>
     </property>
     <layout class="QGridLayout" name="gridPoints">
-     <item row="0" column="0">
-      <widget class="QCheckBox" name="cb_begovaya">
+     <item row="5" column="2">
+      <widget class="QCheckBox" name="cb_stepnaya">
        <property name="text">
-        <string>Беговая</string>
+        <string>Степная</string>
        </property>
        <property name="checked">
         <bool>true</bool>
        </property>
       </widget>
      </item>
-     <item row="5" column="0">
-      <widget class="QCheckBox" name="cb_magazin">
+     <item row="6" column="2">
+      <widget class="QCheckBox" name="cb_tarhova">
        <property name="text">
-        <string>Магазин</string>
+        <string>Тархова</string>
        </property>
        <property name="checked">
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
       </widget>
      </item>
-     <item row="2" column="0">
-      <widget class="QCheckBox" name="cb_gorkogo">
+     <item row="5" column="1">
+      <widget class="QCheckBox" name="cb_pobeda">
        <property name="text">
-        <string>Горького</string>
+        <string>Победа</string>
        </property>
        <property name="checked">
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
       </widget>
      </item>
-     <item row="4" column="0">
-      <widget class="QCheckBox" name="cb_lenina">
+     <item row="6" column="1">
+      <widget class="QCheckBox" name="cb_pavilon">
        <property name="text">
-        <string>Ленина</string>
+        <string>ПП(павильон)</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QCheckBox" name="cb_volsk">
+       <property name="text">
+        <string>Вольск</string>
        </property>
        <property name="checked">
         <bool>true</bool>
@@ -740,17 +747,124 @@ background-color: rgba(228, 107, 134, 1)
        </property>
       </widget>
      </item>
-     <item row="1" column="0">
-      <widget class="QCheckBox" name="cb_volsk">
+     <item row="0" column="0">
+      <widget class="QCheckBox" name="cb_begovaya">
        <property name="text">
-        <string>Вольск</string>
+        <string>Беговая</string>
        </property>
        <property name="checked">
         <bool>true</bool>
        </property>
       </widget>
      </item>
-     <item row="1" column="2">
+     <item row="5" column="0">
+      <widget class="QCheckBox" name="cb_lenina">
+       <property name="text">
+        <string>Ленина</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QCheckBox" name="cb_gorkogo">
+       <property name="text">
+        <string>Горького</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="0">
+      <widget class="QCheckBox" name="cb_magazin">
+       <property name="text">
+        <string>Магазин</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="0">
+      <widget class="QCheckBox" name="checkBox">
+       <property name="text">
+        <string>Крытый рынок</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="3">
+      <widget class="QCheckBox" name="cb_entuziastov">
+       <property name="text">
+        <string>Энтузиастов</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="3">
+      <widget class="QCheckBox" name="cb_chehova">
+       <property name="text">
+        <string>Чехова</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="3">
+      <widget class="QCheckBox" name="cb_fridriha">
+       <property name="text">
+        <string>Фридриха 11</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="3">
+      <widget class="QCheckBox" name="cb_ust_kurdym">
+       <property name="text">
+        <string>Усть-Курдюмская</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="QCheckBox" name="cb_trnavskaya">
+       <property name="text">
+        <string>Трнавская</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="2">
+      <widget class="QCheckBox" name="cb_stargrad">
+       <property name="text">
+        <string>Старград</string>
+       </property>
+       <property name="checked">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="2">
+      <widget class="QCheckBox" name="cb_solnechnii">
+       <property name="text">
+        <string>Солнечный</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="2">
       <widget class="QCheckBox" name="cb_svoboda">
        <property name="text">
         <string>Свобода</string>
@@ -760,17 +874,47 @@ background-color: rgba(228, 107, 134, 1)
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
-      <widget class="QCheckBox" name="cb_marks">
+     <item row="1" column="2">
+      <widget class="QCheckBox" name="cb_rokot">
        <property name="text">
-        <string>Маркс</string>
+        <string>Рокот</string>
+       </property>
+       <property name="checked">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QCheckBox" name="cb_rahova">
+       <property name="text">
+        <string>Рахова</string>
        </property>
        <property name="checked">
         <bool>true</bool>
        </property>
       </widget>
      </item>
-     <item row="1" column="1">
+     <item row="4" column="1">
+      <widget class="QCheckBox" name="cb_orang">
+       <property name="text">
+        <string>Оранж</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QCheckBox" name="cb_moskovskaya">
+       <property name="text">
+        <string>Московская</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
       <widget class="QCheckBox" name="cb_michurina">
        <property name="text">
         <string>Мичурина</string>
@@ -783,157 +927,20 @@ background-color: rgba(228, 107, 134, 1)
        </property>
       </widget>
      </item>
-     <item row="6" column="0">
+     <item row="1" column="1">
+      <widget class="QCheckBox" name="cb_marks">
+       <property name="text">
+        <string>Маркс</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
       <widget class="QCheckBox" name="cb_madonna">
        <property name="text">
         <string>Мадонна</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1">
-      <widget class="QCheckBox" name="cb_moskovskaya">
-       <property name="text">
-        <string>Московская</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="1">
-      <widget class="QCheckBox" name="cb_orang">
-       <property name="text">
-        <string>Оранж</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="2">
-      <widget class="QCheckBox" name="cb_rokot">
-       <property name="text">
-        <string>Рокот</string>
-       </property>
-       <property name="checked">
-        <bool>false</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="6" column="1">
-      <widget class="QCheckBox" name="cb_rahova">
-       <property name="text">
-        <string>Рахова</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="5" column="1">
-      <widget class="QCheckBox" name="cb_pavilon">
-       <property name="text">
-        <string>ПП(павильон)</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="2">
-      <widget class="QCheckBox" name="cb_stargrad">
-       <property name="text">
-        <string>Старград</string>
-       </property>
-       <property name="checked">
-        <bool>false</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="1">
-      <widget class="QCheckBox" name="cb_pobeda">
-       <property name="text">
-        <string>Победа</string>
-       </property>
-       <property name="checked">
-        <bool>false</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="2">
-      <widget class="QCheckBox" name="cb_solnechnii">
-       <property name="text">
-        <string>Солнечный</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="2">
-      <widget class="QCheckBox" name="cb_stepnaya">
-       <property name="text">
-        <string>Степная</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="5" column="2">
-      <widget class="QCheckBox" name="cb_tarhova">
-       <property name="text">
-        <string>Тархова</string>
-       </property>
-       <property name="checked">
-        <bool>false</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="6" column="2">
-      <widget class="QCheckBox" name="cb_trnavskaya">
-       <property name="text">
-        <string>Трнавская</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="3">
-      <widget class="QCheckBox" name="cb_ust_kurdym">
-       <property name="text">
-        <string>Усть-Курдюмская</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="3">
-      <widget class="QCheckBox" name="cb_entuziastov">
-       <property name="text">
-        <string>Энтузиастов</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="3">
-      <widget class="QCheckBox" name="cb_fridriha">
-       <property name="text">
-        <string>Фридриха 11</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="3">
-      <widget class="QCheckBox" name="cb_chehova">
-       <property name="text">
-        <string>Чехова</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
        </property>
       </widget>
      </item>
@@ -1011,6 +1018,137 @@ background-color: rgba(228, 107, 134, 1)
     </property>
     <property name="orientation">
      <enum>Qt::Vertical</enum>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_prosmotrDoliProdag">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>270</x>
+      <y>370</y>
+      <width>251</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Trebuchet MS</family>
+      <pointsize>12</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+background-color: rgb(228, 107, 134);
+border: none;
+border-radius: 10px}
+
+QPushButton:hover {
+border: 1px solid  rgb(0, 0, 0);
+background-color: rgba(228, 107, 134, 0.9)
+}
+
+QPushButton:pressed {
+border:3px solid  rgb(0, 0, 0);
+background-color: rgba(228, 107, 134, 1)
+}</string>
+    </property>
+    <property name="text">
+     <string>Посмотреть доли 
+продаж по дням недели</string>
+    </property>
+    <property name="checkable">
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_deletePrognoz">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>820</x>
+      <y>190</y>
+      <width>391</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Trebuchet MS</family>
+      <pointsize>22</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+background-color: rgb(228, 107, 134);
+border: none;
+border-radius: 10px}
+
+QPushButton:hover {
+border: 1px solid  rgb(0, 0, 0);
+background-color: rgba(228, 107, 134, 0.9)
+}
+
+QPushButton:pressed {
+border:3px solid  rgb(0, 0, 0);
+background-color: rgba(228, 107, 134, 1)
+}</string>
+    </property>
+    <property name="text">
+     <string>Удалить прогноз</string>
+    </property>
+    <property name="checkable">
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_deleteKdayWeek">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>820</x>
+      <y>360</y>
+      <width>391</width>
+      <height>71</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Trebuchet MS</family>
+      <pointsize>20</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+background-color: rgb(228, 107, 134);
+border: none;
+border-radius: 10px}
+
+QPushButton:hover {
+border: 1px solid  rgb(0, 0, 0);
+background-color: rgba(228, 107, 134, 0.9)
+}
+
+QPushButton:pressed {
+border:3px solid  rgb(0, 0, 0);
+background-color: rgba(228, 107, 134, 1)
+}</string>
+    </property>
+    <property name="text">
+     <string>Удалить долю продаж 
+ по дням недели</string>
+    </property>
+    <property name="checkable">
+     <bool>false</bool>
     </property>
    </widget>
   </widget>

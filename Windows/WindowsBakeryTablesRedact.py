@@ -31,7 +31,10 @@ class WindowBakeryTablesRedact(QtWidgets.QMainWindow):
         for col in self.data:
             for row in self.data.get(col):
                 if self.data[col][row] == 0:
-                    item = QTableWidgetItem('0')
+                    if row == '0':
+                        item = QTableWidgetItem('')
+                    else:
+                        item = QTableWidgetItem('0')
                 else:
                     item = QTableWidgetItem(str(self.data[col][row]))
                 self.ui.tableWidget.setItem(int(row), int(col), item)
@@ -72,31 +75,12 @@ class WindowBakeryTablesRedact(QtWidgets.QMainWindow):
             self.ui.tableWidget.cellWidget(row_button, 1).setIcon(iconCross)
             self.ui.tableWidget.cellWidget(row_button, 1).clicked.connect(self.deleteRow)
         self.periodDay = periodDay
-        self.SaveAndNext = QtWidgets.QPushButton()
         self.SaveAndClose = QtWidgets.QPushButton()
-        self.ui.tableWidget.setCellWidget(0, 4, self.SaveAndNext)
-        self.ui.tableWidget.cellWidget(0, 4).setText('Продолжить')
         font = QtGui.QFont()
         font.setFamily("Trebuchet MS")
         font.setPointSize(12)
         font.bold()
         font.setWeight(50)
-        self.ui.tableWidget.cellWidget(0, 4).setFont(font)
-        self.ui.tableWidget.cellWidget(0, 4).setStyleSheet("QPushButton {\n"
-                                            "background-color: rgb(228, 107, 134);\n"
-                                            "border: none;\n"
-                                            "border-radius: 10px}\n"
-                                            "\n"
-                                            "QPushButton:hover {\n"
-                                            "border: 1px solid  rgb(0, 0, 0);\n"
-                                            "background-color: rgba(228, 107, 134, 0.9)\n"
-                                            "}\n"
-                                            "\n"
-                                            "QPushButton:pressed {\n"
-                                            "border:3px solid  rgb(0, 0, 0);\n"
-                                            "background-color: rgba(228, 107, 134, 1)\n"
-                                            "}")
-        self.ui.tableWidget.cellWidget(0, 4).clicked.connect(self.saveAndNextDef)
         self.ui.tableWidget.setCellWidget(0, 5, self.SaveAndClose)
         self.ui.tableWidget.cellWidget(0, 5).setText('Сохранить и закрыть')
         self.ui.tableWidget.cellWidget(0, 5).setFont(font)
@@ -134,30 +118,6 @@ class WindowBakeryTablesRedact(QtWidgets.QMainWindow):
     def poiskPrognoza(self, periodDay):
         self.check_db.thr_poiskPrognoza(periodDay)
         return(prognoz)
-
-    def saveAndNextDef(self):
-        savePeriod = self.periodDay
-        headers = self.headers.copy()
-        saveNull = saveZnach.copy()
-        del headers[0:2]
-        saveHeaders = headers
-        saveDB = {}
-        for col in range(2, self.ui.tableWidget.columnCount()):
-            saveDB[col] = {}
-            for row in range(0, self.ui.tableWidget.rowCount()):
-                if col == 2 or col == 3 or row == 0:
-                    if self.ui.tableWidget.cellWidget(row, col) == None:
-                        saveDB[col][row] = 0
-                    elif (row == 0 and col == 4) or (row == 0 and col == 5):
-                        saveDB[col][row] = 0
-                    else:
-                        saveDB[col][row] = float(self.ui.tableWidget.cellWidget(row, col).value())
-                elif col == 4 or col == 5 or col == 6:
-                    saveDB[col][row] = self.ui.tableWidget.item(row, col).text()
-                else:
-                    saveDB[col][row] = float(self.ui.tableWidget.item(row, col).text())
-        self.updateInDB(savePeriod, json.dumps(saveHeaders, ensure_ascii=False), json.dumps(saveDB, ensure_ascii=False), json.dumps(saveNull, ensure_ascii=False))
-        # Продолжение работы с коэффициентами дня недели
 
     def saveAndCloseDef(self):
         savePeriod = self.periodDay

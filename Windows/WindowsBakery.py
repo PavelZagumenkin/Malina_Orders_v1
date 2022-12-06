@@ -8,7 +8,6 @@ import Windows.WindowsViborRazdela
 import Windows.WindowsBakeryTablesEdit
 import Windows.WindowsBakeryTablesView
 import Windows.WindowsBakeryTablesRedact
-import Windows.WindowsBakeryTablesSevenDay
 
 class WindowBakery(QtWidgets.QMainWindow):
     def __init__(self):
@@ -42,7 +41,6 @@ class WindowBakery(QtWidgets.QMainWindow):
             self.ui.btn_koeff_bakery.setEnabled(False)
         self.ui.btn_prosmotrPrognoz.clicked.connect(self.bakeryTablesView)
         self.ui.btn_editPrognoz.clicked.connect(self.bakeryTablesRedact)
-        self.ui.btn_editKdayWeek.clicked.connect(self.editKdayWeek)
 
 
     def setEndDay(self):
@@ -145,37 +143,37 @@ class WindowBakery(QtWidgets.QMainWindow):
             if self.ui.label_startDay_and_endDay.text() != 'За данный период уже создан прогноз!':
                 self.bakeryTablesOpen(pathOLAP_P, pathOLAP_dayWeek_bakery, self.periodDay, points)
 
-    def editKdayWeek(self):
-        if len(self.ui.lineEdit_OLAP_dayWeek_bakery.text()) == 0:
-            self.ui.lineEdit_OLAP_dayWeek_bakery.setStyleSheet("padding-left: 5px; color: rgba(228, 107, 134, 1)")
-            self.ui.lineEdit_OLAP_dayWeek_bakery.setText('Не выбран файл отчета!')
-            return
-        elif self.ui.lineEdit_OLAP_dayWeek_bakery.text() == 'Не выбран файл отчета!':
-            return
-        elif self.ui.lineEdit_OLAP_dayWeek_bakery.text() == 'Файл отчета неверный, укажите OLAP по продажам по дня недели для Выпечки пекарни':
-            return
-        elif self.ui.lineEdit_OLAP_dayWeek_bakery.text() == 'Вы выбрали одинаковые файлы отчета. Хватит издеваться над программой!':
-            return
-        pathOLAP_dayWeek_bakery = self.ui.lineEdit_OLAP_dayWeek_bakery.text()
-        Excel = win32com.client.Dispatch("Excel.Application")
-        wb_OLAP_dayWeek_bakery = Excel.Workbooks.Open(pathOLAP_dayWeek_bakery)
-        sheet_OLAP_dayWeek_bakery = wb_OLAP_dayWeek_bakery.ActiveSheet
-        if sheet_OLAP_dayWeek_bakery.Name != "OLAP продажи по дням недели для":
-            wb_OLAP_dayWeek_bakery.Close()
-            Excel.Quit()
-            self.ui.lineEdit_OLAP_dayWeek_bakery.setStyleSheet("padding-left: 5px; color: rgba(228, 107, 134, 1)")
-            self.ui.lineEdit_OLAP_dayWeek_bakery.setText(
-                'Файл отчета неверный, укажите OLAP по продажам по дня недели для Выпечки пекарни')
-            return
-        # Проверка, есть ли уже коэффициенты в БД или нет, если нет, то грузим из файла, если есть, то из БД
-        # Убрать обязательность файла, если коэффициенты есть в БД
-        self.openWindowBakeryTableSevenDay(pathOLAP_dayWeek_bakery, self.periodDay)
-
-    def openWindowBakeryTableSevenDay(self, pathOLAP_dayWeek_bakery, periodDay):
-        self.close()
-        global WindowBakerySevenDay
-        WindowBakerySevenDay = Windows.WindowsBakeryTablesSevenDay.WindowBakeryTableSevenDay(pathOLAP_dayWeek_bakery, periodDay)
-        WindowBakerySevenDay.showMaximized()
+    # def editKdayWeek(self):
+    #     if len(self.ui.lineEdit_OLAP_dayWeek_bakery.text()) == 0:
+    #         self.ui.lineEdit_OLAP_dayWeek_bakery.setStyleSheet("padding-left: 5px; color: rgba(228, 107, 134, 1)")
+    #         self.ui.lineEdit_OLAP_dayWeek_bakery.setText('Не выбран файл отчета!')
+    #         return
+    #     elif self.ui.lineEdit_OLAP_dayWeek_bakery.text() == 'Не выбран файл отчета!':
+    #         return
+    #     elif self.ui.lineEdit_OLAP_dayWeek_bakery.text() == 'Файл отчета неверный, укажите OLAP по продажам по дня недели для Выпечки пекарни':
+    #         return
+    #     elif self.ui.lineEdit_OLAP_dayWeek_bakery.text() == 'Вы выбрали одинаковые файлы отчета. Хватит издеваться над программой!':
+    #         return
+    #     pathOLAP_dayWeek_bakery = self.ui.lineEdit_OLAP_dayWeek_bakery.text()
+    #     Excel = win32com.client.Dispatch("Excel.Application")
+    #     wb_OLAP_dayWeek_bakery = Excel.Workbooks.Open(pathOLAP_dayWeek_bakery)
+    #     sheet_OLAP_dayWeek_bakery = wb_OLAP_dayWeek_bakery.ActiveSheet
+    #     if sheet_OLAP_dayWeek_bakery.Name != "OLAP продажи по дням недели для":
+    #         wb_OLAP_dayWeek_bakery.Close()
+    #         Excel.Quit()
+    #         self.ui.lineEdit_OLAP_dayWeek_bakery.setStyleSheet("padding-left: 5px; color: rgba(228, 107, 134, 1)")
+    #         self.ui.lineEdit_OLAP_dayWeek_bakery.setText(
+    #             'Файл отчета неверный, укажите OLAP по продажам по дня недели для Выпечки пекарни')
+    #         return
+    #     # Проверка, есть ли уже коэффициенты в БД или нет, если нет, то грузим из файла, если есть, то из БД
+    #     # Убрать обязательность файла, если коэффициенты есть в БД
+    #     self.openWindowBakeryTableSevenDay(pathOLAP_dayWeek_bakery, self.periodDay)
+    #
+    # def openWindowBakeryTableSevenDay(self, pathOLAP_dayWeek_bakery, periodDay):
+    #     self.close()
+    #     global WindowBakerySevenDay
+    #     WindowBakerySevenDay = Windows.WindowsBakeryTablesSevenDay.WindowBakeryTableSevenDay(pathOLAP_dayWeek_bakery, periodDay)
+    #     WindowBakerySevenDay.showMaximized()
 
     # Закрываем выпечку, открываем таблицу для работы
     def bakeryTablesOpen(self, pathOLAP_P, pathOLAP_dayWeek_bakery, periodDay, points):
