@@ -18,9 +18,10 @@ class WindowBakeryTablesEdit(QtWidgets.QMainWindow):
         self.ui.setupUi(self)
         self.check_db = CheckThread()
         self.check_db.layout.connect(self.signal_layout)
-        Excel = win32com.client.Dispatch("Excel.Application")
-        wb_OLAP_P = Excel.Workbooks.Open(pathOLAP_P)
-        sheet_OLAP_P = wb_OLAP_P.ActiveSheet
+        self.checkPoints = points
+        self.Excel = win32com.client.Dispatch("Excel.Application")
+        self.wb_OLAP_P = self.Excel.Workbooks.Open(pathOLAP_P)
+        sheet_OLAP_P = self.wb_OLAP_P.ActiveSheet
         firstOLAPRow = sheet_OLAP_P.Range("A:A").Find("Код блюда").Row
         # Фильтруем точки по Checkbox-сам
         for i in range(len(points)):
@@ -28,7 +29,7 @@ class WindowBakeryTablesEdit(QtWidgets.QMainWindow):
                 ValidPoints = sheet_OLAP_P.Rows(firstOLAPRow).Find(points[i].text())
                 if ValidPoints != None:
                     sheet_OLAP_P.Columns(ValidPoints.Column).Delete()
-        # Удаляем пустые столбцы
+        # Удаляем пустые столбцы и строки
         for _ in range(firstOLAPRow - 1):
             sheet_OLAP_P.Rows(1).Delete()
         endOLAPRow = sheet_OLAP_P.Range("A:C").Find("Итого").Row
@@ -123,24 +124,6 @@ class WindowBakeryTablesEdit(QtWidgets.QMainWindow):
                                             "background-color: rgba(228, 107, 134, 1)\n"
                                             "}")
         self.ui.tableWidget.cellWidget(0, 4).clicked.connect(self.saveAndNextDef)
-        self.ui.tableWidget.setCellWidget(0, 5, self.SaveAndClose)
-        self.ui.tableWidget.cellWidget(0, 5).setText('Сохранить и закрыть')
-        self.ui.tableWidget.cellWidget(0, 5).setFont(font)
-        self.ui.tableWidget.cellWidget(0, 5).setStyleSheet("QPushButton {\n"
-                                            "background-color: rgb(228, 107, 134);\n"
-                                            "border: none;\n"
-                                            "border-radius: 10px}\n"
-                                            "\n"
-                                            "QPushButton:hover {\n"
-                                            "border: 1px solid  rgb(0, 0, 0);\n"
-                                            "background-color: rgba(228, 107, 134, 0.9)\n"
-                                            "}\n"
-                                            "\n"
-                                            "QPushButton:pressed {\n"
-                                            "border:3px solid  rgb(0, 0, 0);\n"
-                                            "background-color: rgba(228, 107, 134, 1)\n"
-                                            "}")
-        self.ui.tableWidget.cellWidget(0, 5).clicked.connect(self.saveAndCloseDef)
         self.ui.tableWidget.setColumnWidth(0, 20)
         self.ui.tableWidget.setColumnWidth(1, 20)
         self.ui.tableWidget.setColumnWidth(2, 90)
@@ -171,33 +154,9 @@ class WindowBakeryTablesEdit(QtWidgets.QMainWindow):
                 else:
                     saveDB[col][row] = float(self.ui.tableWidget.item(row, col).text())
         self.insertInDB(savePeriod, json.dumps(saveHeaders, ensure_ascii=False), json.dumps(saveDB, ensure_ascii=False), json.dumps(saveNull, ensure_ascii=False))
-        self.openWindowBakeryTableSevenDay(self.pathOLAP_dayWeek_bakery, self.periodDay)
+        self.openWindowBakeryTableSevenDay(self.pathOLAP_dayWeek_bakery, self.periodDay, self.checkPoints)
 
         # Продолжение работы с коэффициентами дня недели
-
-    def saveAndCloseDef(self):
-        savePeriod = self.periodDay
-        saveNull = saveZnach.copy()
-        headers = self.columnLables.copy()
-        del headers[0:2]
-        saveHeaders = headers
-        saveDB = {}
-        for col in range(2, self.ui.tableWidget.columnCount()):
-            saveDB[col] = {}
-            for row in range(0, self.ui.tableWidget.rowCount()):
-                if col == 2 or col == 3 or row == 0:
-                    if self.ui.tableWidget.cellWidget(row, col) == None:
-                        saveDB[col][row] = 0
-                    elif (row == 0 and col == 4) or (row == 0 and col == 5):
-                        saveDB[col][row] = 0
-                    else:
-                        saveDB[col][row] = float(self.ui.tableWidget.cellWidget(row, col).value())
-                elif col == 4 or col == 5 or col == 6:
-                    saveDB[col][row] = self.ui.tableWidget.item(row, col).text()
-                else:
-                    saveDB[col][row] = float(self.ui.tableWidget.item(row, col).text())
-        self.insertInDB(savePeriod, json.dumps(saveHeaders, ensure_ascii=False), json.dumps(saveDB, ensure_ascii=False), json.dumps(saveNull, ensure_ascii=False))
-        self.closeWindowBakeryTables()
 
     def raschetPrognoz(self):
         buttonClicked = self.sender()
@@ -293,10 +252,10 @@ class WindowBakeryTablesEdit(QtWidgets.QMainWindow):
         WindowBakery = Windows.WindowsBakery.WindowBakery()
         WindowBakery.show()
 
-    def openWindowBakeryTableSevenDay(self, pathOLAP_dayWeek_bakery, periodDay):
+    def openWindowBakeryTableSevenDay(self, pathOLAP_dayWeek_bakery, periodDay, points):
         self.close()
         global WindowBakerySevenDay
-        WindowBakerySevenDay = Windows.WindowsBakeryTablesSevenDay.WindowBakeryTableSevenDay(pathOLAP_dayWeek_bakery, periodDay)
+        WindowBakerySevenDay = Windows.WindowsBakeryTablesSevenDay.WindowBakeryTableSevenDay(pathOLAP_dayWeek_bakery, periodDay, points)
         WindowBakerySevenDay.showMaximized()
 
     def closeEvent(self, event):
