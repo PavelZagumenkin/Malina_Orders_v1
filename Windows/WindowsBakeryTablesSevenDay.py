@@ -12,9 +12,9 @@ class WindowBakeryTableSevenDay(QtWidgets.QMainWindow):
         self.ui = Ui_WindowBakeryTables()
         self.ui.setupUi(self)
         self.setWindowTitle("Продажи по дням недели")
-        self.Excel = win32com.client.Dispatch("Excel.Application")
-        self.wb_OLAP_dayWeek_bakery = self.Excel.Workbooks.Open(pathOLAP_dayWeek_bakery)
-        sheet_OLAP_dayWeek_bakery = self.wb_OLAP_dayWeek_bakery.ActiveSheet
+        Excel = win32com.client.Dispatch("Excel.Application")
+        wb_OLAP_dayWeek_bakery = Excel.Workbooks.Open(pathOLAP_dayWeek_bakery)
+        sheet_OLAP_dayWeek_bakery = wb_OLAP_dayWeek_bakery.ActiveSheet
         firstOLAPRow = sheet_OLAP_dayWeek_bakery.Range("A:A").Find("День недели").Row
         # Фильтруем точки по Checkbox-сам
         for i in range(len(points)):
@@ -57,6 +57,7 @@ class WindowBakeryTableSevenDay(QtWidgets.QMainWindow):
 
         if otvet == QMessageBox.StandardButton.Yes:
             event.accept()
+
         else:
             event.ignore()
 

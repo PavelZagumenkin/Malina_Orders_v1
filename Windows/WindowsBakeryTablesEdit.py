@@ -19,9 +19,9 @@ class WindowBakeryTablesEdit(QtWidgets.QMainWindow):
         self.check_db = CheckThread()
         self.check_db.layout.connect(self.signal_layout)
         self.checkPoints = points
-        self.Excel = win32com.client.Dispatch("Excel.Application")
-        self.wb_OLAP_P = self.Excel.Workbooks.Open(pathOLAP_P)
-        sheet_OLAP_P = self.wb_OLAP_P.ActiveSheet
+        Excel = win32com.client.Dispatch("Excel.Application")
+        wb_OLAP_P = Excel.Workbooks.Open(pathOLAP_P)
+        sheet_OLAP_P = wb_OLAP_P.ActiveSheet
         firstOLAPRow = sheet_OLAP_P.Range("A:A").Find("Код блюда").Row
         # Фильтруем точки по Checkbox-сам
         for i in range(len(points)):
@@ -270,5 +270,6 @@ class WindowBakeryTablesEdit(QtWidgets.QMainWindow):
 
         if otvet == QMessageBox.StandardButton.Yes:
             event.accept()
+            self.closeWindowBakeryTables()
         else:
             event.ignore()

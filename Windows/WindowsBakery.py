@@ -1,4 +1,5 @@
 import datetime
+
 import win32com.client
 from PyQt6 import QtCore, QtWidgets
 from PyQt6.QtWidgets import QFileDialog
@@ -26,19 +27,19 @@ class WindowBakery(QtWidgets.QMainWindow):
         self.ui.btn_exit_bakery.clicked.connect(self.viborRazdelaOpen)
         self.ui.btn_path_OLAP_P.clicked.connect(self.olap_p)
         self.ui.btn_path_dayWeek_bakery.clicked.connect(self.olap_dayWeek_bakery)
-        self.ui.btn_koeff_bakery.clicked.connect(self.koeff_bakery_start)
+        self.ui.btn_koeff_Prognoz.clicked.connect(self.koeff_bakery_start)
         if self.proverkaPerioda(self.periodDay) == 0:
             self.ui.label_startDay_and_endDay.setText("Укажите начало периода для формирования данных")
             self.ui.label_startDay_and_endDay.setStyleSheet("color: rgba(0, 0, 0, 1)")
             self.ui.btn_prosmotrPrognoz.setEnabled(False)
             self.ui.btn_editPrognoz.setEnabled(False)
-            self.ui.btn_koeff_bakery.setEnabled(True)
+            self.ui.btn_koeff_Prognoz.setEnabled(True)
         elif self.proverkaPerioda(self.periodDay) == 1:
             self.ui.label_startDay_and_endDay.setText('За данный период уже создан прогноз!')
             self.ui.label_startDay_and_endDay.setStyleSheet("color: rgba(228, 107, 134, 1)")
             self.ui.btn_prosmotrPrognoz.setEnabled(True)
             self.ui.btn_editPrognoz.setEnabled(True)
-            self.ui.btn_koeff_bakery.setEnabled(False)
+            self.ui.btn_koeff_Prognoz.setEnabled(False)
         self.ui.btn_prosmotrPrognoz.clicked.connect(self.bakeryTablesView)
         self.ui.btn_editPrognoz.clicked.connect(self.bakeryTablesRedact)
 
@@ -51,13 +52,13 @@ class WindowBakery(QtWidgets.QMainWindow):
             self.ui.label_startDay_and_endDay.setStyleSheet("color: rgba(0, 0, 0, 1)")
             self.ui.btn_prosmotrPrognoz.setEnabled(False)
             self.ui.btn_editPrognoz.setEnabled(False)
-            self.ui.btn_koeff_bakery.setEnabled(True)
+            self.ui.btn_koeff_Prognoz.setEnabled(True)
         elif self.proverkaPerioda(self.periodDay) == 1:
             self.ui.label_startDay_and_endDay.setText('За данный период уже создан прогноз!')
             self.ui.label_startDay_and_endDay.setStyleSheet("color: rgba(228, 107, 134, 1)")
             self.ui.btn_prosmotrPrognoz.setEnabled(True)
             self.ui.btn_editPrognoz.setEnabled(True)
-            self.ui.btn_koeff_bakery.setEnabled(False)
+            self.ui.btn_koeff_Prognoz.setEnabled(False)
 
     # Закрываем окно настроек, открываем выбор раздела
     def viborRazdelaOpen(self):
@@ -139,7 +140,7 @@ class WindowBakery(QtWidgets.QMainWindow):
             wb_OLAP_P.Close()
             wb_OLAP_dayWeek_bakery.Close()
             Excel.Quit()
-            points = self.ui.gridLayoutWidget.findChildren(QtWidgets.QCheckBox)
+            points = self.ui.formLayoutWidget.findChildren(QtWidgets.QCheckBox)
             if self.ui.label_startDay_and_endDay.text() != 'За данный период уже создан прогноз!':
                 self.bakeryTablesOpen(pathOLAP_P, pathOLAP_dayWeek_bakery, self.periodDay, points)
 
