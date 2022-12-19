@@ -8,11 +8,11 @@ from PyQt6.QtWidgets import QMessageBox
 from PyQt6.QtWidgets import QInputDialog
 from handler.check_db import CheckThread
 import Windows.WindowsBakery
-import Windows.WindowsBakeryTablesSevenDay
+import Windows.WindowsBakeryTablesDayWeek
 
 
 class WindowBakeryTablesEdit(QtWidgets.QMainWindow):
-    def __init__(self, pathOLAP_P, pathOLAP_dayWeek_bakery, periodDay, points):
+    def __init__(self, pathOLAP_P, periodDay, points):
         super().__init__()
         self.ui = Ui_WindowBakeryTables()
         self.ui.setupUi(self)
@@ -98,18 +98,16 @@ class WindowBakeryTablesEdit(QtWidgets.QMainWindow):
             self.ui.tableWidget.cellWidget(row_button, 1).setIcon(iconCross)
             self.ui.tableWidget.cellWidget(row_button, 1).clicked.connect(self.deleteRow)
         self.periodDay = periodDay
-        self.pathOLAP_dayWeek_bakery = pathOLAP_dayWeek_bakery
-        self.SaveAndNext = QtWidgets.QPushButton()
         self.SaveAndClose = QtWidgets.QPushButton()
-        self.ui.tableWidget.setCellWidget(0, 4, self.SaveAndNext)
-        self.ui.tableWidget.cellWidget(0, 4).setText('Продолжить')
+        self.ui.tableWidget.setCellWidget(0, 5, self.SaveAndClose)
+        self.ui.tableWidget.cellWidget(0, 5).setText('Сохранить и закрыть')
         font = QtGui.QFont()
         font.setFamily("Trebuchet MS")
         font.setPointSize(12)
         font.bold()
         font.setWeight(50)
-        self.ui.tableWidget.cellWidget(0, 4).setFont(font)
-        self.ui.tableWidget.cellWidget(0, 4).setStyleSheet("QPushButton {\n"
+        self.ui.tableWidget.cellWidget(0, 5).setFont(font)
+        self.ui.tableWidget.cellWidget(0, 5).setStyleSheet("QPushButton {\n"
                                             "background-color: rgb(228, 107, 134);\n"
                                             "border: none;\n"
                                             "border-radius: 10px}\n"
@@ -123,7 +121,7 @@ class WindowBakeryTablesEdit(QtWidgets.QMainWindow):
                                             "border:3px solid  rgb(0, 0, 0);\n"
                                             "background-color: rgba(228, 107, 134, 1)\n"
                                             "}")
-        self.ui.tableWidget.cellWidget(0, 4).clicked.connect(self.saveAndNextDef)
+        self.ui.tableWidget.cellWidget(0, 5).clicked.connect(self.saveAndCloseDef)
         self.ui.tableWidget.setColumnWidth(0, 20)
         self.ui.tableWidget.setColumnWidth(1, 20)
         self.ui.tableWidget.setColumnWidth(2, 90)
@@ -132,7 +130,7 @@ class WindowBakeryTablesEdit(QtWidgets.QMainWindow):
         self.ui.tableWidget.setColumnWidth(5, 290)
         self.ui.tableWidget.setColumnWidth(6, 130)
 
-    def saveAndNextDef(self):
+    def saveAndCloseDef(self):
         savePeriod = self.periodDay
         saveNull = saveZnach.copy()
         headers = self.columnLables.copy()
@@ -154,8 +152,7 @@ class WindowBakeryTablesEdit(QtWidgets.QMainWindow):
                 else:
                     saveDB[col][row] = float(self.ui.tableWidget.item(row, col).text())
         self.insertInDB(savePeriod, json.dumps(saveHeaders, ensure_ascii=False), json.dumps(saveDB, ensure_ascii=False), json.dumps(saveNull, ensure_ascii=False))
-        self.openWindowBakeryTableSevenDay(self.pathOLAP_dayWeek_bakery, self.periodDay, self.checkPoints)
-
+        self.closeWindowBakeryTables()
         # Продолжение работы с коэффициентами дня недели
 
     def raschetPrognoz(self):
@@ -251,12 +248,6 @@ class WindowBakeryTablesEdit(QtWidgets.QMainWindow):
         global WindowBakery
         WindowBakery = Windows.WindowsBakery.WindowBakery()
         WindowBakery.show()
-
-    def openWindowBakeryTableSevenDay(self, pathOLAP_dayWeek_bakery, periodDay, points):
-        self.close()
-        global WindowBakerySevenDay
-        WindowBakerySevenDay = Windows.WindowsBakeryTablesSevenDay.WindowBakeryTableSevenDay(pathOLAP_dayWeek_bakery, periodDay, points)
-        WindowBakerySevenDay.showMaximized()
 
     def closeEvent(self, event):
         reply = QMessageBox()

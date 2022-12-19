@@ -16,7 +16,7 @@ class Ui_WindowCake(object):
         WindowCake.setMinimumSize(QtCore.QSize(1240, 700))
         WindowCake.setMaximumSize(QtCore.QSize(1240, 700))
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("../image/icon.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        icon.addPixmap(QtGui.QPixmap("image/icon.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         WindowCake.setWindowIcon(icon)
         self.centralwidget = QtWidgets.QWidget(WindowCake)
         self.centralwidget.setObjectName("centralwidget")

@@ -6,7 +6,7 @@ from PyQt6.QtGui import QFont
 import Windows.WindowsBakery
 
 
-class WindowBakeryTableSevenDay(QtWidgets.QMainWindow):
+class WindowBakeryTableDayWeek(QtWidgets.QMainWindow):
     def __init__(self, pathOLAP_dayWeek_bakery, periodDay, points):
         super().__init__()
         self.ui = Ui_WindowBakeryTables()

@@ -943,14 +943,17 @@ background-color: rgba(228, 107, 134, 1)
      <property name="fieldGrowthPolicy">
       <enum>QFormLayout::FieldsStayAtSizeHint</enum>
      </property>
+     <property name="rowWrapPolicy">
+      <enum>QFormLayout::WrapLongRows</enum>
+     </property>
      <property name="labelAlignment">
-      <set>Qt::AlignCenter</set>
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
      </property>
      <property name="formAlignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
      </property>
      <property name="horizontalSpacing">
-      <number>50</number>
+      <number>40</number>
      </property>
      <property name="verticalSpacing">
       <number>8</number>

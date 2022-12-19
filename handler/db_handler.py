@@ -49,7 +49,12 @@ def poiskPeriodaInDB(period, signal):
     if value == []:
         signal.emit('Пусто')
     else:
-        signal.emit('За этот период есть прогноз')
+        if value[0][3] != []:
+            signal.emit('За этот период есть сформированный прогноз')
+        elif value[0][5] != []:
+            signal.emit('За этот период есть сформированные коэффициенты по дням недели')
+        elif value[0][3] != [] and value[0][5] != []:
+            signal.emit('Есть и то и то')
     cur.close()
     con.close()
 
