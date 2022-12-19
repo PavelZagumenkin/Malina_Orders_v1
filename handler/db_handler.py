@@ -20,7 +20,6 @@ def login(login, password, signal):
 def seach_kod(kod, signal):
     con = sqlite3.connect('db/malina_orders.db')
     cur = con.cursor()
-
     # Проверяем, есть ли такой код
     cur.execute(f'SELECT * FROM directory_bakery WHERE KOD="{kod}";')
     value = cur.fetchall()
@@ -49,12 +48,30 @@ def poiskPeriodaInDB(period, signal):
     if value == []:
         signal.emit('Пусто')
     else:
-        if value[0][3] != []:
+        if value[0][2] == None and value[0][3] == None and value[0][4] == None and value [0][5] == None:
+            signal.emit('Пусто')
+        if value[0][3] != None:
             signal.emit('За этот период есть сформированный прогноз')
-        elif value[0][5] != []:
+        elif value[0][5] != None:
             signal.emit('За этот период есть сформированные коэффициенты по дням недели')
-        elif value[0][3] != [] and value[0][5] != []:
+        elif value[0][3] != None and value[0][5] != None:
             signal.emit('Есть и то и то')
+    cur.close()
+    con.close()
+
+def addPeriodInDB(period):
+    con = sqlite3.connect('db/malina_orders.db')
+    cur = con.cursor()
+    cur.execute(f"INSERT INTO prognoz_bakery (PERIOD) VALUES ('''{period}''');")
+    con.commit()
+    cur.close()
+    con.close()
+
+def deletePeriodInDB(period):
+    con = sqlite3.connect('db/malina_orders.db')
+    cur = con.cursor()
+    cur.execute(f"DELETE FROM prognoz_bakery where PERIOD = '''{period}'''")
+    con.commit()
     cur.close()
     con.close()
 

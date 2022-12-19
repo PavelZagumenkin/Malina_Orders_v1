@@ -15,6 +15,12 @@ class CheckThread(QtCore.QThread):
     def thr_kod(self, kod_text):
         seach_kod(kod_text, self.layout)
 
+    def thr_addPeriod(self, period):
+        addPeriodInDB(period)
+
+    def thr_delPeriod(self, period):
+        deletePeriodInDB(period)
+
     # Добавление выкладки в БД
     def thr_updateLayout(self, kod_text, tovar_text, layout):
         update_Layout(kod_text, tovar_text, layout)
@@ -34,3 +40,7 @@ class CheckThread(QtCore.QThread):
     # Поиск прогноза по периоду
     def thr_poiskPrognoza(self, period):
         poiskDataPerioda(period, self.prognoz)
+
+    # Поиск коэффициентов по дням недели по периоду
+    def thr_saveDayWeek(self, savePeriod, saveDB, saveNull):
+        pass
