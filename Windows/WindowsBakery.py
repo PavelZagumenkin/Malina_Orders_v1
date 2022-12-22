@@ -37,7 +37,6 @@ class WindowBakery(QtWidgets.QMainWindow):
         self.ui.btn_editPrognoz.clicked.connect(self.prognozTablesRedact)
         self.ui.btn_deletePrognoz.clicked.connect(self.dialogDeletePrognoz)
 
-
     def setEndDay(self):
         self.ui.dateEdit_EndDay.setDate(self.ui.dateEdit_startDay.date().addDays(6))
         self.periodDay = [self.ui.dateEdit_startDay.date(), self.ui.dateEdit_EndDay.date()]
