@@ -44,3 +44,6 @@ class CheckThread(QtCore.QThread):
     # Поиск коэффициентов по дням недели по периоду
     def thr_saveDayWeek(self, savePeriod, saveDB, saveNull):
         pass
+
+    def thr_deletePrognoz(self, period):
+        deletePrognozInDB(period)

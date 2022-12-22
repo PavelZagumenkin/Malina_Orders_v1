@@ -75,10 +75,18 @@ def deletePeriodInDB(period):
     cur.close()
     con.close()
 
+def deletePrognozInDB(period):
+    con = sqlite3.connect('db/malina_orders.db')
+    cur = con.cursor()
+    cur.execute(f"DELETE FROM prognoz_bakery where PERIOD = '''{period}'''")
+    con.commit()
+    cur.close()
+    con.close()
+
 def addInPrognoz(savePeriod, saveHeaders, saveDB, saveNull):
     con = sqlite3.connect('db/malina_orders.db')
     cur = con.cursor()
-    cur.execute(f"INSERT INTO prognoz_bakery (PERIOD, HEADERS, DATA, SAVENULL) VALUES ('''{savePeriod}''', '''{saveHeaders}''', '''{saveDB}''', '''{saveNull}''');")
+    cur.execute(f"UPDATE prognoz_bakery set HEADERS = '''{saveHeaders}''', DATA = '''{saveDB}''', SAVENULL = '''{saveNull}''' where PERIOD = '''{savePeriod}'''")
     con.commit()
     cur.close()
     con.close()
