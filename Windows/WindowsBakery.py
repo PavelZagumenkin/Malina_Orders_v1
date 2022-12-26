@@ -186,10 +186,29 @@ class WindowBakery(QtWidgets.QMainWindow):
 
     # Закрываем выпечку, открываем таблицу для работы
     def prognozTablesOpen(self, pathOLAP_P, periodDay, points):
+        Excel = win32com.client.Dispatch("Excel.Application")
+        wb_OLAP_P = Excel.Workbooks.Open(pathOLAP_P)
+        sheet_OLAP_P = wb_OLAP_P.ActiveSheet
+        firstOLAPRow = sheet_OLAP_P.Range("A:A").Find("Код блюда").Row
+        for i in range(len(points)):
+            if points[i].isChecked():
+                ValidPoints = sheet_OLAP_P.Rows(firstOLAPRow).Find(points[i].text())
+                if ValidPoints == None:
+                    self.dialogNOvalidOLAP(points[i].text())
+                    return
         self.hide()
         global WindowBakeryTablesEdit
         WindowBakeryTablesEdit = Windows.WindowsBakeryTablesEdit.WindowBakeryTablesEdit(pathOLAP_P, periodDay, points)
         WindowBakeryTablesEdit.showMaximized()
+
+    def dialogNOvalidOLAP(self, pointsNoOLAP):
+        dialogBox = QMessageBox()
+        dialogBox.setText(f"В OLAP-отчете отсутствует кондитерская {pointsNoOLAP}")
+        dialogBox.setWindowIcon(QtGui.QIcon("image/icon.png"))
+        dialogBox.setWindowTitle('Прекращение работы!')
+        dialogBox.setIcon(QMessageBox.Icon.Critical)
+        dialogBox.setStandardButtons(QMessageBox.StandardButton.Ok)
+        dialogBox.exec()
 
     def prognozTablesView(self):
         self.hide()

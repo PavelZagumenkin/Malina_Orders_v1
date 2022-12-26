@@ -23,7 +23,6 @@ def seach_kod(kod, signal):
     # Проверяем, есть ли такой код
     cur.execute(f'SELECT * FROM directory_bakery WHERE KOD="{kod}";')
     value = cur.fetchall()
-
     if value != []:
         signal.emit(str(value[0][3]))
     else:
@@ -49,7 +48,10 @@ def poiskPeriodaInDB(period, signal):
         signal.emit('Пусто')
     else:
         if value[0][2] == None and value[0][3] == None and value [0][5] == None:
-            signal.emit('Пусто')
+            if value[0][1] != None:
+                signal.emit('Есть пустой период')
+            else:
+                signal.emit('Пусто')
         if value[0][3] != None:
             if value[0][3] != None and value[0][5] != None:
                 signal.emit('Есть и то и то')

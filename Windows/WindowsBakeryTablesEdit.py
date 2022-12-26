@@ -1,5 +1,6 @@
 from PyQt6 import QtWidgets, QtGui
 import json
+import sys
 from ui.bakeryTables import Ui_WindowBakeryTables
 import win32com.client
 from PyQt6.QtGui import QFont
@@ -19,6 +20,7 @@ class WindowBakeryTablesEdit(QtWidgets.QMainWindow):
         self.check_db = CheckThread()
         self.check_db.layout.connect(self.signal_layout)
         self.check_db.period.connect(self.signal_period)
+        self.periodDay = periodDay
         Excel = win32com.client.Dispatch("Excel.Application")
         wb_OLAP_P = Excel.Workbooks.Open(pathOLAP_P)
         sheet_OLAP_P = wb_OLAP_P.ActiveSheet
@@ -97,7 +99,6 @@ class WindowBakeryTablesEdit(QtWidgets.QMainWindow):
             iconCross.addPixmap(QtGui.QPixmap("image/cross.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
             self.ui.tableWidget.cellWidget(row_button, 1).setIcon(iconCross)
             self.ui.tableWidget.cellWidget(row_button, 1).clicked.connect(self.deleteRow)
-        self.periodDay = periodDay
         self.SaveAndClose = QtWidgets.QPushButton()
         self.ui.tableWidget.setCellWidget(0, 5, self.SaveAndClose)
         self.ui.tableWidget.cellWidget(0, 5).setText('Сохранить и закрыть')
@@ -153,7 +154,7 @@ class WindowBakeryTablesEdit(QtWidgets.QMainWindow):
                 else:
                     saveDB[col][row] = float(self.ui.tableWidget.item(row, col).text())
         self.insertInDB(savePeriod, json.dumps(saveHeaders, ensure_ascii=False), json.dumps(saveDB, ensure_ascii=False), json.dumps(saveNull, ensure_ascii=False))
-        self.closeWindowBakeryTables(self.periodDay)
+        self.close()
 
     def raschetPrognoz(self):
         buttonClicked = self.sender()
@@ -248,15 +249,6 @@ class WindowBakeryTablesEdit(QtWidgets.QMainWindow):
     def addPeriod(self, period):
         self.check_db.thr_addPeriod(period)
 
-    # Закрываем таблицу выпечки и возвращаемся к настройкам
-    def closeWindowBakeryTables(self, period):
-        if self.proverkaPerioda(period) == 0:
-            self.delPeriodInDB(period)
-        self.close()
-        global WindowBakery
-        WindowBakery = Windows.WindowsBakery.WindowBakery()
-        WindowBakery.show()
-
     def proverkaPerioda(self, period):
         self.check_db.thr_proverkaPerioda(period)
         return otvetPeriod
@@ -267,7 +259,7 @@ class WindowBakeryTablesEdit(QtWidgets.QMainWindow):
             otvetPeriod = 0
         elif value == 'За этот период есть сформированный прогноз':
             otvetPeriod = 1
-        elif value == 'За этот период есть сформированные коэффициенты по дням недели':
+        elif value == 'Есть пустой период':
             otvetPeriod = 2
         elif value == 'Есть и то и то':
             otvetPeriod = 3
@@ -283,6 +275,10 @@ class WindowBakeryTablesEdit(QtWidgets.QMainWindow):
         otvet = reply.exec()
         if otvet == QMessageBox.StandardButton.Yes:
             event.accept()
-            self.closeWindowBakeryTables(self.periodDay)
+            if self.proverkaPerioda(self.periodDay) == 2:
+                self.delPeriodInDB(self.periodDay)
+            global WindowBakery
+            WindowBakery = Windows.WindowsBakery.WindowBakery()
+            WindowBakery.show()
         else:
             event.ignore()
