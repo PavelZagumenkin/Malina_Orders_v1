@@ -259,10 +259,8 @@ class WindowBakeryTablesEdit(QtWidgets.QMainWindow):
             otvetPeriod = 0
         elif value == 'За этот период есть сформированный прогноз':
             otvetPeriod = 1
-        elif value == 'Есть пустой период':
-            otvetPeriod = 2
         elif value == 'Есть и то и то':
-            otvetPeriod = 3
+            otvetPeriod = 2
 
     def closeEvent(self, event):
         reply = QMessageBox()
@@ -275,7 +273,7 @@ class WindowBakeryTablesEdit(QtWidgets.QMainWindow):
         otvet = reply.exec()
         if otvet == QMessageBox.StandardButton.Yes:
             event.accept()
-            if self.proverkaPerioda(self.periodDay) == 2:
+            if self.proverkaPerioda(self.periodDay) == 0:
                 self.delPeriodInDB(self.periodDay)
             global WindowBakery
             WindowBakery = Windows.WindowsBakery.WindowBakery()

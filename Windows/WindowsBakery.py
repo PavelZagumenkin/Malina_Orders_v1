@@ -1,5 +1,6 @@
 import datetime
 import win32com.client
+import json
 from PyQt6 import QtCore, QtWidgets, QtGui
 from PyQt6.QtWidgets import QFileDialog
 from PyQt6.QtWidgets import QMessageBox
@@ -18,6 +19,7 @@ class WindowBakery(QtWidgets.QMainWindow):
         self.ui.setupUi(self)
         self.check_db = CheckThread()
         self.check_db.period.connect(self.signal_period)
+        self.check_db.prognoz.connect(self.signal_prognoz)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("image/icon.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.setWindowIcon(icon)
@@ -173,9 +175,16 @@ class WindowBakery(QtWidgets.QMainWindow):
         else:
             wb_OLAP_DayWeek.Close()
             Excel.Quit()
-            points = self.ui.formLayoutWidget.findChildren(QtWidgets.QCheckBox)
-            if self.ui.label_startDay_and_endDay.text() != 'За данный период уже сохранены коэффициенты по дням недели!':
-                self.dayWeekTablesOpen(pathOLAP_DayWeek, self.periodDay, points)
+            pointsForDayWeek = json.loads(self.poiskPrognoza(self.periodDay).strip("\'"))
+            self.dayWeekTablesOpen(pathOLAP_DayWeek, self.periodDay, pointsForDayWeek)
+
+    def signal_prognoz(self, value):
+        global headers
+        headers = value[0][2]
+
+    def poiskPrognoza(self, periodDay):
+        self.check_db.thr_poiskPrognoza(periodDay)
+        return(headers)
 
     # Закрываем окно настроек, открываем выбор раздела
     def viborRazdelaOpen(self):
@@ -241,52 +250,18 @@ class WindowBakery(QtWidgets.QMainWindow):
     def prognozTablesDelete(self):
         period = self.periodDay
         self.check_db.thr_deletePrognoz(period)
-        if self.proverkaPerioda(self.periodDay) == 0:
-            self.ui.label_startDay_and_endDay.setText("Укажите начало периода для формирования данных")
-            self.ui.label_startDay_and_endDay.setStyleSheet("color: rgba(0, 0, 0, 1)")
-            self.ui.btn_koeff_Prognoz.setEnabled(True)
-            self.ui.btn_prosmotrPrognoz.setEnabled(False)
-            self.ui.btn_editPrognoz.setEnabled(False)
-            self.ui.btn_deletePrognoz.setEnabled(False)
-            self.ui.btn_koeff_DayWeek.setEnabled(True)
-            self.ui.btn_prosmotr_koeff_DayWeek.setEnabled(False)
-            self.ui.btn_edit_koeff_DayWeek.setEnabled(False)
-            self.ui.btn_delete_koeff_DayWeek.setEnabled(False)
-        elif self.proverkaPerioda(self.periodDay) == 1:
-            self.ui.label_startDay_and_endDay.setText('За данный период уже создан прогноз!')
-            self.ui.label_startDay_and_endDay.setStyleSheet("color: rgba(228, 107, 134, 1)")
-            self.ui.btn_koeff_Prognoz.setEnabled(False)
-            self.ui.btn_prosmotrPrognoz.setEnabled(True)
-            self.ui.btn_editPrognoz.setEnabled(True)
-            self.ui.btn_deletePrognoz.setEnabled(True)
-            self.ui.btn_koeff_DayWeek.setEnabled(True)
-            self.ui.btn_prosmotr_koeff_DayWeek.setEnabled(False)
-            self.ui.btn_edit_koeff_DayWeek.setEnabled(False)
-            self.ui.btn_delete_koeff_DayWeek.setEnabled(False)
-        elif self.proverkaPerioda(self.periodDay) == 2:
-            self.ui.label_startDay_and_endDay.setText('За данный период уже сформированны коэффициенты по дням недели!')
-            self.ui.label_startDay_and_endDay.setStyleSheet("color: rgba(228, 107, 134, 1)")
-            self.ui.btn_koeff_Prognoz.setEnabled(True)
-            self.ui.btn_prosmotrPrognoz.setEnabled(False)
-            self.ui.btn_editPrognoz.setEnabled(False)
-            self.ui.btn_deletePrognoz.setEnabled(False)
-            self.ui.btn_koeff_DayWeek.setEnabled(False)
-            self.ui.btn_prosmotr_koeff_DayWeek.setEnabled(True)
-            self.ui.btn_edit_koeff_DayWeek.setEnabled(True)
-            self.ui.btn_delete_koeff_DayWeek.setEnabled(True)
-        elif self.proverkaPerioda(self.periodDay) == 3:
-            self.ui.label_startDay_and_endDay.setText('За данный период уже сформированны и прогноз и коэффициенты по дням недели!')
-            self.ui.label_startDay_and_endDay.setStyleSheet("color: rgba(228, 107, 134, 1)")
-            self.ui.btn_koeff_Prognoz.setEnabled(False)
-            self.ui.btn_prosmotrPrognoz.setEnabled(True)
-            self.ui.btn_editPrognoz.setEnabled(True)
-            self.ui.btn_deletePrognoz.setEnabled(True)
-            self.ui.btn_koeff_DayWeek.setEnabled(False)
-            self.ui.btn_prosmotr_koeff_DayWeek.setEnabled(True)
-            self.ui.btn_edit_koeff_DayWeek.setEnabled(True)
-            self.ui.btn_delete_koeff_DayWeek.setEnabled(True)
+        self.proverkaPeriodaFunc()
 
     def dayWeekTablesOpen(self, pathOLAP_DayWeek, periodDay, points):
+        Excel = win32com.client.Dispatch("Excel.Application")
+        wb_OLAP_dayWeek_bakery = Excel.Workbooks.Open(pathOLAP_DayWeek)
+        sheet_OLAP_dayWeek_bakery = wb_OLAP_dayWeek_bakery.ActiveSheet
+        firstOLAPRow = sheet_OLAP_dayWeek_bakery.Range("A:A").Find("День недели").Row
+        for i in range(5, len(points)):
+            ValidPoints = sheet_OLAP_dayWeek_bakery.Rows(firstOLAPRow).Find(points[i])
+            if ValidPoints == None:
+                self.dialogNOvalidOLAP(points[i])
+                return
         self.hide()
         global WindowBakeryDayWeek
         WindowBakeryDayWeek = Windows.WindowsBakeryTablesDayWeek.WindowBakeryTableDayWeek(pathOLAP_DayWeek, periodDay, points)

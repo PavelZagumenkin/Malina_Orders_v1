@@ -6,7 +6,6 @@ from PyQt6.QtWidgets import QTableWidgetItem
 from PyQt6.QtWidgets import QMessageBox
 from PyQt6.QtGui import QFont
 from handler.check_db import CheckThread
-
 import Windows.WindowsBakery
 
 
@@ -22,11 +21,11 @@ class WindowBakeryTableDayWeek(QtWidgets.QMainWindow):
         sheet_OLAP_dayWeek_bakery = wb_OLAP_dayWeek_bakery.ActiveSheet
         firstOLAPRow = sheet_OLAP_dayWeek_bakery.Range("A:A").Find("День недели").Row
         # Фильтруем точки по Checkbox-сам
-        for i in range(len(points)):
-            if not points[i].isChecked():
-                ValidPoints = sheet_OLAP_dayWeek_bakery.Rows(firstOLAPRow).Find(points[i].text())
-                if ValidPoints != None:
-                    sheet_OLAP_dayWeek_bakery.Columns(ValidPoints.Column).Delete()
+        for i in range(5, len(points)):
+            print(points[i])
+            ValidPoints = sheet_OLAP_dayWeek_bakery.Rows(firstOLAPRow).Find(points[i])
+            if ValidPoints == None:
+                sheet_OLAP_dayWeek_bakery.Columns(ValidPoints.Column).Delete()
         # Удаляем пустые столбцы и строки
         endOLAPCol = sheet_OLAP_dayWeek_bakery.Cells.Find("Выпечка пекарни всего").Column
         for a in range(endOLAPCol-1, 1, -1):
@@ -131,17 +130,10 @@ class WindowBakeryTableDayWeek(QtWidgets.QMainWindow):
                 else:
                     saveDB[col][row] = float(self.ui.tableWidget.item(row, col).text())
         self.insertInDB(savePeriod, json.dumps(saveDB, ensure_ascii=False), json.dumps(saveNull, ensure_ascii=False))
-        self.closeWindowBakeryTables()
+        self.close()
 
     def insertInDB(self, savePeriod, saveDB, saveNull):
         self.check_db.thr_saveDayWeek(savePeriod, saveDB, saveNull)
-
-    # Закрываем таблицу выпечки и возвращаемся к настройкам
-    def closeWindowBakeryTables(self):
-        self.close()
-        global WindowBakery
-        WindowBakery = Windows.WindowsBakery.WindowBakery()
-        WindowBakery.show()
 
     def closeEvent(self, event):
         reply = QMessageBox()
@@ -152,10 +144,11 @@ class WindowBakeryTableDayWeek(QtWidgets.QMainWindow):
         reply.setStandardButtons(QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
         reply.setDefaultButton(QMessageBox.StandardButton.Cancel)
         otvet = reply.exec()
-
         if otvet == QMessageBox.StandardButton.Yes:
             event.accept()
-            self.closeWindowBakeryTables()
+            global WindowBakery
+            WindowBakery = Windows.WindowsBakery.WindowBakery()
+            WindowBakery.show()
         else:
             event.ignore()
 
