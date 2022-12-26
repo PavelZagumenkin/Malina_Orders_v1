@@ -15,9 +15,15 @@ class CheckThread(QtCore.QThread):
     def thr_kod(self, kod_text):
         seach_kod(kod_text, self.layout)
 
+    # Добавляем пустой период
     def thr_addPeriod(self, period):
         addPeriodInDB(period)
 
+    # Проверка наличия созданной даты
+    def thr_proverkaPerioda(self, period):
+        poiskPeriodaInDB(period, self.period)
+
+    # Удаляем пустой период
     def thr_delPeriod(self, period):
         deletePeriodInDB(period)
 
@@ -27,23 +33,20 @@ class CheckThread(QtCore.QThread):
 
     # Сохранение прогноза в БД
     def thr_savePrognoz(self, savePeriod, saveHeaders, saveDB, saveNull):
-        addInPrognoz(savePeriod, saveHeaders, saveDB, saveNull)
+        addPrognozInDB(savePeriod, saveHeaders, saveDB, saveNull)
 
-    # обновление прогноза после редактирования
+    # Обновление прогноза после редактирования
     def thr_updatePrognoz(self, savePeriod, saveHeaders, saveDB, saveNull):
         updatePrognoz(savePeriod, saveHeaders, saveDB, saveNull)
-
-    # Проверка наличия созданной даты
-    def thr_proverkaPerioda(self, period):
-        poiskPeriodaInDB(period, self.period)
 
     # Поиск прогноза по периоду
     def thr_poiskPrognoza(self, period):
         poiskDataPerioda(period, self.prognoz)
 
-    # Поиск коэффициентов по дням недели по периоду
-    def thr_saveDayWeek(self, savePeriod, saveDB, saveNull):
-        pass
-
+    # Удаление прогноза из БД
     def thr_deletePrognoz(self, period):
         deletePrognozInDB(period)
+
+    # Поиск коэффициентов по дням недели по периоду
+    def thr_saveDayWeek(self, savePeriod, saveDB, saveNull):
+        addDayWeekInDB(savePeriod, saveDB, saveNull)

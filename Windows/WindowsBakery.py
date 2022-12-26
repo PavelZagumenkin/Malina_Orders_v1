@@ -50,7 +50,7 @@ class WindowBakery(QtWidgets.QMainWindow):
             self.ui.btn_prosmotrPrognoz.setEnabled(False)
             self.ui.btn_editPrognoz.setEnabled(False)
             self.ui.btn_deletePrognoz.setEnabled(False)
-            self.ui.btn_koeff_DayWeek.setEnabled(True)
+            self.ui.btn_koeff_DayWeek.setEnabled(False)
             self.ui.btn_prosmotr_koeff_DayWeek.setEnabled(False)
             self.ui.btn_edit_koeff_DayWeek.setEnabled(False)
             self.ui.btn_delete_koeff_DayWeek.setEnabled(False)
@@ -66,17 +66,6 @@ class WindowBakery(QtWidgets.QMainWindow):
             self.ui.btn_edit_koeff_DayWeek.setEnabled(False)
             self.ui.btn_delete_koeff_DayWeek.setEnabled(False)
         elif self.proverkaPerioda(self.periodDay) == 2:
-            self.ui.label_startDay_and_endDay.setText('За данный период уже сформированны коэффициенты по дням недели!')
-            self.ui.label_startDay_and_endDay.setStyleSheet("color: rgba(228, 107, 134, 1)")
-            self.ui.btn_koeff_Prognoz.setEnabled(True)
-            self.ui.btn_prosmotrPrognoz.setEnabled(False)
-            self.ui.btn_editPrognoz.setEnabled(False)
-            self.ui.btn_deletePrognoz.setEnabled(False)
-            self.ui.btn_koeff_DayWeek.setEnabled(False)
-            self.ui.btn_prosmotr_koeff_DayWeek.setEnabled(True)
-            self.ui.btn_edit_koeff_DayWeek.setEnabled(True)
-            self.ui.btn_delete_koeff_DayWeek.setEnabled(True)
-        elif self.proverkaPerioda(self.periodDay) == 3:
             self.ui.label_startDay_and_endDay.setText(
                 'За данный период уже сформированны и прогноз и коэффициенты по дням недели!')
             self.ui.label_startDay_and_endDay.setStyleSheet("color: rgba(228, 107, 134, 1)")
@@ -99,10 +88,8 @@ class WindowBakery(QtWidgets.QMainWindow):
             otvetPeriod = 0
         elif value == 'За этот период есть сформированный прогноз':
             otvetPeriod = 1
-        elif value == 'За этот период есть сформированные коэффициенты по дням недели':
-            otvetPeriod = 2
         elif value == 'Есть и то и то':
-            otvetPeriod = 3
+            otvetPeriod = 2
 
     # Диалог выбора файла ОБЩЕГО отчета
     def olap_p(self):

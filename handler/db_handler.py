@@ -48,14 +48,13 @@ def poiskPeriodaInDB(period, signal):
     if value == []:
         signal.emit('Пусто')
     else:
-        if value[0][2] == None and value[0][3] == None and value[0][4] == None and value [0][5] == None:
+        if value[0][2] == None and value[0][3] == None and value [0][5] == None:
             signal.emit('Пусто')
         if value[0][3] != None:
-            signal.emit('За этот период есть сформированный прогноз')
-        elif value[0][5] != None:
-            signal.emit('За этот период есть сформированные коэффициенты по дням недели')
-        elif value[0][3] != None and value[0][5] != None:
-            signal.emit('Есть и то и то')
+            if value[0][3] != None and value[0][5] != None:
+                signal.emit('Есть и то и то')
+            else:
+                signal.emit('За этот период есть сформированный прогноз')
     cur.close()
     con.close()
 
@@ -83,7 +82,7 @@ def deletePrognozInDB(period):
     cur.close()
     con.close()
 
-def addInPrognoz(savePeriod, saveHeaders, saveDB, saveNull):
+def addPrognozInDB(savePeriod, saveHeaders, saveDB, saveNull):
     con = sqlite3.connect('db/malina_orders.db')
     cur = con.cursor()
     cur.execute(f"UPDATE prognoz_bakery set HEADERS = '''{saveHeaders}''', DATA = '''{saveDB}''', SAVENULL = '''{saveNull}''' where PERIOD = '''{savePeriod}'''")
@@ -105,5 +104,13 @@ def poiskDataPerioda(period, prognoz):
     cur.execute(f"SELECT * FROM prognoz_bakery WHERE PERIOD='''{period}''';")
     value = cur.fetchall()
     prognoz.emit(value)
+    cur.close()
+    con.close()
+
+def addDayWeekInDB(savePeriod, saveDB, saveNull):
+    con = sqlite3.connect('db/malina_orders.db')
+    cur = con.cursor()
+    cur.execute(f"UPDATE prognoz_bakery set KDAYWEEK = '''{saveDB}''', KDAYWEEKNULL = '''{saveNull}''' where PERIOD = '''{savePeriod}'''")
+    con.commit()
     cur.close()
     con.close()
