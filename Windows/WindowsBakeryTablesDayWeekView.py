@@ -8,43 +8,42 @@ from handler.check_db import CheckThread
 import Windows.WindowsBakery
 
 
-class WindowBakeryTableView(QtWidgets.QMainWindow):
+class WindowBakeryTableDayWeekView(QtWidgets.QMainWindow):
     def __init__(self, periodDay):
         super().__init__()
         self.ui = Ui_WindowBakeryTables()
         self.ui.setupUi(self)
         self.check_db = CheckThread()
         self.check_db.prognoz.connect(self.signal_prognoz)
-        self.setWindowTitle("Просмотр прогноза продаж")
+        self.setWindowTitle("Просмотр коэффициентов долей продаж")
         self.prognoz = self.poiskPrognoza(periodDay)
         self.headers = json.loads(self.prognoz[0].strip("\'"))
+        del self.headers[0:5]
+        self.headers.insert(0, "День недели")
+        self.headers.insert(0, "Кф. дня недели")
         self.data = json.loads(self.prognoz[1].strip("\'"))
         self.ui.tableWidget.setRowCount(len(self.data['2']))
         self.ui.tableWidget.setColumnCount(len(self.headers))
         self.ui.tableWidget.setHorizontalHeaderLabels(self.headers)
-        self.ui.tableWidget.setColumnWidth(0, 90)
-        self.ui.tableWidget.setColumnWidth(1, 90)
-        self.ui.tableWidget.setColumnWidth(2, 110)
-        self.ui.tableWidget.setColumnWidth(3, 290)
-        self.ui.tableWidget.setColumnWidth(4, 130)
+        self.ui.tableWidget.setColumnWidth(0, 170)
+        self.ui.tableWidget.setColumnWidth(1, 130)
         self.font = QtGui.QFont("Times", 10, QFont.Weight.Bold)
         self.ui.tableWidget.horizontalHeader().setFont(self.font)
         for col in self.data:
             for row in self.data.get(col):
-                if self.data[col][row] == 0:
-                    item = QTableWidgetItem('')
+                if (int(col) == 0 and int(row) == 0) or (int(col) == 1 and int(row) == 0):
+                    item = QTableWidgetItem("")
                 else:
                     item = QTableWidgetItem(str(self.data[col][row]))
-                self.ui.tableWidget.setItem(int(row), int(col) - 2, item)
-                if (int(col) != 0 and int(row) != 0) or (int(col) != 1 and int(row) != 0) or (int(col) != 2 and int(row) != 0) or (int(col) != 3 and int(row) != 0):
-                    self.ui.tableWidget.item(int(row), int(col) - 2).setFlags(QtCore.Qt.ItemFlag.ItemIsEnabled)
-        self.ui.tableWidget.setItem(0, 4, QTableWidgetItem("Кф. кондитерской"))
-        self.ui.tableWidget.item(0, 4).setFont(self.font)
-        self.ui.tableWidget.item(0, 4).setFlags(QtCore.Qt.ItemFlag.ItemIsEnabled)
+                self.ui.tableWidget.setItem(int(row), int(col), item)
+                if (int(col) != 0 and int(row) != 0) or (int(col) != 1 and int(row) != 0):
+                    self.ui.tableWidget.item(int(row), int(col)).setFlags(QtCore.Qt.ItemFlag.ItemIsEnabled)
+        self.ui.tableWidget.setItem(0, 1, QTableWidgetItem("Кф. кондитерской"))
+        self.ui.tableWidget.item(0, 1).setFont(self.font)
 
     def signal_prognoz(self, value):
         headers = value[0][2]
-        data = value[0][3]
+        data = value[0][5]
         global prognoz
         prognoz = [headers, data]
 

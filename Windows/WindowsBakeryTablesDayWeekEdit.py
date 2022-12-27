@@ -22,7 +22,6 @@ class WindowBakeryTableDayWeek(QtWidgets.QMainWindow):
         firstOLAPRow = sheet_OLAP_dayWeek_bakery.Range("A:A").Find("День недели").Row
         # Фильтруем точки по Checkbox-сам
         for i in range(5, len(points)):
-            print(points[i])
             ValidPoints = sheet_OLAP_dayWeek_bakery.Rows(firstOLAPRow).Find(points[i])
             if ValidPoints == None:
                 sheet_OLAP_dayWeek_bakery.Columns(ValidPoints.Column).Delete()

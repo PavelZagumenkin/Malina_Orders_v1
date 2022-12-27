@@ -10,7 +10,8 @@ import Windows.WindowsViborRazdela
 import Windows.WindowsBakeryTablesEdit
 import Windows.WindowsBakeryTablesView
 import Windows.WindowsBakeryTablesRedact
-import Windows.WindowsBakeryTablesDayWeek
+import Windows.WindowsBakeryTablesDayWeekEdit
+import Windows.WindowsBakeryTablesDayWeekView
 
 class WindowBakery(QtWidgets.QMainWindow):
     def __init__(self):
@@ -38,6 +39,7 @@ class WindowBakery(QtWidgets.QMainWindow):
         self.ui.btn_prosmotrPrognoz.clicked.connect(self.prognozTablesView)
         self.ui.btn_editPrognoz.clicked.connect(self.prognozTablesRedact)
         self.ui.btn_deletePrognoz.clicked.connect(self.dialogDeletePrognoz)
+        self.ui.btn_prosmotr_koeff_DayWeek.clicked.connect(self.dayWeekTablesView)
 
     def setEndDay(self):
         self.ui.dateEdit_EndDay.setDate(self.ui.dateEdit_startDay.date().addDays(6))
@@ -130,7 +132,7 @@ class WindowBakery(QtWidgets.QMainWindow):
         Excel = win32com.client.Dispatch("Excel.Application")
         wb_OLAP_P = Excel.Workbooks.Open(pathOLAP_P)
         sheet_OLAP_P = wb_OLAP_P.ActiveSheet
-        if sheet_OLAP_P.Name != "OLAP по продажам ОБЩИЙ":
+        if sheet_OLAP_P.Name != "OLAP отчет для Пекарни":
             wb_OLAP_P.Close()
             Excel.Quit()
             self.ui.lineEdit_OLAP_P.setStyleSheet("padding-left: 5px; color: rgba(228, 107, 134, 1)")
@@ -268,7 +270,10 @@ class WindowBakery(QtWidgets.QMainWindow):
         WindowBakeryDayWeek.showMaximized()
 
     def dayWeekTablesView(self):
-        pass
+        self.hide()
+        global WindowBakeryTablesDayWeekView
+        WindowBakeryTablesDayWeekView = Windows.WindowsBakeryTablesDayWeekView.WindowBakeryTableDayWeekView(self.periodDay)
+        WindowBakeryTablesDayWeekView.showMaximized()
 
     def dayWeekTablesRedact(self):
         pass

@@ -1146,6 +1146,9 @@ background-color: rgba(228, 107, 134, 1)
      </item>
      <item row="11" column="1">
       <widget class="QCheckBox" name="cb_chehova">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
        <property name="font">
         <font>
          <pointsize>11</pointsize>
@@ -1154,8 +1157,11 @@ background-color: rgba(228, 107, 134, 1)
        <property name="text">
         <string>Чехова</string>
        </property>
-       <property name="checked">
+       <property name="checkable">
         <bool>true</bool>
+       </property>
+       <property name="checked">
+        <bool>false</bool>
        </property>
       </widget>
      </item>

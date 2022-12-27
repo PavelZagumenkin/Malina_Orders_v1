@@ -9,7 +9,7 @@ from PyQt6.QtWidgets import QMessageBox
 from PyQt6.QtWidgets import QInputDialog
 from handler.check_db import CheckThread
 import Windows.WindowsBakery
-import Windows.WindowsBakeryTablesDayWeek
+import Windows.WindowsBakeryTablesDayWeekEdit
 
 
 class WindowBakeryTablesEdit(QtWidgets.QMainWindow):
