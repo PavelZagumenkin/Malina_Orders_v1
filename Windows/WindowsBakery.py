@@ -40,6 +40,8 @@ class WindowBakery(QtWidgets.QMainWindow):
         self.ui.btn_editPrognoz.clicked.connect(self.prognozTablesRedact)
         self.ui.btn_deletePrognoz.clicked.connect(self.dialogDeletePrognoz)
         self.ui.btn_prosmotr_koeff_DayWeek.clicked.connect(self.dayWeekTablesView)
+        self.ui.btn_edit_koeff_DayWeek.clicked.connect(self.dayWeekTablesRedact)
+        self.ui.btn_delete_koeff_DayWeek.clicked.connect(self.dayWeekTablesDelete)
 
     def setEndDay(self):
         self.ui.dateEdit_EndDay.setDate(self.ui.dateEdit_startDay.date().addDays(6))
@@ -265,9 +267,9 @@ class WindowBakery(QtWidgets.QMainWindow):
                 self.dialogNOvalidOLAP(points[i])
                 return
         self.hide()
-        global WindowBakeryDayWeek
-        WindowBakeryDayWeek = Windows.WindowsBakeryTablesDayWeek.WindowBakeryTableDayWeek(pathOLAP_DayWeek, periodDay, points)
-        WindowBakeryDayWeek.showMaximized()
+        global WindowBakeryDayWeekEdit
+        WindowBakeryDayWeekEdit = Windows.WindowsBakeryTablesDayWeekEdit.WindowBakeryTableDayWeekEdit(pathOLAP_DayWeek, periodDay, points)
+        WindowBakeryDayWeekEdit.showMaximized()
 
     def dayWeekTablesView(self):
         self.hide()
@@ -276,4 +278,7 @@ class WindowBakery(QtWidgets.QMainWindow):
         WindowBakeryTablesDayWeekView.showMaximized()
 
     def dayWeekTablesRedact(self):
+        pass
+
+    def dayWeekTablesDelete(self):
         pass

@@ -18,9 +18,6 @@ class WindowBakeryTableDayWeekView(QtWidgets.QMainWindow):
         self.setWindowTitle("Просмотр коэффициентов долей продаж")
         self.prognoz = self.poiskPrognoza(periodDay)
         self.headers = json.loads(self.prognoz[0].strip("\'"))
-        del self.headers[0:5]
-        self.headers.insert(0, "День недели")
-        self.headers.insert(0, "Кф. дня недели")
         self.data = json.loads(self.prognoz[1].strip("\'"))
         self.ui.tableWidget.setRowCount(len(self.data['2']))
         self.ui.tableWidget.setColumnCount(len(self.headers))
@@ -42,8 +39,8 @@ class WindowBakeryTableDayWeekView(QtWidgets.QMainWindow):
         self.ui.tableWidget.item(0, 1).setFont(self.font)
 
     def signal_prognoz(self, value):
-        headers = value[0][2]
-        data = value[0][5]
+        headers = value[0][5]
+        data = value[0][6]
         global prognoz
         prognoz = [headers, data]
 

@@ -50,7 +50,7 @@ def poiskPeriodaInDB(period, signal):
         if value[0][2] == None:
             signal.emit('Пусто')
         if value[0][3] != None:
-            if value[0][5] == None:
+            if value[0][6] == None:
                 signal.emit('За этот период есть сформированный прогноз')
             else:
                 signal.emit('Есть и то и то')
@@ -84,7 +84,7 @@ def deletePrognozInDB(period):
 def addPrognozInDB(savePeriod, saveHeaders, saveDB, saveNull):
     con = sqlite3.connect('db/malina_orders.db')
     cur = con.cursor()
-    cur.execute(f"UPDATE prognoz_bakery set HEADERS = '''{saveHeaders}''', DATA = '''{saveDB}''', SAVENULL = '''{saveNull}''' where PERIOD = '''{savePeriod}'''")
+    cur.execute(f"UPDATE prognoz_bakery set HEADERSPROGNOZ = '''{saveHeaders}''', DATAPROGNOZ = '''{saveDB}''', SAVENULLPROGNOZ = '''{saveNull}''' where PERIOD = '''{savePeriod}'''")
     con.commit()
     cur.close()
     con.close()
@@ -92,7 +92,7 @@ def addPrognozInDB(savePeriod, saveHeaders, saveDB, saveNull):
 def updatePrognoz(savePeriod, saveHeaders, saveDB, saveNull):
     con = sqlite3.connect('db/malina_orders.db')
     cur = con.cursor()
-    cur.execute(f"UPDATE prognoz_bakery set HEADERS = '''{saveHeaders}''', DATA = '''{saveDB}''', SAVENULL = '''{saveNull}''' where PERIOD = '''{savePeriod}'''")
+    cur.execute(f"UPDATE prognoz_bakery set HEADERSPROGNOZ = '''{saveHeaders}''', DATAPROGNOZ = '''{saveDB}''', SAVENULLPROGNOZ = '''{saveNull}''' where PERIOD = '''{savePeriod}'''")
     con.commit()
     cur.close()
     con.close()
@@ -106,10 +106,10 @@ def poiskDataPerioda(period, prognoz):
     cur.close()
     con.close()
 
-def addDayWeekInDB(savePeriod, saveDB, saveNull):
+def addDayWeekInDB(savePeriod, saveHeaders, saveDB, saveNull):
     con = sqlite3.connect('db/malina_orders.db')
     cur = con.cursor()
-    cur.execute(f"UPDATE prognoz_bakery set KDAYWEEK = '''{saveDB}''', KDAYWEEKNULL = '''{saveNull}''' where PERIOD = '''{savePeriod}'''")
+    cur.execute(f"UPDATE prognoz_bakery set HEADERSKDAYWEEK = '''{saveHeaders}''', DATAKDAYWEEK = '''{saveDB}''', SAVENULLKDAYWEEK = '''{saveNull}''' where PERIOD = '''{savePeriod}'''")
     con.commit()
     cur.close()
     con.close()

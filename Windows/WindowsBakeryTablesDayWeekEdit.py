@@ -9,7 +9,7 @@ from handler.check_db import CheckThread
 import Windows.WindowsBakery
 
 
-class WindowBakeryTableDayWeek(QtWidgets.QMainWindow):
+class WindowBakeryTableDayWeekEdit(QtWidgets.QMainWindow):
     def __init__(self, pathOLAP_dayWeek_bakery, periodDay, points):
         super().__init__()
         self.ui = Ui_WindowBakeryTables()
@@ -115,6 +115,7 @@ class WindowBakeryTableDayWeek(QtWidgets.QMainWindow):
     def saveAndCloseDef(self):
         savePeriod = self.periodDay
         saveNull = saveZnach.copy()
+        saveHeaders = self.columnLables.copy()
         saveDB = {}
         for col in range(0, self.ui.tableWidget.columnCount()):
             saveDB[col] = {}
@@ -128,11 +129,11 @@ class WindowBakeryTableDayWeek(QtWidgets.QMainWindow):
                     saveDB[col][row] = self.ui.tableWidget.item(row, col).text()
                 else:
                     saveDB[col][row] = float(self.ui.tableWidget.item(row, col).text())
-        self.insertInDB(savePeriod, json.dumps(saveDB, ensure_ascii=False), json.dumps(saveNull, ensure_ascii=False))
+        self.insertInDB(savePeriod, json.dumps(saveHeaders, ensure_ascii=False), json.dumps(saveDB, ensure_ascii=False), json.dumps(saveNull, ensure_ascii=False))
         self.close()
 
-    def insertInDB(self, savePeriod, saveDB, saveNull):
-        self.check_db.thr_saveDayWeek(savePeriod, saveDB, saveNull)
+    def insertInDB(self, savePeriod, saveHeaders, saveDB, saveNull):
+        self.check_db.thr_saveDayWeek(savePeriod, saveHeaders, saveDB, saveNull)
 
     def closeEvent(self, event):
         reply = QMessageBox()
