@@ -16,6 +16,7 @@ class WindowBakeryTableDayWeekEdit(QtWidgets.QMainWindow):
         self.ui.setupUi(self)
         self.setWindowTitle("Продажи по дням недели")
         self.check_db = CheckThread()
+        self.check_db.period.connect(self.signal_period)
         Excel = win32com.client.Dispatch("Excel.Application")
         wb_OLAP_dayWeek_bakery = Excel.Workbooks.Open(pathOLAP_dayWeek_bakery)
         sheet_OLAP_dayWeek_bakery = wb_OLAP_dayWeek_bakery.ActiveSheet
@@ -97,6 +98,7 @@ class WindowBakeryTableDayWeekEdit(QtWidgets.QMainWindow):
         self.ui.tableWidget.cellWidget(0, 0).clicked.connect(self.saveAndCloseDef)
         self.ui.tableWidget.setColumnWidth(0, 170)
         self.ui.tableWidget.setColumnWidth(1, 130)
+        self.addPeriod(self.periodDay)
 
     #Увеличение или уменьшение доли продаж.
     def raschetDayWeek(self):
@@ -132,8 +134,25 @@ class WindowBakeryTableDayWeekEdit(QtWidgets.QMainWindow):
         self.insertInDB(savePeriod, json.dumps(saveHeaders, ensure_ascii=False), json.dumps(saveDB, ensure_ascii=False), json.dumps(saveNull, ensure_ascii=False))
         self.close()
 
+    def addPeriod(self, period):
+        self.check_db.thr_addPeriodKDayWeek(period)
+
+    def delPeriodInDB(self, period):
+        self.check_db.thr_delPeriodKDayWeek(period)
+
     def insertInDB(self, savePeriod, saveHeaders, saveDB, saveNull):
         self.check_db.thr_saveDayWeek(savePeriod, saveHeaders, saveDB, saveNull)
+
+    def proverkaPerioda(self, period):
+        self.check_db.thr_proverkaPeriodaKDayWeek(period)
+        return otvetPeriod
+
+    def signal_period(self, value):
+        global otvetPeriod
+        if value == 'Пусто':
+            otvetPeriod = 0
+        elif value == 'За этот период есть сформированные коэффициенты долей продаж':
+            otvetPeriod = 1
 
     def closeEvent(self, event):
         reply = QMessageBox()
@@ -146,6 +165,8 @@ class WindowBakeryTableDayWeekEdit(QtWidgets.QMainWindow):
         otvet = reply.exec()
         if otvet == QMessageBox.StandardButton.Yes:
             event.accept()
+            if self.proverkaPerioda(self.periodDay) == 0:
+                self.delPeriodInDB(self.periodDay)
             global WindowBakery
             WindowBakery = Windows.WindowsBakery.WindowBakery()
             WindowBakery.show()

@@ -39,7 +39,7 @@ def update_Layout(kod_text, tovar_text, layout):
     cur.close()
     con.close()
 
-def poiskPeriodaInDB(period, signal):
+def poiskPeriodaPrognozaInDB(period, signal):
     con = sqlite3.connect('db/malina_orders.db')
     cur = con.cursor()
     cur.execute(f"SELECT * FROM prognoz_bakery WHERE PERIOD='''{period}''';")
@@ -50,14 +50,11 @@ def poiskPeriodaInDB(period, signal):
         if value[0][2] == None:
             signal.emit('Пусто')
         if value[0][3] != None:
-            if value[0][6] == None:
-                signal.emit('За этот период есть сформированный прогноз')
-            else:
-                signal.emit('Есть и то и то')
+            signal.emit('За этот период есть сформированный прогноз')
     cur.close()
     con.close()
 
-def addPeriodInDB(period):
+def addPeriodPrognozInDB(period):
     con = sqlite3.connect('db/malina_orders.db')
     cur = con.cursor()
     cur.execute(f"INSERT INTO prognoz_bakery (PERIOD) VALUES ('''{period}''');")
@@ -65,7 +62,7 @@ def addPeriodInDB(period):
     cur.close()
     con.close()
 
-def deletePeriodInDB(period):
+def deletePeriodPrognozInDB(period):
     con = sqlite3.connect('db/malina_orders.db')
     cur = con.cursor()
     cur.execute(f"DELETE FROM prognoz_bakery where PERIOD = '''{period}'''")
@@ -89,7 +86,7 @@ def addPrognozInDB(savePeriod, saveHeaders, saveDB, saveNull):
     cur.close()
     con.close()
 
-def updatePrognoz(savePeriod, saveHeaders, saveDB, saveNull):
+def updatePrognozInDB(savePeriod, saveHeaders, saveDB, saveNull):
     con = sqlite3.connect('db/malina_orders.db')
     cur = con.cursor()
     cur.execute(f"UPDATE prognoz_bakery set HEADERSPROGNOZ = '''{saveHeaders}''', DATAPROGNOZ = '''{saveDB}''', SAVENULLPROGNOZ = '''{saveNull}''' where PERIOD = '''{savePeriod}'''")
@@ -97,7 +94,7 @@ def updatePrognoz(savePeriod, saveHeaders, saveDB, saveNull):
     cur.close()
     con.close()
 
-def poiskDataPerioda(period, prognoz):
+def poiskDataPeriodaPrognoz(period, prognoz):
     con = sqlite3.connect('db/malina_orders.db')
     cur = con.cursor()
     cur.execute(f"SELECT * FROM prognoz_bakery WHERE PERIOD='''{period}''';")
@@ -106,10 +103,50 @@ def poiskDataPerioda(period, prognoz):
     cur.close()
     con.close()
 
+def poiskPeriodaKDayWeekInDB(period, signal):
+    con = sqlite3.connect('db/malina_orders.db')
+    cur = con.cursor()
+    cur.execute(f"SELECT * FROM kdayweek_bakery WHERE PERIOD='''{period}''';")
+    value = cur.fetchall()
+    if value == []:
+        signal.emit('Пусто')
+    else:
+        if value[0][2] == None:
+            signal.emit('Пусто')
+        if value[0][3] != None:
+            signal.emit('За этот период есть сформированные коэффициенты долей продаж')
+    cur.close()
+    con.close()
+
+def poiskDataPeriodaKDayWeek(period, prognoz):
+    con = sqlite3.connect('db/malina_orders.db')
+    cur = con.cursor()
+    cur.execute(f"SELECT * FROM kdayweek_bakery WHERE PERIOD='''{period}''';")
+    value = cur.fetchall()
+    prognoz.emit(value)
+    cur.close()
+    con.close()
+
+def addPeriodKDayWeekInDB(period):
+    con = sqlite3.connect('db/malina_orders.db')
+    cur = con.cursor()
+    cur.execute(f"INSERT INTO kdayweek_bakery (PERIOD) VALUES ('''{period}''');")
+    con.commit()
+    cur.close()
+    con.close()
+
+def deletePeriodKDayWeekInDB(period):
+    con = sqlite3.connect('db/malina_orders.db')
+    cur = con.cursor()
+    cur.execute(f"DELETE FROM kdayweek_bakery where PERIOD = '''{period}'''")
+    con.commit()
+    cur.close()
+    con.close()
+
 def addDayWeekInDB(savePeriod, saveHeaders, saveDB, saveNull):
     con = sqlite3.connect('db/malina_orders.db')
     cur = con.cursor()
-    cur.execute(f"UPDATE prognoz_bakery set HEADERSKDAYWEEK = '''{saveHeaders}''', DATAKDAYWEEK = '''{saveDB}''', SAVENULLKDAYWEEK = '''{saveNull}''' where PERIOD = '''{savePeriod}'''")
+    cur.execute(f"UPDATE kdayweek_bakery set HEADERSKDAYWEEK = '''{saveHeaders}''', DATAKDAYWEEK = '''{saveDB}''', SAVENULLKDAYWEEK = '''{saveNull}''' where PERIOD = '''{savePeriod}'''")
     con.commit()
     cur.close()
     con.close()

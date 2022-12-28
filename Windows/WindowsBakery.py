@@ -35,7 +35,8 @@ class WindowBakery(QtWidgets.QMainWindow):
         self.ui.btn_path_dayWeek_bakery.clicked.connect(self.olap_dayWeek_bakery)
         self.ui.btn_koeff_Prognoz.clicked.connect(self.koeff_Prognoz)
         self.ui.btn_koeff_DayWeek.clicked.connect(self.koeff_DayWeek)
-        self.proverkaPeriodaFunc()
+        self.proverkaPeriodaPrognozFunc()
+        self.proverkaPeriodaKDayWeekFunc()
         self.ui.btn_prosmotrPrognoz.clicked.connect(self.prognozTablesView)
         self.ui.btn_editPrognoz.clicked.connect(self.prognozTablesRedact)
         self.ui.btn_deletePrognoz.clicked.connect(self.dialogDeletePrognoz)
@@ -46,39 +47,28 @@ class WindowBakery(QtWidgets.QMainWindow):
     def setEndDay(self):
         self.ui.dateEdit_EndDay.setDate(self.ui.dateEdit_startDay.date().addDays(6))
         self.periodDay = [self.ui.dateEdit_startDay.date(), self.ui.dateEdit_EndDay.date()]
-        self.proverkaPeriodaFunc()
+        self.proverkaPeriodaPrognozFunc()
+        self.proverkaPeriodaKDayWeekFunc()
 
-    def proverkaPeriodaFunc(self):
+    def proverkaPeriodaPrognozFunc(self):
         if self.proverkaPerioda(self.periodDay) == 0:
-            self.ui.label_startDay_and_endDay.setText("Укажите начало периода для формирования данных")
-            self.ui.label_startDay_and_endDay.setStyleSheet("color: rgba(0, 0, 0, 1)")
             self.ui.btn_koeff_Prognoz.setEnabled(True)
             self.ui.btn_prosmotrPrognoz.setEnabled(False)
             self.ui.btn_editPrognoz.setEnabled(False)
             self.ui.btn_deletePrognoz.setEnabled(False)
-            self.ui.btn_koeff_DayWeek.setEnabled(False)
-            self.ui.btn_prosmotr_koeff_DayWeek.setEnabled(False)
-            self.ui.btn_edit_koeff_DayWeek.setEnabled(False)
-            self.ui.btn_delete_koeff_DayWeek.setEnabled(False)
         elif self.proverkaPerioda(self.periodDay) == 1:
-            self.ui.label_startDay_and_endDay.setText('За данный период уже создан прогноз!')
-            self.ui.label_startDay_and_endDay.setStyleSheet("color: rgba(228, 107, 134, 1)")
             self.ui.btn_koeff_Prognoz.setEnabled(False)
             self.ui.btn_prosmotrPrognoz.setEnabled(True)
             self.ui.btn_editPrognoz.setEnabled(True)
             self.ui.btn_deletePrognoz.setEnabled(True)
+
+    def proverkaPeriodaKDayWeekFunc(self):
+        if self.proverkaPeriodaKDayWeek(self.periodDay) == 0:
             self.ui.btn_koeff_DayWeek.setEnabled(True)
             self.ui.btn_prosmotr_koeff_DayWeek.setEnabled(False)
             self.ui.btn_edit_koeff_DayWeek.setEnabled(False)
             self.ui.btn_delete_koeff_DayWeek.setEnabled(False)
-        elif self.proverkaPerioda(self.periodDay) == 2:
-            self.ui.label_startDay_and_endDay.setText(
-                'За данный период уже сформированны и прогноз и коэффициенты по дням недели!')
-            self.ui.label_startDay_and_endDay.setStyleSheet("color: rgba(228, 107, 134, 1)")
-            self.ui.btn_koeff_Prognoz.setEnabled(False)
-            self.ui.btn_prosmotrPrognoz.setEnabled(True)
-            self.ui.btn_editPrognoz.setEnabled(True)
-            self.ui.btn_deletePrognoz.setEnabled(True)
+        elif self.proverkaPeriodaKDayWeek(self.periodDay) == 1:
             self.ui.btn_koeff_DayWeek.setEnabled(False)
             self.ui.btn_prosmotr_koeff_DayWeek.setEnabled(True)
             self.ui.btn_edit_koeff_DayWeek.setEnabled(True)
@@ -88,14 +78,17 @@ class WindowBakery(QtWidgets.QMainWindow):
         self.check_db.thr_proverkaPerioda(period)
         return otvetPeriod
 
+    def proverkaPeriodaKDayWeek(self, period):
+        self.check_db.thr_proverkaPeriodaKDayWeek(period)
+        return otvetPeriod
+
     def signal_period(self, value):
         global otvetPeriod
         if value == 'Пусто':
             otvetPeriod = 0
-        elif value == 'За этот период есть сформированный прогноз':
+        elif value == 'За этот период есть сформированный прогноз' or value == 'За этот период есть сформированные коэффициенты долей продаж':
             otvetPeriod = 1
-        elif value == 'Есть и то и то':
-            otvetPeriod = 2
+
 
     # Диалог выбора файла ОБЩЕГО отчета
     def olap_p(self):
@@ -254,7 +247,7 @@ class WindowBakery(QtWidgets.QMainWindow):
     def prognozTablesDelete(self):
         period = self.periodDay
         self.check_db.thr_deletePrognoz(period)
-        self.proverkaPeriodaFunc()
+        self.proverkaPeriodaPrognozFunc()
 
     def dayWeekTablesOpen(self, pathOLAP_DayWeek, periodDay, points):
         Excel = win32com.client.Dispatch("Excel.Application")

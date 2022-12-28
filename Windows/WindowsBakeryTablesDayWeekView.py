@@ -39,13 +39,13 @@ class WindowBakeryTableDayWeekView(QtWidgets.QMainWindow):
         self.ui.tableWidget.item(0, 1).setFont(self.font)
 
     def signal_prognoz(self, value):
-        headers = value[0][5]
-        data = value[0][6]
+        headers = value[0][2]
+        data = value[0][3]
         global prognoz
         prognoz = [headers, data]
 
     def poiskPrognoza(self, periodDay):
-        self.check_db.thr_poiskPrognoza(periodDay)
+        self.check_db.thr_poiskDataPeriodaKdayWeek(periodDay)
         return(prognoz)
 
     def closeEvent(self, event):
