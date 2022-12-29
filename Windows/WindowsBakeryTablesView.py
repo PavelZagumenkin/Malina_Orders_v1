@@ -35,7 +35,6 @@ class WindowBakeryTableView(QtWidgets.QMainWindow):
                     item = QTableWidgetItem('')
                 elif int(row) == 0 or int(col) == 2:
                     item = QTableWidgetItem(str(round(float(self.data[col][row]), 2)))
-                    print(item.text())
                 else:
                     item = QTableWidgetItem(str(self.data[col][row]))
                 self.ui.tableWidget.setItem(int(row), int(col) - 2, item)

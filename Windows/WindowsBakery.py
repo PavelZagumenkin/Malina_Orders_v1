@@ -136,9 +136,8 @@ class WindowBakery(QtWidgets.QMainWindow):
         else:
             wb_OLAP_P.Close()
             Excel.Quit()
-            points = self.ui.formLayoutWidget.findChildren(QtWidgets.QCheckBox)
-            if self.ui.label_startDay_and_endDay.text() != 'За данный период уже создан прогноз!':
-                self.prognozTablesOpen(pathOLAP_P, self.periodDay, points)
+            # points = self.ui.formLayoutWidget.findChildren(QtWidgets.QCheckBox)
+            self.prognozTablesOpen(pathOLAP_P, self.periodDay)
 
 
     # Проверяем на пустоту поля для отчета по дням недели
@@ -173,8 +172,8 @@ class WindowBakery(QtWidgets.QMainWindow):
         else:
             wb_OLAP_DayWeek.Close()
             Excel.Quit()
-            pointsForDayWeek = json.loads(self.poiskPrognoza(self.periodDay).strip("\'"))
-            self.dayWeekTablesOpen(pathOLAP_DayWeek, self.periodDay, pointsForDayWeek)
+            # points = self.ui.formLayoutWidget.findChildren(QtWidgets.QCheckBox)
+            self.dayWeekTablesOpen(pathOLAP_DayWeek, self.periodDay)
 
     def signal_prognoz(self, value):
         global headers
@@ -182,6 +181,10 @@ class WindowBakery(QtWidgets.QMainWindow):
 
     def poiskPrognoza(self, periodDay):
         self.check_db.thr_poiskPrognoza(periodDay)
+        return(headers)
+
+    def poiskKDayWeek(self, periodDay):
+        self.check_db.thr_poiskDataPeriodaKdayWeek(periodDay)
         return(headers)
 
     # Закрываем окно настроек, открываем выбор раздела
@@ -192,16 +195,27 @@ class WindowBakery(QtWidgets.QMainWindow):
         WindowViborRazdela.show()
 
     # Закрываем выпечку, открываем таблицу для работы
-    def prognozTablesOpen(self, pathOLAP_P, periodDay, points):
+    def prognozTablesOpen(self, pathOLAP_P, periodDay):
         Excel = win32com.client.Dispatch("Excel.Application")
         wb_OLAP_P = Excel.Workbooks.Open(pathOLAP_P)
         sheet_OLAP_P = wb_OLAP_P.ActiveSheet
         firstOLAPRow = sheet_OLAP_P.Range("A:A").Find("Код блюда").Row
-        for i in range(len(points)):
-            if points[i].isChecked():
-                ValidPoints = sheet_OLAP_P.Rows(firstOLAPRow).Find(points[i].text())
+        if self.proverkaPeriodaKDayWeek(self.periodDay) == 0:
+            pointsCheck = self.ui.formLayoutWidget.findChildren(QtWidgets.QCheckBox)
+            for i in range(len(pointsCheck)):
+                if pointsCheck[i].isChecked():
+                    ValidPoints = sheet_OLAP_P.Rows(firstOLAPRow).Find(pointsCheck[i].text())
+                    if ValidPoints == None:
+                        self.dialogNOvalidOLAP(pointsCheck[i].text())
+                        return
+                    #     Сюда добавить переменную points с текстами точек которые отмечены
+        else:
+            points = json.loads(self.poiskKDayWeek(self.periodDay).strip("\'"))
+            del points[0:1]
+            for i in range(len(points)):
+                ValidPoints = sheet_OLAP_P.Rows(firstOLAPRow).Find(points[i])
                 if ValidPoints == None:
-                    self.dialogNOvalidOLAP(points[i].text())
+                    self.dialogNOvalidOLAP(points[i])
                     return
         self.hide()
         global WindowBakeryTablesEdit
@@ -250,16 +264,33 @@ class WindowBakery(QtWidgets.QMainWindow):
         self.check_db.thr_deletePrognoz(period)
         self.proverkaPeriodaPrognozFunc()
 
-    def dayWeekTablesOpen(self, pathOLAP_DayWeek, periodDay, points):
+    def dayWeekTablesOpen(self, pathOLAP_DayWeek, periodDay):
         Excel = win32com.client.Dispatch("Excel.Application")
         wb_OLAP_dayWeek_bakery = Excel.Workbooks.Open(pathOLAP_DayWeek)
         sheet_OLAP_dayWeek_bakery = wb_OLAP_dayWeek_bakery.ActiveSheet
         firstOLAPRow = sheet_OLAP_dayWeek_bakery.Range("A:A").Find("День недели").Row
-        for i in range(5, len(points)):
-            ValidPoints = sheet_OLAP_dayWeek_bakery.Rows(firstOLAPRow).Find(points[i])
-            if ValidPoints == None:
-                self.dialogNOvalidOLAP(points[i])
-                return
+        if self.proverkaPerioda(self.periodDay) == 0:
+            points = self.ui.formLayoutWidget.findChildren(QtWidgets.QCheckBox)
+            for i in range(len(points)):
+                if points[i].isChecked():
+                    ValidPoints = sheet_OLAP_dayWeek_bakery.Rows(firstOLAPRow).Find(points[i].text())
+                    if ValidPoints == None:
+                        self.dialogNOvalidOLAP(points[i].text())
+                        return
+                    #     Сюда добавить переменную points с текстами точек которые отмечены
+        else:
+            points = json.loads(self.poiskPrognoza(self.periodDay).strip("\'"))
+            del points[0:4]
+            for i in range(len(points)):
+                ValidPoints = sheet_OLAP_dayWeek_bakery.Rows(firstOLAPRow).Find(points[i])
+                if ValidPoints == None:
+                    self.dialogNOvalidOLAP(points[i])
+                    return
+        # for i in range(5, len(points)):
+        #     ValidPoints = sheet_OLAP_dayWeek_bakery.Rows(firstOLAPRow).Find(points[i])
+        #     if ValidPoints == None:
+        #         self.dialogNOvalidOLAP(points[i])
+        #         return
         self.hide()
         global WindowBakeryDayWeekEdit
         WindowBakeryDayWeekEdit = Windows.WindowsBakeryTablesDayWeekEdit.WindowBakeryTableDayWeekEdit(pathOLAP_DayWeek, periodDay, points)

@@ -1,6 +1,5 @@
 from PyQt6 import QtWidgets, QtGui
 import json
-import sys
 from ui.bakeryTables import Ui_WindowBakeryTables
 import win32com.client
 from PyQt6.QtGui import QFont
@@ -9,7 +8,6 @@ from PyQt6.QtWidgets import QMessageBox
 from PyQt6.QtWidgets import QInputDialog
 from handler.check_db import CheckThread
 import Windows.WindowsBakery
-import Windows.WindowsBakeryTablesDayWeekEdit
 
 
 class WindowBakeryTablesEdit(QtWidgets.QMainWindow):
@@ -26,11 +24,16 @@ class WindowBakeryTablesEdit(QtWidgets.QMainWindow):
         sheet_OLAP_P = wb_OLAP_P.ActiveSheet
         firstOLAPRow = sheet_OLAP_P.Range("A:A").Find("Код блюда").Row
         # Фильтруем точки по Checkbox-сам
+        # for i in range(len(points)):
+        #     if not points[i].isChecked():
+        #         ValidPoints = sheet_OLAP_P.Rows(firstOLAPRow).Find(points[i].text())
+        #         if ValidPoints != None:
+        #             sheet_OLAP_P.Columns(ValidPoints.Column).Delete()
+        print(points)
         for i in range(len(points)):
-            if not points[i].isChecked():
-                ValidPoints = sheet_OLAP_P.Rows(firstOLAPRow).Find(points[i].text())
-                if ValidPoints != None:
-                    sheet_OLAP_P.Columns(ValidPoints.Column).Delete()
+            ValidPoints = sheet_OLAP_P.Rows(firstOLAPRow).Find(points[i])
+            if ValidPoints == None:
+                sheet_OLAP_P.Columns(ValidPoints.Column).Delete()
         # Удаляем пустые столбцы и строки
         for _ in range(firstOLAPRow - 1):
             sheet_OLAP_P.Rows(1).Delete()

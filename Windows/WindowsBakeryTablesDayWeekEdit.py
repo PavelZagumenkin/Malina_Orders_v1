@@ -22,7 +22,13 @@ class WindowBakeryTableDayWeekEdit(QtWidgets.QMainWindow):
         sheet_OLAP_dayWeek_bakery = wb_OLAP_dayWeek_bakery.ActiveSheet
         firstOLAPRow = sheet_OLAP_dayWeek_bakery.Range("A:A").Find("День недели").Row
         # Фильтруем точки по Checkbox-сам
-        for i in range(5, len(points)):
+        # for i in range(len(points)):
+        #     if not points[i].isChecked():
+        #         ValidPoints = sheet_OLAP_dayWeek_bakery.Rows(firstOLAPRow).Find(points[i].text())
+        #         if ValidPoints != None:
+        #             sheet_OLAP_dayWeek_bakery.Columns(ValidPoints.Column).Delete()
+        print(points)
+        for i in range(len(points)):
             ValidPoints = sheet_OLAP_dayWeek_bakery.Rows(firstOLAPRow).Find(points[i])
             if ValidPoints == None:
                 sheet_OLAP_dayWeek_bakery.Columns(ValidPoints.Column).Delete()
