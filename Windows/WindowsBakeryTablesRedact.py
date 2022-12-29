@@ -141,7 +141,7 @@ class WindowBakeryTablesRedact(QtWidgets.QMainWindow):
                 else:
                     saveDB[col][row] = float(self.ui.tableWidget.item(row, col).text())
         self.updateInDB(savePeriod, json.dumps(saveHeaders, ensure_ascii=False), json.dumps(saveDB, ensure_ascii=False), json.dumps(saveNull, ensure_ascii=False))
-        self.closeWindowBakeryTables()
+        self.close()
 
     def raschetPrognoz(self):
         buttonClicked = self.sender()
@@ -207,12 +207,6 @@ class WindowBakeryTablesRedact(QtWidgets.QMainWindow):
     def updateInDB(self, savePeriod, saveHeaders, saveDB, saveNull):
         self.check_db.thr_updatePrognoz(savePeriod, saveHeaders, saveDB, saveNull)
 
-    # Закрываем таблицу выпечки и возвращаемся к настройкам
-    def closeWindowBakeryTables(self):
-        self.close()
-        global WindowBakery
-        WindowBakery = Windows.WindowsBakery.WindowBakery()
-        WindowBakery.show()
 
     def closeEvent(self, event):
         reply = QMessageBox()
@@ -223,9 +217,10 @@ class WindowBakeryTablesRedact(QtWidgets.QMainWindow):
         reply.setStandardButtons(QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
         reply.setDefaultButton(QMessageBox.StandardButton.Cancel)
         otvet = reply.exec()
-
         if otvet == QMessageBox.StandardButton.Yes:
-            self.closeWindowBakeryTables()
             event.accept()
+            global WindowBakery
+            WindowBakery = Windows.WindowsBakery.WindowBakery()
+            WindowBakery.show()
         else:
             event.ignore()

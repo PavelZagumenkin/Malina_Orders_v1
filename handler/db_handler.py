@@ -143,10 +143,18 @@ def deletePeriodKDayWeekInDB(period):
     cur.close()
     con.close()
 
-def addDayWeekInDB(savePeriod, saveHeaders, saveDB, saveNull):
+def updateDayWeekInDB(savePeriod, saveHeaders, saveDB, saveNull):
     con = sqlite3.connect('db/malina_orders.db')
     cur = con.cursor()
     cur.execute(f"UPDATE kdayweek_bakery set HEADERSKDAYWEEK = '''{saveHeaders}''', DATAKDAYWEEK = '''{saveDB}''', SAVENULLKDAYWEEK = '''{saveNull}''' where PERIOD = '''{savePeriod}'''")
+    con.commit()
+    cur.close()
+    con.close()
+
+def deleteKDayWeekInDB(period):
+    con = sqlite3.connect('db/malina_orders.db')
+    cur = con.cursor()
+    cur.execute(f"DELETE FROM kdayweek_bakery where PERIOD = '''{period}'''")
     con.commit()
     cur.close()
     con.close()

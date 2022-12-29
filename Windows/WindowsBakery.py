@@ -12,6 +12,7 @@ import Windows.WindowsBakeryTablesView
 import Windows.WindowsBakeryTablesRedact
 import Windows.WindowsBakeryTablesDayWeekEdit
 import Windows.WindowsBakeryTablesDayWeekView
+import Windows.WindowsBakeryTablesDayWeekRedact
 
 class WindowBakery(QtWidgets.QMainWindow):
     def __init__(self):
@@ -271,7 +272,13 @@ class WindowBakery(QtWidgets.QMainWindow):
         WindowBakeryTablesDayWeekView.showMaximized()
 
     def dayWeekTablesRedact(self):
-        pass
+        self.hide()
+        periodDay = self.periodDay
+        global WindowBakeryTablesDayWeekRedact
+        WindowBakeryTablesDayWeekRedact = Windows.WindowsBakeryTablesDayWeekRedact.WindowBakeryTablesDayWeekRedact(periodDay)
+        WindowBakeryTablesDayWeekRedact.showMaximized()
 
     def dayWeekTablesDelete(self):
-        pass
+        period = self.periodDay
+        self.check_db.thr_deleteKDayWeek(period)
+        self.proverkaPeriodaKDayWeekFunc()

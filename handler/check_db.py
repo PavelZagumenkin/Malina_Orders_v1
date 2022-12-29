@@ -31,10 +31,6 @@ class CheckThread(QtCore.QThread):
     def thr_updateLayout(self, kod_text, tovar_text, layout):
         update_Layout(kod_text, tovar_text, layout)
 
-    # Сохранение прогноза в БД
-    def thr_savePrognoz(self, savePeriod, saveHeaders, saveDB, saveNull):
-        addPrognozInDB(savePeriod, saveHeaders, saveDB, saveNull)
-
     # Обновление прогноза после редактирования
     def thr_updatePrognoz(self, savePeriod, saveHeaders, saveDB, saveNull):
         updatePrognozInDB(savePeriod, saveHeaders, saveDB, saveNull)
@@ -54,11 +50,14 @@ class CheckThread(QtCore.QThread):
         poiskDataPeriodaKDayWeek(period, self.prognoz)
 
     # Поиск коэффициентов по дням недели по периоду
-    def thr_saveDayWeek(self, savePeriod, saveHeaders, saveDB, saveNull):
-        addDayWeekInDB(savePeriod, saveHeaders, saveDB, saveNull)
+    def thr_updateDayWeek(self, savePeriod, saveHeaders, saveDB, saveNull):
+        updateDayWeekInDB(savePeriod, saveHeaders, saveDB, saveNull)
 
     def thr_proverkaPeriodaKDayWeek(self, period):
         poiskPeriodaKDayWeekInDB(period, self.period)
 
     def thr_delPeriodKDayWeek(self, period):
         deletePeriodKDayWeekInDB(period)
+
+    def thr_deleteKDayWeek(self, period):
+        deleteKDayWeekInDB(period)

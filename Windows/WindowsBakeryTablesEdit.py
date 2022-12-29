@@ -234,7 +234,7 @@ class WindowBakeryTablesEdit(QtWidgets.QMainWindow):
         return int(layout)
 
     def insertInDB(self, savePeriod, saveHeaders, saveDB, saveNull):
-        self.check_db.thr_savePrognoz(savePeriod, saveHeaders, saveDB, saveNull)
+        self.check_db.thr_updatePrognoz(savePeriod, saveHeaders, saveDB, saveNull)
 
     def delPeriodInDB(self, period):
         self.check_db.thr_delPeriod(period)

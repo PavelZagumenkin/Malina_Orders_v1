@@ -28,8 +28,12 @@ class WindowBakeryTableDayWeekView(QtWidgets.QMainWindow):
         self.ui.tableWidget.horizontalHeader().setFont(self.font)
         for col in self.data:
             for row in self.data.get(col):
-                if (int(col) == 0 and int(row) == 0) or (int(col) == 1 and int(row) == 0):
+                if int(col) == 0 and int(row) == 0:
                     item = QTableWidgetItem("")
+                elif int(col) == 1:
+                    item = QTableWidgetItem(str(self.data[col][row]))
+                elif (int(col) != 0 and int(row) == 0) or (int(col) != 1 and int(row) == 0) or (int(col) == 0 and int(row) != 0):
+                    item = QTableWidgetItem(str(round(float(self.data[col][row]), 2)))
                 else:
                     item = QTableWidgetItem(str(self.data[col][row]))
                 self.ui.tableWidget.setItem(int(row), int(col), item)

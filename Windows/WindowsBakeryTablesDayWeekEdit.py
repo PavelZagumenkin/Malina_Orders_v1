@@ -50,14 +50,14 @@ class WindowBakeryTableDayWeekEdit(QtWidgets.QMainWindow):
             self.ui.tableWidget.setCellWidget(0, col_spin, self.DspinboxCol)
             self.ui.tableWidget.cellWidget(0, col_spin).setValue(1.00)
             self.ui.tableWidget.cellWidget(0, col_spin).setSingleStep(0.05)
-            self.ui.tableWidget.cellWidget(0, col_spin).valueChanged.connect(self.raschetDayWeek)
+            self.ui.tableWidget.cellWidget(0, col_spin).valueChanged.connect(self.raschetKDayWeek)
         for row_spin in range(1, self.ui.tableWidget.rowCount()):
             self.DspinboxRow = QtWidgets.QDoubleSpinBox()
             self.DspinboxRow.wheelEvent = lambda event: None
             self.ui.tableWidget.setCellWidget(row_spin, 0, self.DspinboxRow)
             self.ui.tableWidget.cellWidget(row_spin, 0).setValue(1.00)
             self.ui.tableWidget.cellWidget(row_spin, 0).setSingleStep(0.05)
-            self.ui.tableWidget.cellWidget(row_spin, 0).valueChanged.connect(self.raschetDayWeek)
+            self.ui.tableWidget.cellWidget(row_spin, 0).valueChanged.connect(self.raschetKDayWeek)
         for col in range(1, endOLAPCol):
             for row in range(2, endOLAPRow):
                 item = sheet_OLAP_dayWeek_bakery.Cells(row, col).Value
@@ -101,7 +101,7 @@ class WindowBakeryTableDayWeekEdit(QtWidgets.QMainWindow):
         self.addPeriod(self.periodDay)
 
     #Увеличение или уменьшение доли продаж.
-    def raschetDayWeek(self):
+    def raschetKDayWeek(self):
         buttonClicked = self.sender()
         index = self.ui.tableWidget.indexAt(buttonClicked.pos())
         if index.row() == 0:
@@ -141,7 +141,7 @@ class WindowBakeryTableDayWeekEdit(QtWidgets.QMainWindow):
         self.check_db.thr_delPeriodKDayWeek(period)
 
     def insertInDB(self, savePeriod, saveHeaders, saveDB, saveNull):
-        self.check_db.thr_saveDayWeek(savePeriod, saveHeaders, saveDB, saveNull)
+        self.check_db.thr_updateDayWeek(savePeriod, saveHeaders, saveDB, saveNull)
 
     def proverkaPerioda(self, period):
         self.check_db.thr_proverkaPeriodaKDayWeek(period)
