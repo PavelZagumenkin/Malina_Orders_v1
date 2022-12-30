@@ -151,7 +151,13 @@ class WindowBakeryTablesEdit(QtWidgets.QMainWindow):
                 else:
                     saveDB[col][row] = float(self.ui.tableWidget.item(row, col).text())
         self.insertInDB(savePeriod, json.dumps(saveHeaders, ensure_ascii=False), json.dumps(saveDB, ensure_ascii=False), json.dumps(saveNull, ensure_ascii=False))
+        for i in range(1, self.ui.tableWidget.rowCount()):
+            self.saveLayoutInDB(self.ui.tableWidget.item(i, 4).text(), self.ui.tableWidget.item(i, 5).text(), int(self.ui.tableWidget.cellWidget(i, 3).value()))
         self.close()
+
+    # Сохраняем новые значения выкладки
+    def saveLayoutInDB(self, kod, name, layout):
+        self.check_db.thr_saveLayoutInDB(kod, name, layout)
 
     def raschetPrognoz(self):
         buttonClicked = self.sender()

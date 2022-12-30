@@ -8,12 +8,10 @@ def login(login, password, signal):
     # Проверяем, есть ли такой пользователь
     cur.execute(f'SELECT * FROM users WHERE LOGIN="{login}";')
     value = cur.fetchall()
-
     if value != [] and value[0][2] == password:
         signal.emit('Успешная авторизация')
     else:
         signal.emit('Неверный логин или пароль!')
-
     cur.close()
     con.close()
 
@@ -27,7 +25,6 @@ def seach_kod(kod, signal):
         signal.emit(str(value[0][3]))
     else:
         signal.emit('Код отсутствует в БД')
-
     cur.close()
     con.close()
 
@@ -155,6 +152,14 @@ def deleteKDayWeekInDB(period):
     con = sqlite3.connect('db/malina_orders.db')
     cur = con.cursor()
     cur.execute(f"DELETE FROM kdayweek_bakery where PERIOD = '''{period}'''")
+    con.commit()
+    cur.close()
+    con.close()
+
+def saveLayout(kod, name, layuot):
+    con = sqlite3.connect('db/malina_orders.db')
+    cur = con.cursor()
+    cur.execute(f"UPDATE directory_bakery set NAME = '{name}', LAYOUT = '{layuot}' where KOD = '{kod}'")
     con.commit()
     cur.close()
     con.close()

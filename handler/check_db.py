@@ -61,3 +61,6 @@ class CheckThread(QtCore.QThread):
 
     def thr_deleteKDayWeek(self, period):
         deleteKDayWeekInDB(period)
+
+    def thr_saveLayoutInDB(self, kod, name, layout):
+        saveLayout(kod, name, layout)
