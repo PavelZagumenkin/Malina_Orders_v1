@@ -202,16 +202,17 @@ class WindowBakery(QtWidgets.QMainWindow):
         firstOLAPRow = sheet_OLAP_P.Range("A:A").Find("Код блюда").Row
         if self.proverkaPeriodaKDayWeek(self.periodDay) == 0:
             pointsCheck = self.ui.formLayoutWidget.findChildren(QtWidgets.QCheckBox)
+            points = []
             for i in range(len(pointsCheck)):
                 if pointsCheck[i].isChecked():
                     ValidPoints = sheet_OLAP_P.Rows(firstOLAPRow).Find(pointsCheck[i].text())
                     if ValidPoints == None:
                         self.dialogNOvalidOLAP(pointsCheck[i].text())
                         return
-                    #     Сюда добавить переменную points с текстами точек которые отмечены
+                    points.append(pointsCheck[i].text())
         else:
             points = json.loads(self.poiskKDayWeek(self.periodDay).strip("\'"))
-            del points[0:1]
+            del points[0:2]
             for i in range(len(points)):
                 ValidPoints = sheet_OLAP_P.Rows(firstOLAPRow).Find(points[i])
                 if ValidPoints == None:
@@ -270,17 +271,18 @@ class WindowBakery(QtWidgets.QMainWindow):
         sheet_OLAP_dayWeek_bakery = wb_OLAP_dayWeek_bakery.ActiveSheet
         firstOLAPRow = sheet_OLAP_dayWeek_bakery.Range("A:A").Find("День недели").Row
         if self.proverkaPerioda(self.periodDay) == 0:
-            points = self.ui.formLayoutWidget.findChildren(QtWidgets.QCheckBox)
-            for i in range(len(points)):
-                if points[i].isChecked():
-                    ValidPoints = sheet_OLAP_dayWeek_bakery.Rows(firstOLAPRow).Find(points[i].text())
+            pointsCheck = self.ui.formLayoutWidget.findChildren(QtWidgets.QCheckBox)
+            points = []
+            for i in range(len(pointsCheck)):
+                if pointsCheck[i].isChecked():
+                    ValidPoints = sheet_OLAP_dayWeek_bakery.Rows(firstOLAPRow).Find(pointsCheck[i].text())
                     if ValidPoints == None:
-                        self.dialogNOvalidOLAP(points[i].text())
+                        self.dialogNOvalidOLAP(pointsCheck[i].text())
                         return
-                    #     Сюда добавить переменную points с текстами точек которые отмечены
+                    points.append(pointsCheck[i].text())
         else:
             points = json.loads(self.poiskPrognoza(self.periodDay).strip("\'"))
-            del points[0:4]
+            del points[0:5]
             for i in range(len(points)):
                 ValidPoints = sheet_OLAP_dayWeek_bakery.Rows(firstOLAPRow).Find(points[i])
                 if ValidPoints == None:

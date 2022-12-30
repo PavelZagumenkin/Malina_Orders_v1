@@ -24,12 +24,6 @@ class WindowBakeryTablesEdit(QtWidgets.QMainWindow):
         sheet_OLAP_P = wb_OLAP_P.ActiveSheet
         firstOLAPRow = sheet_OLAP_P.Range("A:A").Find("Код блюда").Row
         # Фильтруем точки по Checkbox-сам
-        # for i in range(len(points)):
-        #     if not points[i].isChecked():
-        #         ValidPoints = sheet_OLAP_P.Rows(firstOLAPRow).Find(points[i].text())
-        #         if ValidPoints != None:
-        #             sheet_OLAP_P.Columns(ValidPoints.Column).Delete()
-        print(points)
         for i in range(len(points)):
             ValidPoints = sheet_OLAP_P.Rows(firstOLAPRow).Find(points[i])
             if ValidPoints == None:
