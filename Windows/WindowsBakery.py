@@ -13,6 +13,7 @@ import Windows.WindowsBakeryTablesRedact
 import Windows.WindowsBakeryTablesDayWeekEdit
 import Windows.WindowsBakeryTablesDayWeekView
 import Windows.WindowsBakeryTablesDayWeekRedact
+import Windows.WindowsBakeryNormativView
 
 class WindowBakery(QtWidgets.QMainWindow):
     def __init__(self):
@@ -44,6 +45,7 @@ class WindowBakery(QtWidgets.QMainWindow):
         self.ui.btn_prosmotr_koeff_DayWeek.clicked.connect(self.dayWeekTablesView)
         self.ui.btn_edit_koeff_DayWeek.clicked.connect(self.dayWeekTablesRedact)
         self.ui.btn_delete_koeff_DayWeek.clicked.connect(self.dayWeekTablesDelete)
+        self.ui.btn_prosmotrNormativ.clicked.connect(self.normativView)
 
     def setEndDay(self):
         self.ui.dateEdit_EndDay.setDate(self.ui.dateEdit_startDay.date().addDays(6))
@@ -57,11 +59,15 @@ class WindowBakery(QtWidgets.QMainWindow):
             self.ui.btn_prosmotrPrognoz.setEnabled(False)
             self.ui.btn_editPrognoz.setEnabled(False)
             self.ui.btn_deletePrognoz.setEnabled(False)
+            self.ui.btn_prosmotrNormativ.setEnabled(False)
+            self.ui.btn_editNormativ.setEnabled(False)
         elif self.proverkaPerioda(self.periodDay) == 1:
             self.ui.btn_koeff_Prognoz.setEnabled(False)
             self.ui.btn_prosmotrPrognoz.setEnabled(True)
             self.ui.btn_editPrognoz.setEnabled(True)
             self.ui.btn_deletePrognoz.setEnabled(True)
+            self.ui.btn_prosmotrNormativ.setEnabled(True)
+            self.ui.btn_editNormativ.setEnabled(True)
 
     def proverkaPeriodaKDayWeekFunc(self):
         if self.proverkaPeriodaKDayWeek(self.periodDay) == 0:
@@ -315,3 +321,10 @@ class WindowBakery(QtWidgets.QMainWindow):
         period = self.periodDay
         self.check_db.thr_deleteKDayWeek(period)
         self.proverkaPeriodaKDayWeekFunc()
+
+    def normativView(self):
+        self.hide()
+        periodDay = self.periodDay
+        global WindowNormativView
+        WindowNormativView = Windows.WindowsBakeryNormativView.WindowBakeryNormativView(periodDay)
+        WindowNormativView.showMaximized()
