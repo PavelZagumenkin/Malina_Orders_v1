@@ -35,6 +35,7 @@ class WindowBakeryNormativEdit(QtWidgets.QMainWindow):
         self.ui.tableWidget.setColumnWidth(4, 130)
         self.font = QtGui.QFont("Times", 10, QFont.Weight.Bold)
         self.ui.tableWidget.horizontalHeader().setFont(self.font)
+        # Установливаем значения в таблицу
         for col in self.data:
             for row in self.data.get(col):
                 if self.data[col][row] == 0:
@@ -60,6 +61,12 @@ class WindowBakeryNormativEdit(QtWidgets.QMainWindow):
                 else:
                     item = QTableWidgetItem(str(self.data[col][row]))
                     self.ui.tableWidget.setItem(int(row), int(col) - 2, item)
+        # Перемножаем значения в таблице на значения коэффициентов сохраненных в БД
+        for col in range(5, self.ui.tableWidget.columnCount()):
+            for row in range(1, self.ui.tableWidget.rowCount()):
+                result = round(float(data[str(col + 2)][str(row)]) * float(self.ui.tableWidget.cellWidget(0, col).value()) * float(self.ui.tableWidget.cellWidget(row, 0).value()), 2)
+                self.ui.tableWidget.setItem(row, col, QTableWidgetItem(str(result)))
+        # Вставляем кнопку Сохранить и закрыть
         self.SaveAndClose = QtWidgets.QPushButton()
         self.ui.tableWidget.setCellWidget(0, 3, self.SaveAndClose)
         self.ui.tableWidget.cellWidget(0, 3).setText('Сохранить и закрыть')
