@@ -192,7 +192,7 @@ def poisk_sklada (sklad, kfSkladaotvet):
     cur.execute(f'SELECT * FROM koeff_sklada_konditerskoi WHERE KONDITERSKAY="{sklad}";')
     value = cur.fetchall()
     if value != []:
-        kfSkladaotvet.emit(value[0][2])
+        kfSkladaotvet.emit(str(value[0][2]))
     else:
         kfSkladaotvet.emit('Склад отсутствует в БД')
     cur.close()

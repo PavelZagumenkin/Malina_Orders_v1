@@ -7,7 +7,7 @@ class CheckThread(QtCore.QThread):
     period = QtCore.pyqtSignal(str)
     prognoz = QtCore.pyqtSignal(list)
     kfBakery = QtCore.pyqtSignal(str)
-    kfSklada = QtCore.pyqtSignal(float)
+    kfSklada = QtCore.pyqtSignal(str)
 
     # Форма авторизации(поиск по БД в таблице users)
     def thr_login(self, login_text, password_text):

@@ -39,10 +39,7 @@ class WindowBakeryNormativView(QtWidgets.QMainWindow):
                     item = QTableWidgetItem('')
                 elif int(row) == 0:
                     sklad = self.headers[int(col)-2]
-                    if self.raschetNormativovSklada(sklad) != None:
-                        item = QTableWidgetItem(str(self.raschetNormativovSklada(sklad)))
-                    else:
-                        return
+                    item = QTableWidgetItem(str(self.raschetNormativovSklada(sklad)))
                     self.ui.tableWidget.setItem(int(row), int(col) - 2, item)
                 elif int(col) == 2:
                     kod = self.data['4'][row]
@@ -99,7 +96,7 @@ class WindowBakeryNormativView(QtWidgets.QMainWindow):
             kfSklada = value
         else:
             self.dialogNetSklada()
-            return
+            kfSklada = 1.0
 
     def raschetNormativovSklada(self, sklad):
         global name_sklada
@@ -115,20 +112,3 @@ class WindowBakeryNormativView(QtWidgets.QMainWindow):
         dialogBox.setIcon(QMessageBox.Icon.Critical)
         dialogBox.setStandardButtons(QMessageBox.StandardButton.Ok | QMessageBox.StandardButton.Cancel)
         dialogBox.exec()
-
-    def closeEvent(self, event):
-        reply = QMessageBox()
-        reply.setWindowTitle("Завершение работы с таблицой")
-        reply.setWindowIcon(QtGui.QIcon("image/icon.png"))
-        reply.setText("Вы хотите завершить работу с таблицей?")
-        reply.setIcon(QMessageBox.Icon.Question)
-        reply.setStandardButtons(QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
-        reply.setDefaultButton(QMessageBox.StandardButton.Cancel)
-        otvet = reply.exec()
-        if otvet == QMessageBox.StandardButton.Yes:
-            event.accept()
-            global WindowBakery
-            WindowBakery = Windows.WindowsBakery.WindowBakery()
-            WindowBakery.show()
-        else:
-            event.ignore()
