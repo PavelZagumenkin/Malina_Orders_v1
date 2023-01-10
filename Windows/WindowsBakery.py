@@ -294,11 +294,6 @@ class WindowBakery(QtWidgets.QMainWindow):
                 if ValidPoints == None:
                     self.dialogNOvalidOLAP(points[i])
                     return
-        # for i in range(5, len(points)):
-        #     ValidPoints = sheet_OLAP_dayWeek_bakery.Rows(firstOLAPRow).Find(points[i])
-        #     if ValidPoints == None:
-        #         self.dialogNOvalidOLAP(points[i])
-        #         return
         self.hide()
         global WindowBakeryDayWeekEdit
         WindowBakeryDayWeekEdit = Windows.WindowsBakeryTablesDayWeekEdit.WindowBakeryTableDayWeekEdit(pathOLAP_DayWeek, periodDay, points)

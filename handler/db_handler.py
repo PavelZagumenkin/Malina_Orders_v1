@@ -177,10 +177,23 @@ def poiskKfBakery(kod, kfbakeryotvet):
     cur.close()
     con.close()
 
-def update_Kfbakery(kod_text, kbakery):
+def update_KfBakery(kod_text, kbakery):
     con = sqlite3.connect('db/malina_orders.db')
     cur = con.cursor()
     cur.execute(f"UPDATE directory_bakery set KBAKERY = '{kbakery}' where KOD = '{kod_text}'")
     con.commit()
+    cur.close()
+    con.close()
+
+def poisk_sklada (sklad, kfSkladaotvet):
+    con = sqlite3.connect('db/malina_orders.db')
+    cur = con.cursor()
+    # Проверяем, есть ли такой код
+    cur.execute(f'SELECT * FROM koeff_sklada_konditerskoi WHERE KONDITERSKAY="{sklad}";')
+    value = cur.fetchall()
+    if value != []:
+        kfSkladaotvet.emit(value[0][2])
+    else:
+        kfSkladaotvet.emit('Склад отсутствует в БД')
     cur.close()
     con.close()

@@ -6,7 +6,8 @@ class CheckThread(QtCore.QThread):
     layout = QtCore.pyqtSignal(str)
     period = QtCore.pyqtSignal(str)
     prognoz = QtCore.pyqtSignal(list)
-    kfbakery = QtCore.pyqtSignal(str)
+    kfBakery = QtCore.pyqtSignal(str)
+    kfSklada = QtCore.pyqtSignal(float)
 
     # Форма авторизации(поиск по БД в таблице users)
     def thr_login(self, login_text, password_text):
@@ -66,9 +67,12 @@ class CheckThread(QtCore.QThread):
     def thr_saveLayoutInDB(self, kod, name, layout):
         saveLayout(kod, name, layout)
 
-    def thr_poisk_kfbakery(self, kod):
-        poiskKfBakery(kod, self.kfbakery)
+    def thr_poisk_kfBakery(self, kod):
+        poiskKfBakery(kod, self.kfBakery)
 
     # Добавление кф пекарни в БД
-    def thr_updateKfbakery(self, kod_text, kbakery):
-        update_Kfbakery(kod_text, kbakery)
+    def thr_updateKfBakery(self, kod_text, kbakery):
+        update_KfBakery(kod_text, kbakery)
+
+    def thr_poisk_sklada(self, sklad):
+        poisk_sklada(sklad, self.kfSklada)
