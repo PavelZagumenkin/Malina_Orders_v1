@@ -247,7 +247,9 @@ class WindowBakeryTablesEdit(QtWidgets.QMainWindow):
         if ok:
             self.check_db.thr_updateLayout(kod_text, tovar_text, int(kol))
             return(int(kol))
-        return 1
+        else:
+            self.check_db.thr_updateLayout(kod_text, tovar_text, 1)
+            return(1)
 
     def addPeriod(self, period):
         self.check_db.thr_addPeriod(period)

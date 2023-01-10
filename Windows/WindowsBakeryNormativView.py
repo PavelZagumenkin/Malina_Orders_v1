@@ -86,7 +86,9 @@ class WindowBakeryNormativView(QtWidgets.QMainWindow):
         if ok:
             self.check_db.thr_updateKfbakery(kod_text, float(kol))
             return(float(kol))
-        return 1
+        else:
+            self.check_db.thr_updateKfbakery(kod_text, 1.0)
+            return (1.0)
 
     def raschetNormativovSklada(self):
         pass
