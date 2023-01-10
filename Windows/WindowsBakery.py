@@ -13,7 +13,7 @@ import Windows.WindowsBakeryTablesRedact
 import Windows.WindowsBakeryTablesDayWeekEdit
 import Windows.WindowsBakeryTablesDayWeekView
 import Windows.WindowsBakeryTablesDayWeekRedact
-import Windows.WindowsBakeryNormativView
+import Windows.WindowsBakeryNormativEdit
 
 class WindowBakery(QtWidgets.QMainWindow):
     def __init__(self):
@@ -45,7 +45,7 @@ class WindowBakery(QtWidgets.QMainWindow):
         self.ui.btn_prosmotr_koeff_DayWeek.clicked.connect(self.dayWeekTablesView)
         self.ui.btn_edit_koeff_DayWeek.clicked.connect(self.dayWeekTablesRedact)
         self.ui.btn_delete_koeff_DayWeek.clicked.connect(self.dayWeekTablesDelete)
-        self.ui.btn_prosmotrNormativ.clicked.connect(self.normativView)
+        self.ui.btn_Normativ.clicked.connect(self.normativEdit)
 
     def setEndDay(self):
         self.ui.dateEdit_EndDay.setDate(self.ui.dateEdit_startDay.date().addDays(6))
@@ -59,15 +59,13 @@ class WindowBakery(QtWidgets.QMainWindow):
             self.ui.btn_prosmotrPrognoz.setEnabled(False)
             self.ui.btn_editPrognoz.setEnabled(False)
             self.ui.btn_deletePrognoz.setEnabled(False)
-            self.ui.btn_prosmotrNormativ.setEnabled(False)
-            self.ui.btn_editNormativ.setEnabled(False)
+            self.ui.btn_Normativ.setEnabled(False)
         elif self.proverkaPerioda(self.periodDay) == 1:
             self.ui.btn_koeff_Prognoz.setEnabled(False)
             self.ui.btn_prosmotrPrognoz.setEnabled(True)
             self.ui.btn_editPrognoz.setEnabled(True)
             self.ui.btn_deletePrognoz.setEnabled(True)
-            self.ui.btn_prosmotrNormativ.setEnabled(True)
-            self.ui.btn_editNormativ.setEnabled(True)
+            self.ui.btn_Normativ.setEnabled(True)
 
     def proverkaPeriodaKDayWeekFunc(self):
         if self.proverkaPeriodaKDayWeek(self.periodDay) == 0:
@@ -142,7 +140,6 @@ class WindowBakery(QtWidgets.QMainWindow):
         else:
             wb_OLAP_P.Close()
             Excel.Quit()
-            # points = self.ui.formLayoutWidget.findChildren(QtWidgets.QCheckBox)
             self.prognozTablesOpen(pathOLAP_P, self.periodDay)
 
 
@@ -178,7 +175,6 @@ class WindowBakery(QtWidgets.QMainWindow):
         else:
             wb_OLAP_DayWeek.Close()
             Excel.Quit()
-            # points = self.ui.formLayoutWidget.findChildren(QtWidgets.QCheckBox)
             self.dayWeekTablesOpen(pathOLAP_DayWeek, self.periodDay)
 
     def signal_prognoz(self, value):
@@ -317,9 +313,9 @@ class WindowBakery(QtWidgets.QMainWindow):
         self.check_db.thr_deleteKDayWeek(period)
         self.proverkaPeriodaKDayWeekFunc()
 
-    def normativView(self):
+    def normativEdit(self):
         self.hide()
         periodDay = self.periodDay
-        global WindowNormativView
-        WindowNormativView = Windows.WindowsBakeryNormativView.WindowBakeryNormativView(periodDay)
-        WindowNormativView.showMaximized()
+        global WindowNormativEdit
+        WindowNormativEdit = Windows.WindowsBakeryNormativEdit.WindowBakeryNormativEdit(periodDay)
+        WindowNormativEdit.showMaximized()

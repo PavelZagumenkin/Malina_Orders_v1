@@ -259,7 +259,7 @@ class Ui_WindowBakery(object):
         self.btn_editPrognoz.setObjectName("btn_editPrognoz")
         self.btn_editNormativ = QtWidgets.QPushButton(self.centralwidget)
         self.btn_editNormativ.setEnabled(False)
-        self.btn_editNormativ.setGeometry(QtCore.QRect(410, 490, 381, 61))
+        self.btn_editNormativ.setGeometry(QtCore.QRect(280, 540, 241, 61))
         font = QtGui.QFont()
         font.setFamily("Trebuchet MS")
         font.setPointSize(22)
@@ -282,16 +282,16 @@ class Ui_WindowBakery(object):
 "}")
         self.btn_editNormativ.setCheckable(False)
         self.btn_editNormativ.setObjectName("btn_editNormativ")
-        self.btn_prosmotrNormativ = QtWidgets.QPushButton(self.centralwidget)
-        self.btn_prosmotrNormativ.setEnabled(False)
-        self.btn_prosmotrNormativ.setGeometry(QtCore.QRect(10, 490, 381, 61))
+        self.btn_Normativ = QtWidgets.QPushButton(self.centralwidget)
+        self.btn_Normativ.setEnabled(False)
+        self.btn_Normativ.setGeometry(QtCore.QRect(20, 540, 231, 61))
         font = QtGui.QFont()
         font.setFamily("Trebuchet MS")
-        font.setPointSize(22)
+        font.setPointSize(18)
         font.setBold(False)
         font.setWeight(50)
-        self.btn_prosmotrNormativ.setFont(font)
-        self.btn_prosmotrNormativ.setStyleSheet("QPushButton {\n"
+        self.btn_Normativ.setFont(font)
+        self.btn_Normativ.setStyleSheet("QPushButton {\n"
 "background-color: rgb(228, 107, 134);\n"
 "border: none;\n"
 "border-radius: 10px}\n"
@@ -305,8 +305,8 @@ class Ui_WindowBakery(object):
 "border:3px solid  rgb(0, 0, 0);\n"
 "background-color: rgba(228, 107, 134, 1)\n"
 "}")
-        self.btn_prosmotrNormativ.setCheckable(False)
-        self.btn_prosmotrNormativ.setObjectName("btn_prosmotrNormativ")
+        self.btn_Normativ.setCheckable(False)
+        self.btn_Normativ.setObjectName("btn_Normativ")
         self.btn_edit_koeff_DayWeek = QtWidgets.QPushButton(self.centralwidget)
         self.btn_edit_koeff_DayWeek.setEnabled(False)
         self.btn_edit_koeff_DayWeek.setGeometry(QtCore.QRect(410, 410, 171, 51))
@@ -721,6 +721,58 @@ class Ui_WindowBakery(object):
         self.line_11.setFrameShape(QtWidgets.QFrame.Shape.VLine)
         self.line_11.setFrameShadow(QtWidgets.QFrame.Shadow.Sunken)
         self.line_11.setObjectName("line_11")
+        self.btn_deleteNormativ = QtWidgets.QPushButton(self.centralwidget)
+        self.btn_deleteNormativ.setEnabled(False)
+        self.btn_deleteNormativ.setGeometry(QtCore.QRect(550, 540, 231, 61))
+        font = QtGui.QFont()
+        font.setFamily("Trebuchet MS")
+        font.setPointSize(22)
+        font.setBold(False)
+        font.setWeight(50)
+        self.btn_deleteNormativ.setFont(font)
+        self.btn_deleteNormativ.setStyleSheet("QPushButton {\n"
+"background-color: rgb(228, 107, 134);\n"
+"border: none;\n"
+"border-radius: 10px}\n"
+"\n"
+"QPushButton:hover {\n"
+"border: 1px solid  rgb(0, 0, 0);\n"
+"background-color: rgba(228, 107, 134, 0.9)\n"
+"}\n"
+"\n"
+"QPushButton:pressed {\n"
+"border:3px solid  rgb(0, 0, 0);\n"
+"background-color: rgba(228, 107, 134, 1)\n"
+"}")
+        self.btn_deleteNormativ.setCheckable(False)
+        self.btn_deleteNormativ.setObjectName("btn_deleteNormativ")
+        self.label_OLAP_P_3 = QtWidgets.QLabel(self.centralwidget)
+        self.label_OLAP_P_3.setGeometry(QtCore.QRect(30, 500, 761, 21))
+        font = QtGui.QFont()
+        font.setFamily("Trebuchet MS")
+        font.setPointSize(15)
+        self.label_OLAP_P_3.setFont(font)
+        self.label_OLAP_P_3.setObjectName("label_OLAP_P_3")
+        self.line_12 = QtWidgets.QFrame(self.centralwidget)
+        self.line_12.setGeometry(QtCore.QRect(10, 480, 781, 20))
+        self.line_12.setFrameShape(QtWidgets.QFrame.Shape.HLine)
+        self.line_12.setFrameShadow(QtWidgets.QFrame.Shadow.Sunken)
+        self.line_12.setObjectName("line_12")
+        self.line_13 = QtWidgets.QFrame(self.centralwidget)
+        self.line_13.setGeometry(QtCore.QRect(10, 610, 781, 20))
+        self.line_13.setFrameShape(QtWidgets.QFrame.Shape.HLine)
+        self.line_13.setFrameShadow(QtWidgets.QFrame.Shadow.Sunken)
+        self.line_13.setObjectName("line_13")
+        self.line_14 = QtWidgets.QFrame(self.centralwidget)
+        self.line_14.setGeometry(QtCore.QRect(780, 490, 20, 131))
+        self.line_14.setFrameShape(QtWidgets.QFrame.Shape.VLine)
+        self.line_14.setFrameShadow(QtWidgets.QFrame.Shadow.Sunken)
+        self.line_14.setObjectName("line_14")
+        self.line_15 = QtWidgets.QFrame(self.centralwidget)
+        self.line_15.setGeometry(QtCore.QRect(0, 490, 20, 131))
+        self.line_15.setFrameShape(QtWidgets.QFrame.Shape.VLine)
+        self.line_15.setFrameShadow(QtWidgets.QFrame.Shadow.Sunken)
+        self.line_15.setObjectName("line_15")
         WindowBakery.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(WindowBakery)
@@ -741,8 +793,8 @@ class Ui_WindowBakery(object):
         self.label_EndDay.setText(_translate("WindowBakery", "Конец периода"))
         self.btn_prosmotrPrognoz.setText(_translate("WindowBakery", "Посмотреть"))
         self.btn_editPrognoz.setText(_translate("WindowBakery", "Редактировать"))
-        self.btn_editNormativ.setText(_translate("WindowBakery", "Редактировать нормативы"))
-        self.btn_prosmotrNormativ.setText(_translate("WindowBakery", "Посмотреть нормативы"))
+        self.btn_editNormativ.setText(_translate("WindowBakery", "Редактировать"))
+        self.btn_Normativ.setText(_translate("WindowBakery", "Установить"))
         self.btn_edit_koeff_DayWeek.setText(_translate("WindowBakery", "Редактировать"))
         self.btn_download.setText(_translate("WindowBakery", "ВЫГРУЗИТЬ ПЛАНЫ"))
         self.label_OLAP_P_2.setText(_translate("WindowBakery", "Выберите кондитерские для автозаказа"))
@@ -776,6 +828,8 @@ class Ui_WindowBakery(object):
         self.cb_rokot.setText(_translate("WindowBakery", "Рокот"))
         self.cb_rahova.setText(_translate("WindowBakery", "Рахова"))
         self.cb_pavilon.setText(_translate("WindowBakery", "ПП(павильон)"))
+        self.btn_deleteNormativ.setText(_translate("WindowBakery", "Удалить"))
+        self.label_OLAP_P_3.setText(_translate("WindowBakery", "Нормативы пекарни"))
 
 
 if __name__ == "__main__":

@@ -189,7 +189,7 @@ def poisk_sklada (sklad, kfSkladaotvet):
     con = sqlite3.connect('db/malina_orders.db')
     cur = con.cursor()
     # Проверяем, есть ли такой код
-    cur.execute(f'SELECT * FROM koeff_sklada_konditerskoi WHERE KONDITERSKAY="{sklad}";')
+    cur.execute(f'SELECT * FROM konditerskie WHERE KONDITERSKAY="{sklad}";')
     value = cur.fetchall()
     if value != []:
         kfSkladaotvet.emit(str(value[0][2]))
