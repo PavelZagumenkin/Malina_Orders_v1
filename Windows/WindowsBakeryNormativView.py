@@ -3,6 +3,7 @@ import json
 from ui.bakeryTables import Ui_WindowBakeryTables
 from PyQt6.QtGui import QFont
 from PyQt6.QtWidgets import QTableWidgetItem
+from PyQt6.QtWidgets import QInputDialog
 from PyQt6.QtWidgets import QMessageBox
 from handler.check_db import CheckThread
 import Windows.WindowsBakery
@@ -15,6 +16,7 @@ class WindowBakeryNormativView(QtWidgets.QMainWindow):
         self.ui.setupUi(self)
         self.check_db = CheckThread()
         self.check_db.prognoz.connect(self.signal_prognoz)
+        self.check_db.kfbakery.connect(self.signal_kfbakery)
         self.setWindowTitle("Просмотр норматива приготовления")
         self.prognoz = self.poiskPrognoza(periodDay)
         self.headers = json.loads(self.prognoz[0].strip("\'"))
@@ -34,8 +36,14 @@ class WindowBakeryNormativView(QtWidgets.QMainWindow):
             for row in self.data.get(col):
                 if self.data[col][row] == 0:
                     item = QTableWidgetItem('')
-                elif int(row) == 0 or int(col) == 2:
-                    item = QTableWidgetItem('')
+                elif int(row) == 0:
+                    item = QTableWidgetItem(str(self.raschetNormativovSklada()))
+                    # self.ui.tableWidget.setItem(int(row), int(col) - 2, item)
+                elif int(col) == 2:
+                    kod = self.data['4'][row]
+                    tovar = self.data['5'][row]
+                    item = QTableWidgetItem(str(self.raschetNormativovBakery(kod, tovar)))
+                    self.ui.tableWidget.setItem(int(row), int(col) - 2, item)
                 else:
                     item = QTableWidgetItem(str(self.data[col][row]))
                 self.ui.tableWidget.setItem(int(row), int(col) - 2, item)
@@ -44,12 +52,7 @@ class WindowBakeryNormativView(QtWidgets.QMainWindow):
         self.ui.tableWidget.setItem(0, 4, QTableWidgetItem("Кф. склада кондитерской"))
         self.ui.tableWidget.item(0, 4).setFont(self.font)
         self.ui.tableWidget.item(0, 4).setFlags(QtCore.Qt.ItemFlag.ItemIsEnabled)
-        for col in self.data:
-            for row in self.data.get(col):
-                if int(row) == 0:
-                    pass
-                elif int(col) == 2:
-                    pass
+
 
 
 
@@ -63,7 +66,29 @@ class WindowBakeryNormativView(QtWidgets.QMainWindow):
         self.check_db.thr_poiskPrognoza(periodDay)
         return(prognoz)
 
-    def raschetNormativov(self):
+    def signal_kfbakery(self, value):
+        global kfbakery
+        if value != 'КФ отсутствует в БД':
+            kfbakery = value
+        else:
+            kfbakery = self.dialogAddKfBakery()
+
+    def raschetNormativovBakery(self, kod, tovar):
+        global kod_text
+        kod_text = kod
+        global tovar_text
+        tovar_text = tovar
+        self.check_db.thr_poisk_kfbakery(kod)
+        return(kfbakery)
+
+    def dialogAddKfBakery(self):
+        kol, ok = QInputDialog.getDouble(self, "Отсуствует коэффициент пекарни", f"Введите коэффициент пекарни для {tovar_text} код изделия {kod_text}:")
+        if ok:
+            self.check_db.thr_updateKfbakery(kod_text, float(kol))
+            return(float(kol))
+        return 1
+
+    def raschetNormativovSklada(self):
         pass
 
     def closeEvent(self, event):
