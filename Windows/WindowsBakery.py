@@ -23,6 +23,7 @@ class WindowBakery(QtWidgets.QMainWindow):
         self.check_db = CheckThread()
         self.check_db.period.connect(self.signal_period)
         self.check_db.prognoz.connect(self.signal_prognoz)
+        self.check_db.normativ.connect(self.signal_normativ)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("image/icon.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.setWindowIcon(icon)
@@ -52,6 +53,7 @@ class WindowBakery(QtWidgets.QMainWindow):
         self.periodDay = [self.ui.dateEdit_startDay.date(), self.ui.dateEdit_EndDay.date()]
         self.proverkaPeriodaPrognozFunc()
         self.proverkaPeriodaKDayWeekFunc()
+        self.proverkaNormativaFunc()
 
     def proverkaPeriodaPrognozFunc(self):
         if self.proverkaPerioda(self.periodDay) == 0:
@@ -78,6 +80,27 @@ class WindowBakery(QtWidgets.QMainWindow):
             self.ui.btn_prosmotr_koeff_DayWeek.setEnabled(True)
             self.ui.btn_edit_koeff_DayWeek.setEnabled(True)
             self.ui.btn_delete_koeff_DayWeek.setEnabled(True)
+
+    def proverkaNormativaFunc(self):
+        if self.proverkaNormativa(self.periodDay) == 0:
+            self.ui.btn_Normativ.setEnabled(True)
+            self.ui.btn_editNormativ.setEnabled(False)
+            self.ui.btn_deleteNormativ.setEnabled(False)
+        elif self.proverkaNormativa(self.periodDay) == 1:
+            self.ui.btn_Normativ.setEnabled(False)
+            self.ui.btn_editNormativ.setEnabled(True)
+            self.ui.btn_deleteNormativ.setEnabled(True)
+
+    def proverkaNormativa(self, period):
+        self.check_db.thr_proverkaNormativa(period)
+        return otvetNormativ
+
+    def signal_normativ(self, value):
+        global otvetNormativ
+        if value == 'Пусто':
+            otvetNormativ = 0
+        elif value == 'За этот период есть сформированный норматив':
+            otvetNormativ = 1
 
     def proverkaPerioda(self, period):
         self.check_db.thr_proverkaPerioda(period)

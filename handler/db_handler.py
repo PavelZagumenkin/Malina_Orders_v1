@@ -19,7 +19,7 @@ def seach_kod(kod, signal):
     con = sqlite3.connect('db/malina_orders.db')
     cur = con.cursor()
     # Проверяем, есть ли такой код
-    cur.execute(f'SELECT * FROM directory_bakery WHERE KOD="{kod}";')
+    cur.execute(f'SELECT * FROM catalog_food WHERE KOD="{kod}";')
     value = cur.fetchall()
     if value != []:
         signal.emit(str(value[0][3]))
@@ -31,7 +31,7 @@ def seach_kod(kod, signal):
 def update_Layout(kod_text, tovar_text, layout):
     con = sqlite3.connect('db/malina_orders.db')
     cur = con.cursor()
-    cur.execute(f"INSERT INTO directory_bakery (KOD, NAME, LAYOUT) VALUES ('{kod_text}', '{tovar_text}', '{layout}');")
+    cur.execute(f"INSERT INTO catalog_food (KOD, NAME, LAYOUT) VALUES ('{kod_text}', '{tovar_text}', '{layout}');")
     con.commit()
     cur.close()
     con.close()
@@ -159,7 +159,7 @@ def deleteKDayWeekInDB(period):
 def saveLayout(kod, name, layuot):
     con = sqlite3.connect('db/malina_orders.db')
     cur = con.cursor()
-    cur.execute(f"UPDATE directory_bakery set NAME = '{name}', LAYOUT = '{layuot}' where KOD = '{kod}'")
+    cur.execute(f"UPDATE catalog_food set NAME = '{name}', LAYOUT = '{layuot}' where KOD = '{kod}'")
     con.commit()
     cur.close()
     con.close()
@@ -168,7 +168,7 @@ def poiskKfBakery(kod, kfbakeryotvet):
     con = sqlite3.connect('db/malina_orders.db')
     cur = con.cursor()
     # Проверяем, есть ли такой код
-    cur.execute(f'SELECT * FROM directory_bakery WHERE KOD="{kod}";')
+    cur.execute(f'SELECT * FROM catalog_food WHERE KOD="{kod}";')
     value = cur.fetchall()
     if value[0][4] != '':
         kfbakeryotvet.emit(str(value[0][4]))
@@ -180,7 +180,7 @@ def poiskKfBakery(kod, kfbakeryotvet):
 def update_KfBakery(kod_text, kbakery):
     con = sqlite3.connect('db/malina_orders.db')
     cur = con.cursor()
-    cur.execute(f"UPDATE directory_bakery set KBAKERY = '{kbakery}' where KOD = '{kod_text}'")
+    cur.execute(f"UPDATE catalog_food set KBAKERY = '{kbakery}' where KOD = '{kod_text}'")
     con.commit()
     cur.close()
     con.close()
@@ -189,11 +189,59 @@ def poisk_sklada (sklad, kfSkladaotvet):
     con = sqlite3.connect('db/malina_orders.db')
     cur = con.cursor()
     # Проверяем, есть ли такой код
-    cur.execute(f'SELECT * FROM konditerskie WHERE KONDITERSKAY="{sklad}";')
+    cur.execute(f'SELECT * FROM catalog_konditerskie WHERE KONDITERSKAY="{sklad}";')
     value = cur.fetchall()
     if value != []:
         kfSkladaotvet.emit(str(value[0][2]))
     else:
         kfSkladaotvet.emit('Склад отсутствует в БД')
+    cur.close()
+    con.close()
+
+def saveKfBakery(kod, name, layuot):
+    con = sqlite3.connect('db/malina_orders.db')
+    cur = con.cursor()
+    cur.execute(f"UPDATE catalog_food set NAME = '{name}', KBAKERY = '{layuot}' where KOD = '{kod}'")
+    con.commit()
+    cur.close()
+    con.close()
+
+def proverkaNormativa(period, signal):
+    con = sqlite3.connect('db/malina_orders.db')
+    cur = con.cursor()
+    cur.execute(f"SELECT * FROM normativ_bakery WHERE PERIOD='''{period}''';")
+    value = cur.fetchall()
+    if value == []:
+        signal.emit('Пусто')
+    else:
+        if value[0][2] == None:
+            signal.emit('Пусто')
+        if value[0][3] != None:
+            signal.emit('За этот период есть сформированный норматив')
+    cur.close()
+    con.close()
+
+def addPeriodNormativInDB(period):
+    con = sqlite3.connect('db/malina_orders.db')
+    cur = con.cursor()
+    cur.execute(f"INSERT INTO normativ_bakery (PERIOD) VALUES ('''{period}''');")
+    con.commit()
+    cur.close()
+    con.close()
+
+def deleteNormativInDB(period):
+    con = sqlite3.connect('db/malina_orders.db')
+    cur = con.cursor()
+    cur.execute(f"DELETE FROM v where PERIOD = '''{period}'''")
+    con.commit()
+    cur.close()
+    con.close()
+
+def updateNormativ(savePeriod, saveHeaders, saveDB, saveNull):
+    con = sqlite3.connect('db/malina_orders.db')
+    cur = con.cursor()
+    cur.execute(
+        f"UPDATE normativ_bakery set HEADERSNORMATIV = '''{saveHeaders}''', DATANORMATIV = '''{saveDB}''', SAVENULLNORMATIV = '''{saveNull}''' where PERIOD = '''{savePeriod}'''")
+    con.commit()
     cur.close()
     con.close()

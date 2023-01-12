@@ -8,6 +8,7 @@ class CheckThread(QtCore.QThread):
     prognoz = QtCore.pyqtSignal(list)
     kfBakery = QtCore.pyqtSignal(str)
     kfSklada = QtCore.pyqtSignal(str)
+    normativ = QtCore.pyqtSignal(str)
 
     # Форма авторизации(поиск по БД в таблице users)
     def thr_login(self, login_text, password_text):
@@ -67,6 +68,9 @@ class CheckThread(QtCore.QThread):
     def thr_saveLayoutInDB(self, kod, name, layout):
         saveLayout(kod, name, layout)
 
+    def thr_saveKfBakeryInDB(self, kod, name, layout):
+        saveKfBakery(kod, name, layout)
+
     def thr_poisk_kfBakery(self, kod):
         poiskKfBakery(kod, self.kfBakery)
 
@@ -76,3 +80,15 @@ class CheckThread(QtCore.QThread):
 
     def thr_poisk_sklada(self, sklad):
         poisk_sklada(sklad, self.kfSklada)
+
+    def thr_proverkaNormativa(self, period):
+        proverkaNormativa(period, self.normativ)
+
+    def thr_addPeriodInNormativ(self, period):
+        addPeriodNormativInDB(period)
+
+    def thr_delNormativ(self, period):
+        deleteNormativInDB(period)
+
+    def thr_updateNormativ(self, savePeriod, saveHeaders, saveDB, saveNull):
+        updateNormativ(savePeriod, saveHeaders, saveDB, saveNull)

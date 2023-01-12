@@ -18,6 +18,7 @@ class WindowBakeryNormativEdit(QtWidgets.QMainWindow):
         self.check_db.prognoz.connect(self.signal_prognoz)
         self.check_db.kfBakery.connect(self.signal_kfBakery)
         self.check_db.kfSklada.connect(self.signal_kfSklada)
+        self.check_db.normativ.connect(self.signal_normativ)
         self.setWindowTitle("Просмотр норматива приготовления")
         self.prognoz = self.poiskPrognoza(periodDay)
         self.headers = json.loads(self.prognoz[0].strip("\'"))
@@ -35,6 +36,7 @@ class WindowBakeryNormativEdit(QtWidgets.QMainWindow):
         self.ui.tableWidget.setColumnWidth(4, 130)
         self.font = QtGui.QFont("Times", 10, QFont.Weight.Bold)
         self.ui.tableWidget.horizontalHeader().setFont(self.font)
+        self.periodDay = periodDay
         # Установливаем значения в таблицу
         for col in self.data:
             for row in self.data.get(col):
@@ -94,6 +96,13 @@ class WindowBakeryNormativEdit(QtWidgets.QMainWindow):
         self.ui.tableWidget.setItem(0, 4, QTableWidgetItem("Кф. склада кондитерской"))
         self.ui.tableWidget.item(0, 4).setFont(self.font)
         self.ui.tableWidget.item(0, 4).setFlags(QtCore.Qt.ItemFlag.ItemIsEnabled)
+        self.addPeriodInNormativ(self.periodDay)
+
+    def delNormativInDB(self, period):
+        self.check_db.thr_delNormativ(period)
+
+    def addPeriodInNormativ(self, period):
+        self.check_db.thr_addPeriodInNormativ(period)
 
     def raschetNormativov(self):
         buttonClicked = self.sender()
@@ -108,7 +117,35 @@ class WindowBakeryNormativEdit(QtWidgets.QMainWindow):
                 self.ui.tableWidget.setItem(index.row(), i, QTableWidgetItem(str(result)))
 
     def saveAndCloseDef(self):
-        pass
+        savePeriod = self.periodDay
+        saveNull = data.copy()
+        saveHeaders = self.headers.copy()
+        saveDB = {}
+        for col in range(0, self.ui.tableWidget.columnCount()):
+            saveDB[col] = {}
+            for row in range(0, self.ui.tableWidget.rowCount()):
+                if col == 0 or row == 0:
+                    if self.ui.tableWidget.cellWidget(row, col) == None:
+                        saveDB[col][row] = 0
+                    elif (row == 0 and col == 3) or (row == 0 and col == 4):
+                        saveDB[col][row] = 0
+                    else:
+                        saveDB[col][row] = float(self.ui.tableWidget.cellWidget(row, col).value())
+                elif col == 2 or col == 3 or col == 4:
+                    saveDB[col][row] = self.ui.tableWidget.item(row, col).text()
+                else:
+                    saveDB[col][row] = float(self.ui.tableWidget.item(row, col).text())
+        self.insertNormativInDB(savePeriod, json.dumps(saveHeaders, ensure_ascii=False), json.dumps(saveDB, ensure_ascii=False), json.dumps(saveNull, ensure_ascii=False))
+        for i in range(1, self.ui.tableWidget.rowCount()):
+            self.saveKfBakeryInDB(self.ui.tableWidget.item(i, 2).text(), self.ui.tableWidget.item(i, 3).text(), int(self.ui.tableWidget.cellWidget(i, 0).value()))
+        self.close()
+
+    def insertNormativInDB(self, savePeriod, saveHeaders, saveDB, saveNull):
+        self.check_db.thr_updateNormativ(savePeriod, saveHeaders, saveDB, saveNull)
+
+    def saveKfBakeryInDB(self, kod, name, layout):
+        self.check_db.thr_saveKfBakeryInDB(kod, name, layout)
+
 
     def signal_prognoz(self, value):
         headers = value[0][2]
@@ -167,6 +204,17 @@ class WindowBakeryNormativEdit(QtWidgets.QMainWindow):
         dialogBox.setStandardButtons(QMessageBox.StandardButton.Ok | QMessageBox.StandardButton.Cancel)
         dialogBox.exec()
 
+    def proverkaNormativa(self, period):
+        self.check_db.thr_proverkaNormativa(period)
+        return otvetNormativ
+
+    def signal_normativ(self, value):
+        global otvetNormativ
+        if value == 'Пусто':
+            otvetNormativ = 0
+        elif value == 'За этот период есть сформированный норматив':
+            otvetNormativ = 1
+
     def closeEvent(self, event):
         reply = QMessageBox()
         reply.setWindowTitle("Завершение работы с таблицой")
@@ -178,8 +226,8 @@ class WindowBakeryNormativEdit(QtWidgets.QMainWindow):
         otvet = reply.exec()
         if otvet == QMessageBox.StandardButton.Yes:
             event.accept()
-            # if self.proverkaPerioda(self.periodDay) == 0:
-            #     self.delPeriodInDB(self.periodDay)
+            if self.proverkaNormativa(self.periodDay) == 0:
+                self.delNormativInDB(self.periodDay)
             global WindowBakery
             WindowBakery = Windows.WindowsBakery.WindowBakery()
             WindowBakery.show()
