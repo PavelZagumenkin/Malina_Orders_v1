@@ -98,8 +98,8 @@ class WindowBakeryNormativEdit(QtWidgets.QMainWindow):
         self.ui.tableWidget.item(0, 4).setFlags(QtCore.Qt.ItemFlag.ItemIsEnabled)
         self.addPeriodInNormativ(self.periodDay)
 
-    def delNormativInDB(self, period):
-        self.check_db.thr_delNormativ(period)
+    def deleteNormativInDB(self, period):
+        self.check_db.thr_deleteNormativ(period)
 
     def addPeriodInNormativ(self, period):
         self.check_db.thr_addPeriodInNormativ(period)
@@ -227,7 +227,7 @@ class WindowBakeryNormativEdit(QtWidgets.QMainWindow):
         if otvet == QMessageBox.StandardButton.Yes:
             event.accept()
             if self.proverkaNormativa(self.periodDay) == 0:
-                self.delNormativInDB(self.periodDay)
+                self.deleteNormativInDB(self.periodDay)
             global WindowBakery
             WindowBakery = Windows.WindowsBakery.WindowBakery()
             WindowBakery.show()

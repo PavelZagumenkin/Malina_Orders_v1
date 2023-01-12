@@ -87,7 +87,7 @@ class CheckThread(QtCore.QThread):
     def thr_addPeriodInNormativ(self, period):
         addPeriodNormativInDB(period)
 
-    def thr_delNormativ(self, period):
+    def thr_deleteNormativ(self, period):
         deleteNormativInDB(period)
 
     def thr_updateNormativ(self, savePeriod, saveHeaders, saveDB, saveNull):

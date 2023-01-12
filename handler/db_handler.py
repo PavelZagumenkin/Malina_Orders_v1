@@ -232,7 +232,7 @@ def addPeriodNormativInDB(period):
 def deleteNormativInDB(period):
     con = sqlite3.connect('db/malina_orders.db')
     cur = con.cursor()
-    cur.execute(f"DELETE FROM v where PERIOD = '''{period}'''")
+    cur.execute(f"DELETE FROM normativ_bakery where PERIOD = '''{period}'''")
     con.commit()
     cur.close()
     con.close()
