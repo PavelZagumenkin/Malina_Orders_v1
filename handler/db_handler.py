@@ -245,3 +245,11 @@ def updateNormativ(savePeriod, saveHeaders, saveDB, saveNull):
     con.commit()
     cur.close()
     con.close()
+
+def updateKfSklada(sklad, kf):
+    con = sqlite3.connect('db/malina_orders.db')
+    cur = con.cursor()
+    cur.execute(f"UPDATE catalog_konditerskie set KOEFFBAKERY = '{kf}' where KONDITERSKAY = '{sklad}'")
+    con.commit()
+    cur.close()
+    con.close()

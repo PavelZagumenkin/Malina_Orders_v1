@@ -92,3 +92,6 @@ class CheckThread(QtCore.QThread):
 
     def thr_updateNormativ(self, savePeriod, saveHeaders, saveDB, saveNull):
         updateNormativ(savePeriod, saveHeaders, saveDB, saveNull)
+
+    def thr_saveKfSkladaInDB(self, sklad, kf):
+        updateKfSklada(sklad, kf)
