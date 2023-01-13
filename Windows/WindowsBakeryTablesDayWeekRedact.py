@@ -29,7 +29,7 @@ class WindowBakeryTablesDayWeekRedact(QtWidgets.QMainWindow):
         for col in self.data:
             for row in self.data.get(col):
                 if self.data[col][row] == 0:
-                    if row == '0':
+                    if row == '0' and int(col) < 2:
                         item = QTableWidgetItem('')
                     else:
                         item = QTableWidgetItem('0')
@@ -43,14 +43,14 @@ class WindowBakeryTablesDayWeekRedact(QtWidgets.QMainWindow):
             self.DspinboxCol.wheelEvent = lambda event: None
             self.ui.tableWidget.setCellWidget(0, col_spin, self.DspinboxCol)
             self.ui.tableWidget.cellWidget(0, col_spin).setValue(float(self.ui.tableWidget.item(0, col_spin).text()))
-            self.ui.tableWidget.cellWidget(0, col_spin).setSingleStep(0.05)
+            self.ui.tableWidget.cellWidget(0, col_spin).setSingleStep(0.01)
             self.ui.tableWidget.cellWidget(0, col_spin).valueChanged.connect(self.raschetKDayWeek)
         for row_spin in range(1, self.ui.tableWidget.rowCount()):
             self.DspinboxRow = QtWidgets.QDoubleSpinBox()
             self.DspinboxRow.wheelEvent = lambda event: None
             self.ui.tableWidget.setCellWidget(row_spin, 0, self.DspinboxRow)
             self.ui.tableWidget.cellWidget(row_spin, 0).setValue(float(self.ui.tableWidget.item(row_spin, 0).text()))
-            self.ui.tableWidget.cellWidget(row_spin, 0).setSingleStep(0.05)
+            self.ui.tableWidget.cellWidget(row_spin, 0).setSingleStep(0.01)
             self.ui.tableWidget.cellWidget(row_spin, 0).valueChanged.connect(self.raschetKDayWeek)
         self.periodDay = periodDay
         self.SaveAndClose = QtWidgets.QPushButton()
@@ -117,11 +117,11 @@ class WindowBakeryTablesDayWeekRedact(QtWidgets.QMainWindow):
         index = self.ui.tableWidget.indexAt(buttonClicked.pos())
         if index.row() == 0:
             for i in range(1, self.ui.tableWidget.rowCount()):
-                result = round(float(saveZnach[str(index.column())][str(i)]) * float(self.ui.tableWidget.cellWidget(0, index.column()).value()) * float(self.ui.tableWidget.cellWidget(i, 0).value()), 4)
+                result = round(float(saveZnach[str(index.column())][str(i)]) + float(self.ui.tableWidget.cellWidget(0, index.column()).value()) + float(self.ui.tableWidget.cellWidget(i, 0).value()), 4)
                 self.ui.tableWidget.setItem(i, index.column(), QTableWidgetItem(str(result)))
         else:
             for i in range(2, self.ui.tableWidget.columnCount()):
-                result = round(float(saveZnach[str(i)][str(index.row())]) * float(self.ui.tableWidget.cellWidget(index.row(), 0).value()) * float(self.ui.tableWidget.cellWidget(0, i).value()), 4)
+                result = round(float(saveZnach[str(i)][str(index.row())]) + float(self.ui.tableWidget.cellWidget(index.row(), 0).value()) + float(self.ui.tableWidget.cellWidget(0, i).value()), 4)
                 self.ui.tableWidget.setItem(index.row(), i, QTableWidgetItem(str(result)))
 
 
