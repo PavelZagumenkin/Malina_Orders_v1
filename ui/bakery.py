@@ -332,16 +332,16 @@ class Ui_WindowBakery(object):
 "}")
         self.btn_edit_koeff_DayWeek.setCheckable(False)
         self.btn_edit_koeff_DayWeek.setObjectName("btn_edit_koeff_DayWeek")
-        self.btn_download = QtWidgets.QPushButton(self.centralwidget)
-        self.btn_download.setEnabled(False)
-        self.btn_download.setGeometry(QtCore.QRect(820, 520, 391, 71))
+        self.btn_download_Normativ = QtWidgets.QPushButton(self.centralwidget)
+        self.btn_download_Normativ.setEnabled(False)
+        self.btn_download_Normativ.setGeometry(QtCore.QRect(820, 480, 391, 61))
         font = QtGui.QFont()
         font.setFamily("Trebuchet MS")
-        font.setPointSize(28)
+        font.setPointSize(20)
         font.setBold(True)
         font.setWeight(75)
-        self.btn_download.setFont(font)
-        self.btn_download.setStyleSheet("QPushButton {\n"
+        self.btn_download_Normativ.setFont(font)
+        self.btn_download_Normativ.setStyleSheet("QPushButton {\n"
 "background-color: rgb(228, 107, 134);\n"
 "border: none;\n"
 "border-radius: 10px}\n"
@@ -355,8 +355,8 @@ class Ui_WindowBakery(object):
 "border:3px solid  rgb(0, 0, 0);\n"
 "background-color: rgba(228, 107, 134, 1)\n"
 "}")
-        self.btn_download.setCheckable(False)
-        self.btn_download.setObjectName("btn_download")
+        self.btn_download_Normativ.setCheckable(False)
+        self.btn_download_Normativ.setObjectName("btn_download_Normativ")
         self.label_OLAP_P_2 = QtWidgets.QLabel(self.centralwidget)
         self.label_OLAP_P_2.setGeometry(QtCore.QRect(830, 20, 381, 31))
         font = QtGui.QFont()
@@ -773,6 +773,31 @@ class Ui_WindowBakery(object):
         self.line_15.setFrameShape(QtWidgets.QFrame.Shape.VLine)
         self.line_15.setFrameShadow(QtWidgets.QFrame.Shadow.Sunken)
         self.line_15.setObjectName("line_15")
+        self.btn_download_2 = QtWidgets.QPushButton(self.centralwidget)
+        self.btn_download_2.setEnabled(False)
+        self.btn_download_2.setGeometry(QtCore.QRect(820, 550, 391, 61))
+        font = QtGui.QFont()
+        font.setFamily("Trebuchet MS")
+        font.setPointSize(20)
+        font.setBold(True)
+        font.setWeight(75)
+        self.btn_download_2.setFont(font)
+        self.btn_download_2.setStyleSheet("QPushButton {\n"
+"background-color: rgb(228, 107, 134);\n"
+"border: none;\n"
+"border-radius: 10px}\n"
+"\n"
+"QPushButton:hover {\n"
+"border: 1px solid  rgb(0, 0, 0);\n"
+"background-color: rgba(228, 107, 134, 0.9)\n"
+"}\n"
+"\n"
+"QPushButton:pressed {\n"
+"border:3px solid  rgb(0, 0, 0);\n"
+"background-color: rgba(228, 107, 134, 1)\n"
+"}")
+        self.btn_download_2.setCheckable(False)
+        self.btn_download_2.setObjectName("btn_download_2")
         WindowBakery.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(WindowBakery)
@@ -796,7 +821,7 @@ class Ui_WindowBakery(object):
         self.btn_editNormativ.setText(_translate("WindowBakery", "Редактировать"))
         self.btn_Normativ.setText(_translate("WindowBakery", "Установить"))
         self.btn_edit_koeff_DayWeek.setText(_translate("WindowBakery", "Редактировать"))
-        self.btn_download.setText(_translate("WindowBakery", "ВЫГРУЗИТЬ ПЛАНЫ"))
+        self.btn_download_Normativ.setText(_translate("WindowBakery", "ВЫГРУЗИТЬ НОРМАТИВЫ"))
         self.label_OLAP_P_2.setText(_translate("WindowBakery", "Выберите кондитерские для автозаказа"))
         self.btn_prosmotr_koeff_DayWeek.setText(_translate("WindowBakery", "Посмотреть"))
         self.btn_deletePrognoz.setText(_translate("WindowBakery", "Удалить"))
@@ -830,6 +855,7 @@ class Ui_WindowBakery(object):
         self.cb_pavilon.setText(_translate("WindowBakery", "ПП(павильон)"))
         self.btn_deleteNormativ.setText(_translate("WindowBakery", "Удалить"))
         self.label_OLAP_P_3.setText(_translate("WindowBakery", "Нормативы пекарни"))
+        self.btn_download_2.setText(_translate("WindowBakery", "ВЫГРУЗИТЬ ВЫКЛАДКУ"))
 
 
 if __name__ == "__main__":

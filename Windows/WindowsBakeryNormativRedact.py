@@ -39,7 +39,10 @@ class WindowBakeryNormativRedact(QtWidgets.QMainWindow):
                     if int(row) == 0:
                         item = QTableWidgetItem('')
                     else:
-                        item = QTableWidgetItem(str(0.0))
+                        if int(col) != 0:
+                            item = QTableWidgetItem('0.0')
+                        else:
+                            item = QTableWidgetItem('0,00')
                     self.ui.tableWidget.setItem(int(row), int(col), item)
                 elif int(row) == 0:
                     self.DspinboxRow = QtWidgets.QDoubleSpinBox()

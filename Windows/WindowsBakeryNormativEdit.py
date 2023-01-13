@@ -179,6 +179,8 @@ class WindowBakeryNormativEdit(QtWidgets.QMainWindow):
     def dialogAddKfBakery(self):
         kol, ok = QInputDialog.getDouble(self, "Отсуствует коэффициент пекарни", f"Введите коэффициент пекарни для {tovar_text} код изделия {kod_text}:")
         if ok:
+            if float(kol) == 0:
+                kol = '1.0'
             self.check_db.thr_updateKfBakery(kod_text, float(kol))
             return(float(kol))
         else:

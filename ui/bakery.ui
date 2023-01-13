@@ -638,22 +638,22 @@ background-color: rgba(228, 107, 134, 1)
      <bool>false</bool>
     </property>
    </widget>
-   <widget class="QPushButton" name="btn_download">
+   <widget class="QPushButton" name="btn_download_Normativ">
     <property name="enabled">
      <bool>false</bool>
     </property>
     <property name="geometry">
      <rect>
       <x>820</x>
-      <y>520</y>
+      <y>480</y>
       <width>391</width>
-      <height>71</height>
+      <height>61</height>
      </rect>
     </property>
     <property name="font">
      <font>
       <family>Trebuchet MS</family>
-      <pointsize>28</pointsize>
+      <pointsize>20</pointsize>
       <weight>75</weight>
       <bold>true</bold>
      </font>
@@ -675,7 +675,7 @@ background-color: rgba(228, 107, 134, 1)
 }</string>
     </property>
     <property name="text">
-     <string>ВЫГРУЗИТЬ ПЛАНЫ</string>
+     <string>ВЫГРУЗИТЬ НОРМАТИВЫ</string>
     </property>
     <property name="checkable">
      <bool>false</bool>
@@ -1575,6 +1575,49 @@ background-color: rgba(228, 107, 134, 1)
     </property>
     <property name="orientation">
      <enum>Qt::Vertical</enum>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_download_2">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>820</x>
+      <y>550</y>
+      <width>391</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Trebuchet MS</family>
+      <pointsize>20</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+background-color: rgb(228, 107, 134);
+border: none;
+border-radius: 10px}
+
+QPushButton:hover {
+border: 1px solid  rgb(0, 0, 0);
+background-color: rgba(228, 107, 134, 0.9)
+}
+
+QPushButton:pressed {
+border:3px solid  rgb(0, 0, 0);
+background-color: rgba(228, 107, 134, 1)
+}</string>
+    </property>
+    <property name="text">
+     <string>ВЫГРУЗИТЬ ВЫКЛАДКУ</string>
+    </property>
+    <property name="checkable">
+     <bool>false</bool>
     </property>
    </widget>
   </widget>
