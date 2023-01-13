@@ -170,7 +170,7 @@ def poiskKfBakery(kod, kfbakeryotvet):
     # Проверяем, есть ли такой код
     cur.execute(f'SELECT * FROM catalog_food WHERE KOD="{kod}";')
     value = cur.fetchall()
-    if value[0][4] != '':
+    if value[0][4] != None:
         kfbakeryotvet.emit(str(value[0][4]))
     else:
         kfbakeryotvet.emit('КФ отсутствует в БД')
