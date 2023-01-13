@@ -1,4 +1,6 @@
 import datetime
+import os
+
 import win32com.client
 import json
 from PyQt6 import QtCore, QtWidgets, QtGui
@@ -51,6 +53,7 @@ class WindowBakery(QtWidgets.QMainWindow):
         self.ui.btn_Normativ.clicked.connect(self.normativ)
         self.ui.btn_editNormativ.clicked.connect(self.normativTablesRedact)
         self.ui.btn_deleteNormativ.clicked.connect(self.dialogDeleteNormativ)
+        self.ui.btn_download_Normativ.clicked.connect(self.saveFileDialog)
 
     def setEndDay(self):
         self.ui.dateEdit_EndDay.setDate(self.ui.dateEdit_startDay.date().addDays(6))
@@ -378,3 +381,13 @@ class WindowBakery(QtWidgets.QMainWindow):
         global WindowNormativEdit
         WindowNormativEdit = Windows.WindowsBakeryNormativEdit.WindowBakeryNormativEdit(periodDay)
         WindowNormativEdit.showMaximized()
+
+    def saveFileDialog(self):
+        fileName, _ = QFileDialog.getSaveFileName(
+            parent = self,
+            caption = "Сохранение данных",
+            directory = os.path.expanduser('~') + r'\Desktop' + f"\Нормативы для пекарни с {self.periodDay[0].toString('dd.MM.yyyy')} по {self.periodDay[1].toString('dd.MM.yyyy')}.xlsx",
+            filter = "All Files (*);",
+            initialFilter = "Excel Files (*.xlsx)")
+        if fileName:
+            print(fileName)
