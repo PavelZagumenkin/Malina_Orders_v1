@@ -71,7 +71,8 @@ class WindowBakery(QtWidgets.QMainWindow):
             self.ui.btn_prosmotrPrognoz.setEnabled(True)
             self.ui.btn_editPrognoz.setEnabled(True)
             self.ui.btn_deletePrognoz.setEnabled(True)
-            self.ui.btn_Normativ.setEnabled(True)
+            if self.proverkaNormativa(self.periodDay) == 0:
+                self.ui.btn_Normativ.setEnabled(True)
 
     def proverkaPeriodaKDayWeekFunc(self):
         if self.proverkaPeriodaKDayWeek(self.periodDay) == 0:
@@ -87,7 +88,6 @@ class WindowBakery(QtWidgets.QMainWindow):
 
     def proverkaNormativaFunc(self):
         if self.proverkaNormativa(self.periodDay) == 0:
-            self.ui.btn_Normativ.setEnabled(True)
             self.ui.btn_editNormativ.setEnabled(False)
             self.ui.btn_deleteNormativ.setEnabled(False)
         elif self.proverkaNormativa(self.periodDay) == 1:
@@ -317,6 +317,7 @@ class WindowBakery(QtWidgets.QMainWindow):
         if self.proverkaNormativa(self.periodDay) == 1:
             self.check_db.thr_deleteNormativ(period)
             self.proverkaNormativaFunc()
+            self.proverkaPeriodaPrognozFunc()
 
     def prognozTablesDelete(self):
         period = self.periodDay
