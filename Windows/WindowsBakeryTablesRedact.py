@@ -34,7 +34,7 @@ class WindowBakeryTablesRedact(QtWidgets.QMainWindow):
                     if row == '0':
                         item = QTableWidgetItem('')
                     else:
-                        item = QTableWidgetItem('0')
+                        item = QTableWidgetItem('0.0')
                 else:
                     item = QTableWidgetItem(str(self.data[col][row]))
                 self.ui.tableWidget.setItem(int(row), int(col), item)

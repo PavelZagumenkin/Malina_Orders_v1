@@ -14,6 +14,7 @@ import Windows.WindowsBakeryTablesDayWeekEdit
 import Windows.WindowsBakeryTablesDayWeekView
 import Windows.WindowsBakeryTablesDayWeekRedact
 import Windows.WindowsBakeryNormativEdit
+import Windows.WindowsBakeryNormativRedact
 
 class WindowBakery(QtWidgets.QMainWindow):
     def __init__(self):
@@ -48,7 +49,7 @@ class WindowBakery(QtWidgets.QMainWindow):
         self.ui.btn_edit_koeff_DayWeek.clicked.connect(self.dayWeekTablesRedact)
         self.ui.btn_delete_koeff_DayWeek.clicked.connect(self.dayWeekTablesDelete)
         self.ui.btn_Normativ.clicked.connect(self.normativ)
-
+        self.ui.btn_editNormativ.clicked.connect(self.normativTablesRedact)
         self.ui.btn_deleteNormativ.clicked.connect(self.dialogDeleteNormativ)
 
     def setEndDay(self):
@@ -273,6 +274,13 @@ class WindowBakery(QtWidgets.QMainWindow):
         global WindowBakeryTablesRedact
         WindowBakeryTablesRedact = Windows.WindowsBakeryTablesRedact.WindowBakeryTablesRedact(periodDay)
         WindowBakeryTablesRedact.showMaximized()
+
+    def normativTablesRedact(self):
+        self.hide()
+        periodDay = self.periodDay
+        global WindowNormativTablesRedact
+        WindowNormativTablesRedact = Windows.WindowsBakeryNormativRedact.WindowBakeryNormativRedact(periodDay)
+        WindowNormativTablesRedact.showMaximized()
 
     def dialogDeletePrognoz(self):
         dialogBox = QMessageBox()

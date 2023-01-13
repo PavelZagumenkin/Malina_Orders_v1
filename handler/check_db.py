@@ -9,6 +9,7 @@ class CheckThread(QtCore.QThread):
     kfBakery = QtCore.pyqtSignal(str)
     kfSklada = QtCore.pyqtSignal(str)
     normativ = QtCore.pyqtSignal(str)
+    normativdata = QtCore.pyqtSignal(list)
 
     # Форма авторизации(поиск по БД в таблице users)
     def thr_login(self, login_text, password_text):
@@ -95,3 +96,7 @@ class CheckThread(QtCore.QThread):
 
     def thr_saveKfSkladaInDB(self, sklad, kf):
         updateKfSklada(sklad, kf)
+
+    # Поиск прогноза по периоду
+    def thr_poiskNormativa(self, period):
+        poiskDataPeriodaNormativ(period, self.normativdata)

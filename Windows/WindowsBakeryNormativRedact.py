@@ -14,13 +14,13 @@ class WindowBakeryNormativRedact(QtWidgets.QMainWindow):
         self.ui = Ui_WindowBakeryTables()
         self.ui.setupUi(self)
         self.check_db = CheckThread()
-        self.check_db.normativ.connect(self.signal_normativ)
+        self.check_db.normativdata.connect(self.signal_normativ)
         self.setWindowTitle("Редактор норматива приготовления")
         self.normativ = self.poiskNormativa(periodDay)
         self.headers = json.loads(self.normativ[0].strip("\'"))
         self.data = json.loads(self.normativ[1].strip("\'"))
-        global data
-        data = self.data
+        global saveZnach
+        saveZnach =json.loads(self.normativ[2].strip("\'"))
         self.ui.tableWidget.setRowCount(len(self.data['0']))
         self.ui.tableWidget.setColumnCount(len(self.headers))
         self.ui.tableWidget.setHorizontalHeaderLabels(self.headers)
@@ -36,7 +36,10 @@ class WindowBakeryNormativRedact(QtWidgets.QMainWindow):
         for col in self.data:
             for row in self.data.get(col):
                 if self.data[col][row] == 0:
-                    item = QTableWidgetItem('')
+                    if int(row) == 0:
+                        item = QTableWidgetItem('')
+                    else:
+                        item = QTableWidgetItem(str(0.0))
                     self.ui.tableWidget.setItem(int(row), int(col), item)
                 elif int(row) == 0:
                     self.DspinboxRow = QtWidgets.QDoubleSpinBox()
@@ -89,16 +92,16 @@ class WindowBakeryNormativRedact(QtWidgets.QMainWindow):
         index = self.ui.tableWidget.indexAt(buttonClicked.pos())
         if index.row() == 0:
             for i in range(1, self.ui.tableWidget.rowCount()):
-                result = round(float(data[str(index.column()+2)][str(i)]) * float(self.ui.tableWidget.cellWidget(0, index.column()).value()) * float(self.ui.tableWidget.cellWidget(i, 0).value()), 2)
+                result = round(float(saveZnach[str(index.column()+2)][str(i)]) * float(self.ui.tableWidget.cellWidget(0, index.column()).value()) * float(self.ui.tableWidget.cellWidget(i, 0).value()), 2)
                 self.ui.tableWidget.setItem(i, index.column(), QTableWidgetItem(str(result)))
         else:
             for i in range(5, self.ui.tableWidget.columnCount()):
-                result = round(float(data[str(i+2)][str(index.row())]) * float(self.ui.tableWidget.cellWidget(index.row(), 0).value()) * float(self.ui.tableWidget.cellWidget(0, i).value()), 2)
+                result = round(float(saveZnach[str(i+2)][str(index.row())]) * float(self.ui.tableWidget.cellWidget(index.row(), 0).value()) * float(self.ui.tableWidget.cellWidget(0, i).value()), 2)
                 self.ui.tableWidget.setItem(index.row(), i, QTableWidgetItem(str(result)))
 
     def saveAndCloseDef(self):
         savePeriod = self.periodDay
-        saveNull = data.copy()
+        saveNull = saveZnach.copy()
         saveHeaders = self.headers.copy()
         saveDB = {}
         for col in range(0, self.ui.tableWidget.columnCount()):
@@ -115,10 +118,25 @@ class WindowBakeryNormativRedact(QtWidgets.QMainWindow):
                     saveDB[col][row] = self.ui.tableWidget.item(row, col).text()
                 else:
                     saveDB[col][row] = float(self.ui.tableWidget.item(row, col).text())
-        self.insertNormativInDB(savePeriod, json.dumps(saveHeaders, ensure_ascii=False), json.dumps(saveDB, ensure_ascii=False), json.dumps(saveNull, ensure_ascii=False))
-        for i in range(1, self.ui.tableWidget.rowCount()):
-            self.saveKfBakeryInDB(self.ui.tableWidget.item(i, 2).text(), self.ui.tableWidget.item(i, 3).text(), int(self.ui.tableWidget.cellWidget(i, 0).value()))
+        self.insertNormativInDB(savePeriod, json.dumps(saveHeaders, ensure_ascii=False),
+                                json.dumps(saveDB, ensure_ascii=False), json.dumps(saveNull, ensure_ascii=False))
+        for row in range(1, self.ui.tableWidget.rowCount()):
+            self.saveKfBakeryInDB(self.ui.tableWidget.item(row, 2).text(), self.ui.tableWidget.item(row, 3).text(),
+                                  round(float(self.ui.tableWidget.cellWidget(row, 0).value()), 3))
+        for col in range(5, self.ui.tableWidget.columnCount()):
+            self.saveKfSkladaInDB(self.ui.tableWidget.horizontalHeaderItem(col).text(), round(float(self.ui.tableWidget.cellWidget(0, col).value()), 2))
         self.close()
+
+    def poiskNormativa(self, periodDay):
+        self.check_db.thr_poiskNormativa(periodDay)
+        return(otvetNormativ)
+
+    def signal_normativ(self, value):
+        headers = value[0][2]
+        data = value[0][3]
+        saveNull = value[0][4]
+        global otvetNormativ
+        otvetNormativ = [headers, data, saveNull]
 
     def insertNormativInDB(self, savePeriod, saveHeaders, saveDB, saveNull):
         self.check_db.thr_updateNormativ(savePeriod, saveHeaders, saveDB, saveNull)
@@ -126,8 +144,8 @@ class WindowBakeryNormativRedact(QtWidgets.QMainWindow):
     def saveKfBakeryInDB(self, kod, name, layout):
         self.check_db.thr_saveKfBakeryInDB(kod, name, layout)
 
-    def saveKfSkladaInDB(self, kod, name, layout):
-        self.check_db.thr_saveKfBakeryInDB(kod, name, layout)
+    def saveKfSkladaInDB(self, sklad, kf):
+        self.check_db.thr_saveKfSkladaInDB(sklad, kf)
 
 
     def closeEvent(self, event):

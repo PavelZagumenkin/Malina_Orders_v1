@@ -253,3 +253,12 @@ def updateKfSklada(sklad, kf):
     con.commit()
     cur.close()
     con.close()
+
+def poiskDataPeriodaNormativ(period, signal):
+    con = sqlite3.connect('db/malina_orders.db')
+    cur = con.cursor()
+    cur.execute(f"SELECT * FROM normativ_bakery WHERE PERIOD='''{period}''';")
+    value = cur.fetchall()
+    signal.emit(value)
+    cur.close()
+    con.close()
