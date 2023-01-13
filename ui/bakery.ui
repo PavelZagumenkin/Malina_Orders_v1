@@ -1577,7 +1577,7 @@ background-color: rgba(228, 107, 134, 1)
      <enum>Qt::Vertical</enum>
     </property>
    </widget>
-   <widget class="QPushButton" name="btn_download_2">
+   <widget class="QPushButton" name="btn_download_Layout">
     <property name="enabled">
      <bool>false</bool>
     </property>

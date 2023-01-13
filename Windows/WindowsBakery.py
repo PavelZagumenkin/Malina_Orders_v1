@@ -94,6 +94,8 @@ class WindowBakery(QtWidgets.QMainWindow):
             self.ui.btn_Normativ.setEnabled(False)
             self.ui.btn_editNormativ.setEnabled(True)
             self.ui.btn_deleteNormativ.setEnabled(True)
+            self.ui.btn_download_Normativ.setEnabled(True)
+            self.ui.btn_download_Layout.setEnabled(True)
 
     def proverkaNormativa(self, period):
         self.check_db.thr_proverkaNormativa(period)
