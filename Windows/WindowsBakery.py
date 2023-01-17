@@ -386,8 +386,13 @@ class WindowBakery(QtWidgets.QMainWindow):
         fileName, _ = QFileDialog.getSaveFileName(
             parent = self,
             caption = "Сохранение данных",
-            directory = os.path.expanduser('~') + r'\Desktop' + f"\Нормативы для пекарни с {self.periodDay[0].toString('dd.MM.yyyy')} по {self.periodDay[1].toString('dd.MM.yyyy')}.xlsx",
+            directory = os.path.expanduser('~') + r'/Desktop' + f"/Нормативы для пекарни с {self.periodDay[0].toString('dd.MM.yyyy')} по {self.periodDay[1].toString('dd.MM.yyyy')}.xlsx",
             filter = "All Files (*);",
             initialFilter = "Excel Files (*.xlsx)")
         if fileName:
-            print(fileName)
+            Excel = win32com.client.Dispatch("Excel.Application")
+            normativExcel = Excel.Workbooks.Add()
+            fileName = fileName.replace('/', '\\')
+            normativExcel.SaveAs(Filename=fileName)
+            normativExcel.Close()
+            Excel.Quit()
