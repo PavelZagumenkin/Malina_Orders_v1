@@ -27,6 +27,7 @@ class WindowBakery(QtWidgets.QMainWindow):
         self.check_db.period.connect(self.signal_period)
         self.check_db.prognoz.connect(self.signal_prognoz)
         self.check_db.normativ.connect(self.signal_normativ)
+        self.check_db.normativdata.connect(self.signal_normativdata)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("image/icon.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.setWindowIcon(icon)
@@ -382,16 +383,45 @@ class WindowBakery(QtWidgets.QMainWindow):
         WindowNormativEdit = Windows.WindowsBakeryNormativEdit.WindowBakeryNormativEdit(periodDay)
         WindowNormativEdit.showMaximized()
 
+    def poiskNormativa(self, periodDay):
+        self.check_db.thr_poiskNormativa(periodDay)
+        return(otvetNormativ)
+
+    def signal_normativdata(self, value):
+        headers = value[0][2]
+        data = value[0][3]
+        global otvetNormativ
+        otvetNormativ = [headers, data]
+
     def saveFileDialog(self):
         fileName, _ = QFileDialog.getSaveFileName(
             parent = self,
             caption = "Сохранение данных",
             directory = os.path.expanduser('~') + r'/Desktop' + f"/Нормативы для пекарни с {self.periodDay[0].toString('dd.MM.yyyy')} по {self.periodDay[1].toString('dd.MM.yyyy')}.xlsx",
-            filter = "All Files (*);",
-            initialFilter = "Excel Files (*.xlsx)")
+            filter = "Таблица Excel (*.xlsx, *.xls);",
+            initialFilter = "Таблица Excel (*.xlsx)")
         if fileName:
+            normativData = self.poiskNormativa(self.periodDay)
+            headers = json.loads(normativData[0].strip("\'"))
+            data = json.loads(normativData[1].strip("\'"))
             Excel = win32com.client.Dispatch("Excel.Application")
             normativExcel = Excel.Workbooks.Add()
+            sheet = normativExcel.ActiveSheet
+            sheet.Columns(1).NumberFormat = "@"
+            for col in range(2, len(headers)):
+                sheet.Cells(1, col - 1).Value = headers[col]
+            for col in range(2, len(data.keys())):
+                for row in range(1, len(data.get(str(col)).keys())):
+                    sheet.Cells(int(row) + 1, col - 1).Value = data[str(col)][str(row)]
+            sheet.Columns.AutoFit()
+            lastColumn = sheet.UsedRange.Columns.Count
+            lastRow = sheet.UsedRange.Rows.Count
+            sheet.Range(sheet.Cells(1, 1), sheet.Cells(lastRow+1, lastColumn)).Borders(2).Weight = 2
+            sheet.Range(sheet.Cells(1, 1), sheet.Cells(lastRow+1, lastColumn)).Borders(4).Weight = 2
+            sheet.Range(sheet.Cells(1, 1), sheet.Cells(lastRow+1, lastColumn)).Borders(7).Weight = 3
+            sheet.Range(sheet.Cells(1, 1), sheet.Cells(lastRow+1, lastColumn)).Borders(8).Weight = 3
+            sheet.Range(sheet.Cells(1, 1), sheet.Cells(lastRow+1, lastColumn)).Borders(9).Weight = 3
+            sheet.Range(sheet.Cells(1, 1), sheet.Cells(lastRow+1, lastColumn)).Borders(10).Weight = 3
             fileName = fileName.replace('/', '\\')
             normativExcel.SaveAs(Filename=fileName)
             normativExcel.Close()
