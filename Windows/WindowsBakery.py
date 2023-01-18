@@ -416,6 +416,9 @@ class WindowBakery(QtWidgets.QMainWindow):
             sheet.Columns.AutoFit()
             lastColumn = sheet.UsedRange.Columns.Count
             lastRow = sheet.UsedRange.Rows.Count
+            sheet.Range("A1").AutoFilter(Field = 1)
+            for col in range(4, lastColumn + 1):
+                sheet.Cells(lastRow + 1, col).Value = f"=SUM(R[{1 - lastRow}]C:R[-1]C)"
             sheet.Range(sheet.Cells(1, 1), sheet.Cells(lastRow+1, lastColumn)).Borders(2).Weight = 2
             sheet.Range(sheet.Cells(1, 1), sheet.Cells(lastRow+1, lastColumn)).Borders(4).Weight = 2
             sheet.Range(sheet.Cells(1, 1), sheet.Cells(lastRow+1, lastColumn)).Borders(7).Weight = 3
