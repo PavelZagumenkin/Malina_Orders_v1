@@ -1,5 +1,6 @@
 import datetime
 import os
+import shutil
 
 import win32com.client
 import json
@@ -54,7 +55,8 @@ class WindowBakery(QtWidgets.QMainWindow):
         self.ui.btn_Normativ.clicked.connect(self.normativ)
         self.ui.btn_editNormativ.clicked.connect(self.normativTablesRedact)
         self.ui.btn_deleteNormativ.clicked.connect(self.dialogDeleteNormativ)
-        self.ui.btn_download_Normativ.clicked.connect(self.saveFileDialog)
+        self.ui.btn_download_Normativ.clicked.connect(self.saveFileDialogNormativ)
+        self.ui.btn_download_Layout.clicked.connect(self.saveFileDialogLayout)
 
     def setEndDay(self):
         self.ui.dateEdit_EndDay.setDate(self.ui.dateEdit_startDay.date().addDays(6))
@@ -393,11 +395,11 @@ class WindowBakery(QtWidgets.QMainWindow):
         global otvetNormativ
         otvetNormativ = [headers, data]
 
-    def saveFileDialog(self):
+    def saveFileDialogNormativ(self):
         fileName, _ = QFileDialog.getSaveFileName(
             parent = self,
             caption = "Сохранение данных",
-            directory = os.path.expanduser('~') + r'/Desktop' + f"/Нормативы для пекарни с {self.periodDay[0].toString('dd.MM.yyyy')} по {self.periodDay[1].toString('dd.MM.yyyy')}.xlsx",
+            directory = os.path.expanduser('~') + r'\Desktop' + f"\Нормативы для пекарни с {self.periodDay[0].toString('dd.MM.yyyy')} по {self.periodDay[1].toString('dd.MM.yyyy')}.xlsx",
             filter = "Таблица Excel (*.xlsx, *.xls);",
             initialFilter = "Таблица Excel (*.xlsx)")
         if fileName:
@@ -412,7 +414,10 @@ class WindowBakery(QtWidgets.QMainWindow):
                 sheet.Cells(1, col - 1).Value = headers[col]
             for col in range(2, len(data.keys())):
                 for row in range(1, len(data.get(str(col)).keys())):
-                    sheet.Cells(int(row) + 1, col - 1).Value = data[str(col)][str(row)]
+                    if col > 4:
+                        sheet.Cells(int(row) + 1, col - 1).Value = round(data[str(col)][str(row)], 0)
+                    else:
+                        sheet.Cells(int(row) + 1, col - 1).Value = data[str(col)][str(row)]
             sheet.Columns.AutoFit()
             lastColumn = sheet.UsedRange.Columns.Count
             lastRow = sheet.UsedRange.Rows.Count
@@ -429,3 +434,15 @@ class WindowBakery(QtWidgets.QMainWindow):
             normativExcel.SaveAs(Filename=fileName)
             normativExcel.Close()
             Excel.Quit()
+
+    def saveFileDialogLayout(self):
+        folderName = QFileDialog.getExistingDirectory(
+            parent=self,
+            caption="Выберите папку для сохранения выкладки",
+            directory=os.path.expanduser('~') + r'\Desktop')
+        if folderName:
+            folderName = folderName.replace('/', '\\') + f"\Выкладка {self.periodDay[0].toString('dd.MM.yyyy')} по {self.periodDay[1].toString('dd.MM.yyyy')}"
+            if os.path.exists(folderName) == True:
+                shutil.rmtree(folderName)
+            os.mkdir(folderName)
+
