@@ -277,6 +277,7 @@ class WindowBakery(QtWidgets.QMainWindow):
         WindowBakeryTablesView.showMaximized()
 
     def prognozTablesRedact(self):
+        self.normativTablesDelete()
         self.hide()
         periodDay = self.periodDay
         global WindowBakeryTablesRedact
@@ -445,4 +446,6 @@ class WindowBakery(QtWidgets.QMainWindow):
             if os.path.exists(folderName) == True:
                 shutil.rmtree(folderName)
             os.mkdir(folderName)
+            Excel = win32com.client.Dispatch("Excel.Application")
+            layout = Excel.Workbooks.Add()
 
