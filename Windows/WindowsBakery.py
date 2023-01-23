@@ -215,6 +215,10 @@ class WindowBakery(QtWidgets.QMainWindow):
     def signal_prognoz(self, value):
         global headers
         headers = value[0][2]
+        data = value[0][3]
+        global fullData
+        fullData = [headers, data]
+
 
     def poiskPrognoza(self, periodDay):
         self.check_db.thr_poiskPrognoza(periodDay)
@@ -223,6 +227,14 @@ class WindowBakery(QtWidgets.QMainWindow):
     def poiskKDayWeek(self, periodDay):
         self.check_db.thr_poiskDataPeriodaKdayWeek(periodDay)
         return(headers)
+
+    def poiskPrognozaExcel(self, periodDay):
+        self.check_db.thr_poiskPrognoza(periodDay)
+        return(fullData)
+
+    def poiskKDayWeekExcel(self, periodDay):
+        self.check_db.thr_poiskDataPeriodaKdayWeek(periodDay)
+        return(fullData)
 
     # Закрываем окно настроек, открываем выбор раздела
     def viborRazdelaOpen(self):
@@ -446,6 +458,44 @@ class WindowBakery(QtWidgets.QMainWindow):
             if os.path.exists(folderName) == True:
                 shutil.rmtree(folderName)
             os.mkdir(folderName)
+            prognoz = self.poiskPrognozaExcel(self.periodDay)
+            headersPrognoz = json.loads(prognoz[0].strip("\'"))
+            dataPrognoz = json.loads(prognoz[1].strip("\'"))
+            kdayweek = self.poiskKDayWeekExcel(self.periodDay)
+            headersKdayweek = json.loads(kdayweek[0].strip("\'"))
+            dataKdayweek = json.loads(kdayweek[1].strip("\'"))
+            del headersPrognoz[:5]
+            keysDataPrognoz = ['0', '1', '2', '6']
+            for key in keysDataPrognoz:
+                dataPrognoz.pop(key, None)
+            del headersKdayweek[:1]
+            keysDataKdayweek = ['0']
+            for key in keysDataKdayweek:
+                dataKdayweek.pop(key, None)
             Excel = win32com.client.Dispatch("Excel.Application")
-            layout = Excel.Workbooks.Add()
+            for point in headersPrognoz:
+                pointExcel = Excel.Workbooks.Add()
+                sheet = pointExcel.ActiveSheet
+                sheet.Columns(1).NumberFormat = "@"
+                for day in range(0, 7):
+                    DayInPeriod = self.periodDay[0].addDays(day)
+                    date = (datetime.date(int(DayInPeriod.toString('yyyy')), int(DayInPeriod.toString('MM')), int(DayInPeriod.toString('dd')))).isoweekday()
+                    sheet.Cells(1, 1).Value = point
+                    sheet.Cells(1, 4).Value = DayInPeriod.toString('dd.MM.yyyy')
+                    sheet.Cells(2, 1).Value = "Код"
+                    sheet.Cells(2, 2).Value = "Наименование"
+                    sheet.Cells(2, 3).Value = "Норма выкладки"
+                    sheet.Cells(2, 4).Value = "Всего"
+                    sheet.Cells(2, 5).Value = "Утро"
+                    sheet.Cells(2, 6).Value = "День"
+                    sheet.Range(sheet.Cells(1, 1), sheet.Cells(1, 3)).Merge()
+                    sheet.Range(sheet.Cells(1, 4), sheet.Cells(1, 6)).Merge()
+                    rowKod = 3
+                    for kod in dataPrognoz['4']:
+                        if kod != '0':
+                            sheet.Cells(rowKod, 1).Value = dataPrognoz['4'][kod]
+                            rowKod += 1
+                pointExcel.SaveAs(Filename=(folderName + '\\' + point + '.xlsx'))
+                pointExcel.Close()
+                Excel.Quit()
 
