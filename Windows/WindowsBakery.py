@@ -494,6 +494,7 @@ class WindowBakery(QtWidgets.QMainWindow):
                     for kod in dataPrognoz['4']:
                         if kod != '0':
                             sheet.Cells(rowKod, 1).Value = dataPrognoz['4'][kod]
+                            sheet.Cells(rowKod, 2).Value = dataPrognoz['5'][kod]
                             rowKod += 1
                 pointExcel.SaveAs(Filename=(folderName + '\\' + point + '.xlsx'))
                 pointExcel.Close()
