@@ -1,6 +1,7 @@
 import datetime
 import os
 import shutil
+import time
 
 import win32com.client
 import json
@@ -37,6 +38,7 @@ class WindowBakery(QtWidgets.QMainWindow):
         self.ui.dateEdit_startDay.setDate(QtCore.QDate(TodayDate.year, TodayDate.month, TodayDate.day))
         self.ui.dateEdit_EndDay.setDate(QtCore.QDate(EndDay.year, EndDay.month, EndDay.day))
         self.periodDay = [self.ui.dateEdit_startDay.date(), self.ui.dateEdit_EndDay.date()]
+        self.ui.progressBar.hide()
         self.ui.dateEdit_startDay.userDateChanged['QDate'].connect(self.setEndDay)
         self.ui.btn_exit_bakery.clicked.connect(self.viborRazdelaOpen)
         self.ui.btn_path_OLAP_P.clicked.connect(self.olap_p)
@@ -454,6 +456,8 @@ class WindowBakery(QtWidgets.QMainWindow):
             caption="Выберите папку для сохранения выкладки",
             directory=os.path.expanduser('~') + r'\Desktop')
         if folderName:
+            self.ui.progressBar.show()
+            self.setEnabled(False)
             folderName = folderName.replace('/', '\\') + f"\Выкладка {self.periodDay[0].toString('dd.MM.yyyy')} по {self.periodDay[1].toString('dd.MM.yyyy')}"
             if os.path.exists(folderName) == True:
                 shutil.rmtree(folderName)
@@ -473,30 +477,40 @@ class WindowBakery(QtWidgets.QMainWindow):
             for key in keysDataKdayweek:
                 dataKdayweek.pop(key, None)
             Excel = win32com.client.Dispatch("Excel.Application")
+            self.ui.progressBar.setMinimum(0)
+            self.ui.progressBar.setMaximum(len(headersPrognoz))
+            progress = 0
             for point in headersPrognoz:
                 pointExcel = Excel.Workbooks.Add()
                 sheet = pointExcel.ActiveSheet
                 sheet.Columns(1).NumberFormat = "@"
+                dayCol = 1
                 for day in range(0, 7):
                     DayInPeriod = self.periodDay[0].addDays(day)
                     date = (datetime.date(int(DayInPeriod.toString('yyyy')), int(DayInPeriod.toString('MM')), int(DayInPeriod.toString('dd')))).isoweekday()
-                    sheet.Cells(1, 1).Value = point
-                    sheet.Cells(1, 4).Value = DayInPeriod.toString('dd.MM.yyyy')
-                    sheet.Cells(2, 1).Value = "Код"
-                    sheet.Cells(2, 2).Value = "Наименование"
-                    sheet.Cells(2, 3).Value = "Норма выкладки"
-                    sheet.Cells(2, 4).Value = "Всего"
-                    sheet.Cells(2, 5).Value = "Утро"
-                    sheet.Cells(2, 6).Value = "День"
-                    sheet.Range(sheet.Cells(1, 1), sheet.Cells(1, 3)).Merge()
-                    sheet.Range(sheet.Cells(1, 4), sheet.Cells(1, 6)).Merge()
-                    rowKod = 3
-                    for kod in dataPrognoz['4']:
-                        if kod != '0':
-                            sheet.Cells(rowKod, 1).Value = dataPrognoz['4'][kod]
-                            sheet.Cells(rowKod, 2).Value = dataPrognoz['5'][kod]
-                            rowKod += 1
+                    sheet.Cells(1, dayCol).Value = point
+                    sheet.Cells(1, dayCol+3).Value = DayInPeriod.toString('dd.MM.yyyy')
+                    sheet.Cells(2, dayCol).Value = "Код"
+                    sheet.Cells(2, dayCol+1).Value = "Наименование"
+                    sheet.Cells(2, dayCol+2).Value = "Выкладка"
+                    sheet.Cells(2, dayCol+3).Value = "Всего"
+                    sheet.Cells(2, dayCol+4).Value = "Утро"
+                    sheet.Cells(2, dayCol+5).Value = "День"
+                    sheet.Range(sheet.Cells(1, dayCol), sheet.Cells(1, dayCol+2)).Merge()
+                    sheet.Range(sheet.Cells(1, dayCol+3), sheet.Cells(1, dayCol+5)).Merge()
+                    rowCount = 3
+                    for poz in dataPrognoz['4']:
+                        if poz != '0':
+                            sheet.Cells(rowCount, dayCol).Value = dataPrognoz['4'][poz]
+                            sheet.Cells(rowCount, dayCol+1).Value = dataPrognoz['5'][poz]
+                            sheet.Cells(rowCount, dayCol+2).Value = dataPrognoz['3'][poz]
+                            rowCount += 1
+                    dayCol += 6
                 pointExcel.SaveAs(Filename=(folderName + '\\' + point + '.xlsx'))
                 pointExcel.Close()
                 Excel.Quit()
+                self.ui.progressBar.setValue(progress)
+                progress += 1
+        self.setEnabled(True)
+        self.ui.progressBar.hide()
 

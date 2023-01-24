@@ -20,6 +20,7 @@ class Ui_WindowBakery(object):
         icon.addPixmap(QtGui.QPixmap("../image/icon.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         WindowBakery.setWindowIcon(icon)
         self.centralwidget = QtWidgets.QWidget(WindowBakery)
+        self.centralwidget.setEnabled(True)
         self.centralwidget.setObjectName("centralwidget")
         self.lineEdit_OLAP_dayWeek_bakery = QtWidgets.QLineEdit(self.centralwidget)
         self.lineEdit_OLAP_dayWeek_bakery.setEnabled(False)
@@ -798,6 +799,17 @@ class Ui_WindowBakery(object):
 "}")
         self.btn_download_Layout.setCheckable(False)
         self.btn_download_Layout.setObjectName("btn_download_Layout")
+        self.progressBar = QtWidgets.QProgressBar(self.centralwidget)
+        self.progressBar.setEnabled(True)
+        self.progressBar.setGeometry(QtCore.QRect(320, 330, 600, 40))
+        self.progressBar.setMinimumSize(QtCore.QSize(600, 40))
+        self.progressBar.setMaximumSize(QtCore.QSize(600, 40))
+        self.progressBar.setLayoutDirection(QtCore.Qt.LayoutDirection.LeftToRight)
+        self.progressBar.setProperty("value", 0)
+        self.progressBar.setTextVisible(False)
+        self.progressBar.setInvertedAppearance(False)
+        self.progressBar.setTextDirection(QtWidgets.QProgressBar.Direction.TopToBottom)
+        self.progressBar.setObjectName("progressBar")
         WindowBakery.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(WindowBakery)
@@ -856,6 +868,7 @@ class Ui_WindowBakery(object):
         self.btn_deleteNormativ.setText(_translate("WindowBakery", "Удалить"))
         self.label_OLAP_P_3.setText(_translate("WindowBakery", "Нормативы пекарни"))
         self.btn_download_Layout.setText(_translate("WindowBakery", "ВЫГРУЗИТЬ ВЫКЛАДКУ"))
+        self.progressBar.setFormat(_translate("WindowBakery", "%p%"))
 
 
 if __name__ == "__main__":
