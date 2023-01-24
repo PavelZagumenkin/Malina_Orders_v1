@@ -1,7 +1,7 @@
 import datetime
 import os
 import shutil
-import time
+from math import ceil
 
 import win32com.client
 import json
@@ -19,6 +19,7 @@ import Windows.WindowsBakeryTablesDayWeekView
 import Windows.WindowsBakeryTablesDayWeekRedact
 import Windows.WindowsBakeryNormativEdit
 import Windows.WindowsBakeryNormativRedact
+
 
 class WindowBakery(QtWidgets.QMainWindow):
     def __init__(self):
@@ -131,7 +132,6 @@ class WindowBakery(QtWidgets.QMainWindow):
         elif value == 'За этот период есть сформированный прогноз' or value == 'За этот период есть сформированные коэффициенты долей продаж':
             otvetPeriod = 1
 
-
     # Диалог выбора файла ОБЩЕГО отчета
     def olap_p(self):
         fileName = QFileDialog.getOpenFileName(self, 'Выберите файл OLAP по продажам', 'Отчеты', 'Excel файл (*.xlsx)')
@@ -179,7 +179,6 @@ class WindowBakery(QtWidgets.QMainWindow):
             Excel.Quit()
             self.prognozTablesOpen(pathOLAP_P, self.periodDay)
 
-
     # Проверяем на пустоту поля для отчета по дням недели
     def check_DayWeek(funct_bakery):
         def wrapper(self):
@@ -208,7 +207,8 @@ class WindowBakery(QtWidgets.QMainWindow):
             wb_OLAP_DayWeek.Close()
             Excel.Quit()
             self.ui.lineEdit_OLAP_dayWeek_bakery.setStyleSheet("padding-left: 5px; color: rgba(228, 107, 134, 1)")
-            self.ui.lineEdit_OLAP_dayWeek_bakery.setText('Файл отчета неверный, укажите OLAP по продажам по дням недели для Выпечки пекарне')
+            self.ui.lineEdit_OLAP_dayWeek_bakery.setText(
+                'Файл отчета неверный, укажите OLAP по продажам по дням недели для Выпечки пекарне')
         else:
             wb_OLAP_DayWeek.Close()
             Excel.Quit()
@@ -221,22 +221,21 @@ class WindowBakery(QtWidgets.QMainWindow):
         global fullData
         fullData = [headers, data]
 
-
     def poiskPrognoza(self, periodDay):
         self.check_db.thr_poiskPrognoza(periodDay)
-        return(headers)
+        return (headers)
 
     def poiskKDayWeek(self, periodDay):
         self.check_db.thr_poiskDataPeriodaKdayWeek(periodDay)
-        return(headers)
+        return (headers)
 
     def poiskPrognozaExcel(self, periodDay):
         self.check_db.thr_poiskPrognoza(periodDay)
-        return(fullData)
+        return (fullData)
 
     def poiskKDayWeekExcel(self, periodDay):
         self.check_db.thr_poiskDataPeriodaKdayWeek(periodDay)
-        return(fullData)
+        return (fullData)
 
     # Закрываем окно настроек, открываем выбор раздела
     def viborRazdelaOpen(self):
@@ -311,7 +310,7 @@ class WindowBakery(QtWidgets.QMainWindow):
         dialogBox.setWindowIcon(QtGui.QIcon("image/icon.png"))
         dialogBox.setWindowTitle('Удаление прогноза продаж')
         dialogBox.setIcon(QMessageBox.Icon.Critical)
-        dialogBox.setStandardButtons(QMessageBox.StandardButton.Ok|QMessageBox.StandardButton.Cancel)
+        dialogBox.setStandardButtons(QMessageBox.StandardButton.Ok | QMessageBox.StandardButton.Cancel)
         dialogBox.buttonClicked.connect(self.dialogButtonClickedPrognoz)
         dialogBox.exec()
 
@@ -320,14 +319,13 @@ class WindowBakery(QtWidgets.QMainWindow):
             self.prognozTablesDelete()
             self.normativTablesDelete()
 
-
     def dialogDeleteNormativ(self):
         dialogBox = QMessageBox()
         dialogBox.setText("Вы действительно хотите удалить сформированный норматив с изначальными данными?")
         dialogBox.setWindowIcon(QtGui.QIcon("image/icon.png"))
         dialogBox.setWindowTitle('Удаление норматива')
         dialogBox.setIcon(QMessageBox.Icon.Critical)
-        dialogBox.setStandardButtons(QMessageBox.StandardButton.Ok|QMessageBox.StandardButton.Cancel)
+        dialogBox.setStandardButtons(QMessageBox.StandardButton.Ok | QMessageBox.StandardButton.Cancel)
         dialogBox.buttonClicked.connect(self.dialogButtonClickedNormativ)
         dialogBox.exec()
 
@@ -372,20 +370,23 @@ class WindowBakery(QtWidgets.QMainWindow):
                     return
         self.hide()
         global WindowBakeryDayWeekEdit
-        WindowBakeryDayWeekEdit = Windows.WindowsBakeryTablesDayWeekEdit.WindowBakeryTableDayWeekEdit(pathOLAP_DayWeek, periodDay, points)
+        WindowBakeryDayWeekEdit = Windows.WindowsBakeryTablesDayWeekEdit.WindowBakeryTableDayWeekEdit(pathOLAP_DayWeek,
+                                                                                                      periodDay, points)
         WindowBakeryDayWeekEdit.showMaximized()
 
     def dayWeekTablesView(self):
         self.hide()
         global WindowBakeryTablesDayWeekView
-        WindowBakeryTablesDayWeekView = Windows.WindowsBakeryTablesDayWeekView.WindowBakeryTableDayWeekView(self.periodDay)
+        WindowBakeryTablesDayWeekView = Windows.WindowsBakeryTablesDayWeekView.WindowBakeryTableDayWeekView(
+            self.periodDay)
         WindowBakeryTablesDayWeekView.showMaximized()
 
     def dayWeekTablesRedact(self):
         self.hide()
         periodDay = self.periodDay
         global WindowBakeryTablesDayWeekRedact
-        WindowBakeryTablesDayWeekRedact = Windows.WindowsBakeryTablesDayWeekRedact.WindowBakeryTablesDayWeekRedact(periodDay)
+        WindowBakeryTablesDayWeekRedact = Windows.WindowsBakeryTablesDayWeekRedact.WindowBakeryTablesDayWeekRedact(
+            periodDay)
         WindowBakeryTablesDayWeekRedact.showMaximized()
 
     def dayWeekTablesDelete(self):
@@ -402,7 +403,7 @@ class WindowBakery(QtWidgets.QMainWindow):
 
     def poiskNormativa(self, periodDay):
         self.check_db.thr_poiskNormativa(periodDay)
-        return(otvetNormativ)
+        return (otvetNormativ)
 
     def signal_normativdata(self, value):
         headers = value[0][2]
@@ -412,15 +413,22 @@ class WindowBakery(QtWidgets.QMainWindow):
 
     def saveFileDialogNormativ(self):
         fileName, _ = QFileDialog.getSaveFileName(
-            parent = self,
-            caption = "Сохранение данных",
-            directory = os.path.expanduser('~') + r'\Desktop' + f"\Нормативы для пекарни с {self.periodDay[0].toString('dd.MM.yyyy')} по {self.periodDay[1].toString('dd.MM.yyyy')}.xlsx",
-            filter = "Таблица Excel (*.xlsx, *.xls);",
-            initialFilter = "Таблица Excel (*.xlsx)")
+            parent=self,
+            caption="Сохранение данных",
+            directory=os.path.expanduser(
+                '~') + r'\Desktop' + f"\Нормативы для пекарни с {self.periodDay[0].toString('dd.MM.yyyy')} по {self.periodDay[1].toString('dd.MM.yyyy')}.xlsx",
+            filter="Таблица Excel (*.xlsx, *.xls);",
+            initialFilter="Таблица Excel (*.xlsx)")
         if fileName:
+            self.ui.progressBar.show()
+            self.setEnabled(False)
+            progress = 0
             normativData = self.poiskNormativa(self.periodDay)
             headers = json.loads(normativData[0].strip("\'"))
             data = json.loads(normativData[1].strip("\'"))
+            self.ui.progressBar.setValue(progress)
+            self.ui.progressBar.setMinimum(0)
+            self.ui.progressBar.setMaximum(len(data.keys()) - 3)
             Excel = win32com.client.Dispatch("Excel.Application")
             normativExcel = Excel.Workbooks.Add()
             sheet = normativExcel.ActiveSheet
@@ -433,22 +441,27 @@ class WindowBakery(QtWidgets.QMainWindow):
                         sheet.Cells(int(row) + 1, col - 1).Value = round(data[str(col)][str(row)], 0)
                     else:
                         sheet.Cells(int(row) + 1, col - 1).Value = data[str(col)][str(row)]
+                self.ui.progressBar.setValue(progress)
+                progress += 1
             sheet.Columns.AutoFit()
             lastColumn = sheet.UsedRange.Columns.Count
             lastRow = sheet.UsedRange.Rows.Count
-            sheet.Range("A1").AutoFilter(Field = 1)
+            sheet.Range("A1").AutoFilter(Field=1)
             for col in range(4, lastColumn + 1):
                 sheet.Cells(lastRow + 1, col).Value = f"=SUM(R[{1 - lastRow}]C:R[-1]C)"
-            sheet.Range(sheet.Cells(1, 1), sheet.Cells(lastRow+1, lastColumn)).Borders(2).Weight = 2
-            sheet.Range(sheet.Cells(1, 1), sheet.Cells(lastRow+1, lastColumn)).Borders(4).Weight = 2
-            sheet.Range(sheet.Cells(1, 1), sheet.Cells(lastRow+1, lastColumn)).Borders(7).Weight = 3
-            sheet.Range(sheet.Cells(1, 1), sheet.Cells(lastRow+1, lastColumn)).Borders(8).Weight = 3
-            sheet.Range(sheet.Cells(1, 1), sheet.Cells(lastRow+1, lastColumn)).Borders(9).Weight = 3
-            sheet.Range(sheet.Cells(1, 1), sheet.Cells(lastRow+1, lastColumn)).Borders(10).Weight = 3
+            sheet.Range(sheet.Cells(1, 1), sheet.Cells(lastRow + 1, lastColumn)).Borders(2).Weight = 2
+            sheet.Range(sheet.Cells(1, 1), sheet.Cells(lastRow + 1, lastColumn)).Borders(4).Weight = 2
+            sheet.Range(sheet.Cells(1, 1), sheet.Cells(lastRow + 1, lastColumn)).Borders(7).Weight = 3
+            sheet.Range(sheet.Cells(1, 1), sheet.Cells(lastRow + 1, lastColumn)).Borders(8).Weight = 3
+            sheet.Range(sheet.Cells(1, 1), sheet.Cells(lastRow + 1, lastColumn)).Borders(9).Weight = 3
+            sheet.Range(sheet.Cells(1, 1), sheet.Cells(lastRow + 1, lastColumn)).Borders(10).Weight = 3
             fileName = fileName.replace('/', '\\')
+            Excel.DisplayAlerts = False
             normativExcel.SaveAs(Filename=fileName)
             normativExcel.Close()
             Excel.Quit()
+            self.setEnabled(True)
+            self.ui.progressBar.hide()
 
     def saveFileDialogLayout(self):
         folderName = QFileDialog.getExistingDirectory(
@@ -458,7 +471,9 @@ class WindowBakery(QtWidgets.QMainWindow):
         if folderName:
             self.ui.progressBar.show()
             self.setEnabled(False)
-            folderName = folderName.replace('/', '\\') + f"\Выкладка {self.periodDay[0].toString('dd.MM.yyyy')} по {self.periodDay[1].toString('dd.MM.yyyy')}"
+            progress = 0
+            folderName = folderName.replace('/',
+                                            '\\') + f"\Выкладка {self.periodDay[0].toString('dd.MM.yyyy')} по {self.periodDay[1].toString('dd.MM.yyyy')}"
             if os.path.exists(folderName) == True:
                 shutil.rmtree(folderName)
             os.mkdir(folderName)
@@ -470,16 +485,16 @@ class WindowBakery(QtWidgets.QMainWindow):
             dataKdayweek = json.loads(kdayweek[1].strip("\'"))
             del headersPrognoz[:5]
             keysDataPrognoz = ['0', '1', '2', '6']
+            self.ui.progressBar.setValue(progress)
+            self.ui.progressBar.setMinimum(0)
+            self.ui.progressBar.setMaximum(len(headersPrognoz) - 1)
             for key in keysDataPrognoz:
                 dataPrognoz.pop(key, None)
-            del headersKdayweek[:1]
             keysDataKdayweek = ['0']
             for key in keysDataKdayweek:
                 dataKdayweek.pop(key, None)
             Excel = win32com.client.Dispatch("Excel.Application")
-            self.ui.progressBar.setMinimum(0)
-            self.ui.progressBar.setMaximum(len(headersPrognoz))
-            progress = 0
+            pointCounter = 7
             for point in headersPrognoz:
                 pointExcel = Excel.Workbooks.Add()
                 sheet = pointExcel.ActiveSheet
@@ -487,30 +502,57 @@ class WindowBakery(QtWidgets.QMainWindow):
                 dayCol = 1
                 for day in range(0, 7):
                     DayInPeriod = self.periodDay[0].addDays(day)
-                    date = (datetime.date(int(DayInPeriod.toString('yyyy')), int(DayInPeriod.toString('MM')), int(DayInPeriod.toString('dd')))).isoweekday()
+                    date = (datetime.date(int(DayInPeriod.toString('yyyy')), int(DayInPeriod.toString('MM')),
+                                          int(DayInPeriod.toString('dd')))).isoweekday()
                     sheet.Cells(1, dayCol).Value = point
-                    sheet.Cells(1, dayCol+3).Value = DayInPeriod.toString('dd.MM.yyyy')
+                    sheet.Cells(1, dayCol + 3).Value = DayInPeriod.toString('dd.MM.yyyy')
                     sheet.Cells(2, dayCol).Value = "Код"
-                    sheet.Cells(2, dayCol+1).Value = "Наименование"
-                    sheet.Cells(2, dayCol+2).Value = "Выкладка"
-                    sheet.Cells(2, dayCol+3).Value = "Всего"
-                    sheet.Cells(2, dayCol+4).Value = "Утро"
-                    sheet.Cells(2, dayCol+5).Value = "День"
-                    sheet.Range(sheet.Cells(1, dayCol), sheet.Cells(1, dayCol+2)).Merge()
-                    sheet.Range(sheet.Cells(1, dayCol+3), sheet.Cells(1, dayCol+5)).Merge()
+                    sheet.Columns(dayCol).ColumnWidth = 6
+                    sheet.Cells(2, dayCol + 1).Value = "Наименование"
+                    sheet.Columns(dayCol + 1).ColumnWidth = 45
+                    sheet.Cells(2, dayCol + 2).Value = "Норма"
+                    sheet.Columns(dayCol + 2).ColumnWidth = 6
+                    sheet.Cells(2, dayCol + 3).Value = "Всего"
+                    sheet.Columns(dayCol + 3).ColumnWidth = 6
+                    sheet.Cells(2, dayCol + 4).Value = "Утро"
+                    sheet.Columns(dayCol + 4).ColumnWidth = 6
+                    sheet.Cells(2, dayCol + 5).Value = "День"
+                    sheet.Columns(dayCol + 5).ColumnWidth = 6
+                    sheet.Range(sheet.Cells(1, dayCol), sheet.Cells(1, dayCol + 2)).Merge()
+                    sheet.Range(sheet.Cells(1, dayCol + 3), sheet.Cells(1, dayCol + 5)).Merge()
                     rowCount = 3
                     for poz in dataPrognoz['4']:
                         if poz != '0':
                             sheet.Cells(rowCount, dayCol).Value = dataPrognoz['4'][poz]
-                            sheet.Cells(rowCount, dayCol+1).Value = dataPrognoz['5'][poz]
-                            sheet.Cells(rowCount, dayCol+2).Value = dataPrognoz['3'][poz]
+                            sheet.Cells(rowCount, dayCol + 1).Value = dataPrognoz['5'][poz]
+                            sheet.Cells(rowCount, dayCol + 2).Value = dataPrognoz['3'][poz]
+                            if (dataPrognoz[str(pointCounter)][poz] * dataKdayweek[str(headersKdayweek.index(point))][
+                                str(date)]) / dataPrognoz['3'][poz] < 1:
+                                itogo = dataPrognoz['3'][poz]
+                            else:
+                                itogo = ceil(dataPrognoz[str(pointCounter)][poz] *
+                                             dataKdayweek[str(headersKdayweek.index(point))][str(date)])
+                            sheet.Cells(rowCount, dayCol + 3).Value = itogo
+                            morningLayout = round((itogo * 0.6) / dataPrognoz['3'][poz]) * dataPrognoz['3'][poz]
+                            sheet.Cells(rowCount, dayCol + 4).Value = morningLayout
+                            dayLayout = itogo - morningLayout
+                            sheet.Cells(rowCount, dayCol + 5).Value = dayLayout
                             rowCount += 1
                     dayCol += 6
+                lastColumn = sheet.UsedRange.Columns.Count
+                lastRow = sheet.UsedRange.Rows.Count
+                sheet.Range(sheet.Cells(1, 1), sheet.Cells(lastRow + 1, lastColumn)).Borders(2).Weight = 2
+                sheet.Range(sheet.Cells(1, 1), sheet.Cells(lastRow + 1, lastColumn)).Borders(4).Weight = 2
+                sheet.Range(sheet.Cells(1, 1), sheet.Cells(lastRow + 1, lastColumn)).Borders(7).Weight = 3
+                sheet.Range(sheet.Cells(1, 1), sheet.Cells(lastRow + 1, lastColumn)).Borders(8).Weight = 3
+                sheet.Range(sheet.Cells(1, 1), sheet.Cells(lastRow + 1, lastColumn)).Borders(9).Weight = 3
+                sheet.Range(sheet.Cells(1, 1), sheet.Cells(lastRow + 1, lastColumn)).Borders(10).Weight = 3
+                Excel.DisplayAlerts = False
                 pointExcel.SaveAs(Filename=(folderName + '\\' + point + '.xlsx'))
                 pointExcel.Close()
                 Excel.Quit()
                 self.ui.progressBar.setValue(progress)
                 progress += 1
+                pointCounter += 1
         self.setEnabled(True)
         self.ui.progressBar.hide()
-
