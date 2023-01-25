@@ -2,7 +2,6 @@ import datetime
 import os
 import shutil
 from math import ceil
-
 import win32com.client
 import json
 from PyQt6 import QtCore, QtWidgets, QtGui
@@ -34,10 +33,16 @@ class WindowBakery(QtWidgets.QMainWindow):
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("image/icon.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.setWindowIcon(icon)
-        TodayDate = datetime.datetime.today()
-        EndDay = datetime.datetime.today() + datetime.timedelta(days=6)
-        self.ui.dateEdit_startDay.setDate(QtCore.QDate(TodayDate.year, TodayDate.month, TodayDate.day))
-        self.ui.dateEdit_EndDay.setDate(QtCore.QDate(EndDay.year, EndDay.month, EndDay.day))
+        if self.proverkaData() != 0:
+            TodayDate = QtCore.QDate(self.proverkaData()[0], self.proverkaData()[1], self.proverkaData()[2])
+            self.ui.dateEdit_startDay.setDate(TodayDate)
+            EndDay = TodayDate.addDays(6)
+            self.ui.dateEdit_EndDay.setDate(EndDay)
+        else:
+            TodayDate = datetime.datetime.today()
+            EndDay = datetime.datetime.today() + datetime.timedelta(days=6)
+            self.ui.dateEdit_startDay.setDate(QtCore.QDate(TodayDate.year, TodayDate.month, TodayDate.day))
+            self.ui.dateEdit_EndDay.setDate(QtCore.QDate(EndDay.year, EndDay.month, EndDay.day))
         self.periodDay = [self.ui.dateEdit_startDay.date(), self.ui.dateEdit_EndDay.date()]
         self.ui.progressBar.hide()
         self.ui.dateEdit_startDay.userDateChanged['QDate'].connect(self.setEndDay)
@@ -61,7 +66,18 @@ class WindowBakery(QtWidgets.QMainWindow):
         self.ui.btn_download_Normativ.clicked.connect(self.saveFileDialogNormativ)
         self.ui.btn_download_Layout.clicked.connect(self.saveFileDialogLayout)
 
+    def proverkaData(self):
+        if self.check_db.thr_proverkaData() == 0:
+            return 0
+        else:
+            year = self.check_db.thr_proverkaData()[0][1]
+            month = self.check_db.thr_proverkaData()[0][2]
+            day = self.check_db.thr_proverkaData()[0][3]
+            date = [year, month, day]
+            return date
+
     def setEndDay(self):
+        self.check_db.thr_savecookieData(int(self.ui.dateEdit_startDay.date().toString('yyyy')), int(self.ui.dateEdit_startDay.date().toString('MM')), int(self.ui.dateEdit_startDay.date().toString('dd')))
         self.ui.dateEdit_EndDay.setDate(self.ui.dateEdit_startDay.date().addDays(6))
         self.periodDay = [self.ui.dateEdit_startDay.date(), self.ui.dateEdit_EndDay.date()]
         self.proverkaPeriodaPrognozFunc()
@@ -75,6 +91,7 @@ class WindowBakery(QtWidgets.QMainWindow):
             self.ui.btn_editPrognoz.setEnabled(False)
             self.ui.btn_deletePrognoz.setEnabled(False)
             self.ui.btn_Normativ.setEnabled(False)
+            self.ui.btn_download_Layout.setEnabled(False)
         elif self.proverkaPerioda(self.periodDay) == 1:
             self.ui.btn_koeff_Prognoz.setEnabled(False)
             self.ui.btn_prosmotrPrognoz.setEnabled(True)
@@ -82,6 +99,10 @@ class WindowBakery(QtWidgets.QMainWindow):
             self.ui.btn_deletePrognoz.setEnabled(True)
             if self.proverkaNormativa(self.periodDay) == 0:
                 self.ui.btn_Normativ.setEnabled(True)
+            if self.proverkaPeriodaKDayWeek(self.periodDay) == 1:
+                self.ui.btn_download_Layout.setEnabled(True)
+            else:
+                self.ui.btn_download_Layout.setEnabled(False)
 
     def proverkaPeriodaKDayWeekFunc(self):
         if self.proverkaPeriodaKDayWeek(self.periodDay) == 0:
@@ -89,22 +110,28 @@ class WindowBakery(QtWidgets.QMainWindow):
             self.ui.btn_prosmotr_koeff_DayWeek.setEnabled(False)
             self.ui.btn_edit_koeff_DayWeek.setEnabled(False)
             self.ui.btn_delete_koeff_DayWeek.setEnabled(False)
+            self.ui.btn_download_Layout.setEnabled(False)
         elif self.proverkaPeriodaKDayWeek(self.periodDay) == 1:
             self.ui.btn_koeff_DayWeek.setEnabled(False)
             self.ui.btn_prosmotr_koeff_DayWeek.setEnabled(True)
             self.ui.btn_edit_koeff_DayWeek.setEnabled(True)
             self.ui.btn_delete_koeff_DayWeek.setEnabled(True)
+            if self.proverkaPerioda(self.periodDay) == 1:
+                self.ui.btn_download_Layout.setEnabled(True)
+            else:
+                self.ui.btn_download_Layout.setEnabled(False)
 
     def proverkaNormativaFunc(self):
         if self.proverkaNormativa(self.periodDay) == 0:
             self.ui.btn_editNormativ.setEnabled(False)
+            self.ui.btn_download_Normativ.setEnabled(False)
             self.ui.btn_deleteNormativ.setEnabled(False)
         elif self.proverkaNormativa(self.periodDay) == 1:
             self.ui.btn_Normativ.setEnabled(False)
             self.ui.btn_editNormativ.setEnabled(True)
             self.ui.btn_deleteNormativ.setEnabled(True)
             self.ui.btn_download_Normativ.setEnabled(True)
-            self.ui.btn_download_Layout.setEnabled(True)
+
 
     def proverkaNormativa(self, period):
         self.check_db.thr_proverkaNormativa(period)
@@ -344,6 +371,7 @@ class WindowBakery(QtWidgets.QMainWindow):
         period = self.periodDay
         self.check_db.thr_deletePrognoz(period)
         self.proverkaPeriodaPrognozFunc()
+        self.proverkaNormativaFunc()
 
     def dayWeekTablesOpen(self, pathOLAP_DayWeek, periodDay):
         Excel = win32com.client.Dispatch("Excel.Application")
@@ -556,3 +584,10 @@ class WindowBakery(QtWidgets.QMainWindow):
                 pointCounter += 1
         self.setEnabled(True)
         self.ui.progressBar.hide()
+
+    def delCookieData(self):
+        self.check_db.thr_deleteCookieData()
+
+    def closeEvent(self, event):
+        self.delCookieData()
+        event.accept()

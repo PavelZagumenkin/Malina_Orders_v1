@@ -262,3 +262,30 @@ def poiskDataPeriodaNormativ(period, signal):
     signal.emit(value)
     cur.close()
     con.close()
+
+def saveCookieData(year, month, day):
+    con = sqlite3.connect('db/malina_orders.db')
+    cur = con.cursor()
+    cur.execute(f"UPDATE cookie_data set YEAR = '{year}', MONTH = '{month}', DAY = '{day}' where ID = 1")
+    con.commit()
+    cur.close()
+    con.close()
+
+def proverkaData():
+    con = sqlite3.connect('db/malina_orders.db')
+    cur = con.cursor()
+    cur.execute(f"SELECT * FROM cookie_data WHERE ID = 1;")
+    value = cur.fetchall()
+    if value == [] or value[0][1] == 0:
+        value = 0
+    cur.close()
+    con.close()
+    return value
+
+def delCookieData():
+    con = sqlite3.connect('db/malina_orders.db')
+    cur = con.cursor()
+    cur.execute(f"UPDATE cookie_data set YEAR = 0, MONTH = 0, DAY = 0 where ID = 1")
+    con.commit()
+    cur.close()
+    con.close()

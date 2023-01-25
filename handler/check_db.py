@@ -100,3 +100,12 @@ class CheckThread(QtCore.QThread):
     # Поиск прогноза по периоду
     def thr_poiskNormativa(self, period):
         poiskDataPeriodaNormativ(period, self.normativdata)
+
+    def thr_savecookieData(self, year, month, day):
+        saveCookieData(year, month, day)
+
+    def thr_proverkaData(self):
+        return proverkaData()
+
+    def thr_deleteCookieData(self):
+        delCookieData()
