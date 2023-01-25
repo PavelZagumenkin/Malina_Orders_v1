@@ -161,14 +161,15 @@ class WindowBakery(QtWidgets.QMainWindow):
 
     # Диалог выбора файла ОБЩЕГО отчета
     def olap_p(self):
-        fileName = QFileDialog.getOpenFileName(self, 'Выберите файл OLAP по продажам', 'Отчеты', 'Excel файл (*.xlsx)')
+        fileName = QFileDialog.getOpenFileName(self, 'Выберите файл OLAP по продажам', os.path.expanduser(
+                '~') + r'\Desktop', 'Excel файл (*.xlsx)')
         self.ui.lineEdit_OLAP_P.setText(fileName[0])
         self.ui.lineEdit_OLAP_P.setStyleSheet("padding-left: 5px; color: rgb(0, 0, 0)")
 
     # Диалог выбора файла отчета по дням недели
     def olap_dayWeek_bakery(self):
-        fileName = QFileDialog.getOpenFileName(self, 'Выберите файл OLAP по дням недели для пекарни', 'Отчеты',
-                                               'Excel файл (*.xlsx)')
+        fileName = QFileDialog.getOpenFileName(self, 'Выберите файл OLAP по дням недели для пекарни', os.path.expanduser(
+                '~') + r'\Desktop', 'Excel файл (*.xlsx)')
         self.ui.lineEdit_OLAP_dayWeek_bakery.setText(fileName[0])
         self.ui.lineEdit_OLAP_dayWeek_bakery.setStyleSheet("padding-left: 5px; color: rgb(0, 0, 0)")
 
@@ -445,8 +446,7 @@ class WindowBakery(QtWidgets.QMainWindow):
             caption="Сохранение данных",
             directory=os.path.expanduser(
                 '~') + r'\Desktop' + f"\Нормативы для пекарни с {self.periodDay[0].toString('dd.MM.yyyy')} по {self.periodDay[1].toString('dd.MM.yyyy')}.xlsx",
-            filter="Таблица Excel (*.xlsx, *.xls);",
-            initialFilter="Таблица Excel (*.xlsx)")
+            filter="Все файлы (*);")
         if fileName:
             self.ui.progressBar.show()
             self.setEnabled(False)
