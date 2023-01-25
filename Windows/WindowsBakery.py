@@ -566,15 +566,19 @@ class WindowBakery(QtWidgets.QMainWindow):
                             dayLayout = itogo - morningLayout
                             sheet.Cells(rowCount, dayCol + 5).Value = dayLayout
                             rowCount += 1
+                    lastRow = rowCount
+                    sheet.Cells(lastRow, dayCol + 3).Value = f"=SUM(R[{1 - lastRow}]C:R[-1]C)"
+                    sheet.Cells(lastRow, dayCol + 4).Value = f"=SUM(R[{1 - lastRow}]C:R[-1]C)"
+                    sheet.Cells(lastRow, dayCol + 5).Value = f"=SUM(R[{1 - lastRow}]C:R[-1]C)"
+                    sheet.Range(sheet.Cells(1, dayCol), sheet.Cells(lastRow, dayCol+5)).Borders(2).Weight = 2
+                    sheet.Range(sheet.Cells(1, dayCol), sheet.Cells(lastRow, dayCol+5)).Borders(4).Weight = 2
+                    sheet.Range(sheet.Cells(1, dayCol), sheet.Cells(lastRow, dayCol+5)).Borders(7).Weight = 3
+                    sheet.Range(sheet.Cells(1, dayCol), sheet.Cells(lastRow, dayCol+5)).Borders(8).Weight = 3
+                    sheet.Range(sheet.Cells(1, dayCol), sheet.Cells(lastRow, dayCol+5)).Borders(9).Weight = 3
+                    sheet.Range(sheet.Cells(1, dayCol), sheet.Cells(lastRow, dayCol+5)).Borders(10).Weight = 3
+                    if dayCol != 1:
+                        sheet.Columns(dayCol).PageBreak = True
                     dayCol += 6
-                lastColumn = sheet.UsedRange.Columns.Count
-                lastRow = sheet.UsedRange.Rows.Count
-                sheet.Range(sheet.Cells(1, 1), sheet.Cells(lastRow + 1, lastColumn)).Borders(2).Weight = 2
-                sheet.Range(sheet.Cells(1, 1), sheet.Cells(lastRow + 1, lastColumn)).Borders(4).Weight = 2
-                sheet.Range(sheet.Cells(1, 1), sheet.Cells(lastRow + 1, lastColumn)).Borders(7).Weight = 3
-                sheet.Range(sheet.Cells(1, 1), sheet.Cells(lastRow + 1, lastColumn)).Borders(8).Weight = 3
-                sheet.Range(sheet.Cells(1, 1), sheet.Cells(lastRow + 1, lastColumn)).Borders(9).Weight = 3
-                sheet.Range(sheet.Cells(1, 1), sheet.Cells(lastRow + 1, lastColumn)).Borders(10).Weight = 3
                 Excel.DisplayAlerts = False
                 pointExcel.SaveAs(Filename=(folderName + '\\' + point + '.xlsx'))
                 pointExcel.Close()
