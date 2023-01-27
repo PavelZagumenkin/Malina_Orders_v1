@@ -533,52 +533,51 @@ class WindowBakery(QtWidgets.QMainWindow):
                     date = (datetime.date(int(DayInPeriod.toString('yyyy')), int(DayInPeriod.toString('MM')),
                                           int(DayInPeriod.toString('dd')))).isoweekday()
                     sheet.Cells(1, dayCol).Value = point
-                    sheet.Cells(1, dayCol + 3).Value = DayInPeriod.toString('dd.MM.yyyy')
+                    sheet.Cells(1, dayCol + 2).Value = DayInPeriod.toString('dd.MM.yyyy')
                     sheet.Cells(2, dayCol).Value = "Код"
                     sheet.Columns(dayCol).ColumnWidth = 6
                     sheet.Cells(2, dayCol + 1).Value = "Наименование"
                     sheet.Columns(dayCol + 1).ColumnWidth = 45
-                    sheet.Cells(2, dayCol + 2).Value = "Норма"
+                    # sheet.Cells(2, dayCol + 2).Value = "Норма"
+                    # sheet.Columns(dayCol + 2).ColumnWidth = 6
+                    sheet.Cells(2, dayCol + 2).Value = "Всего"
                     sheet.Columns(dayCol + 2).ColumnWidth = 6
-                    sheet.Cells(2, dayCol + 3).Value = "Всего"
+                    sheet.Cells(2, dayCol + 3).Value = "Утро"
                     sheet.Columns(dayCol + 3).ColumnWidth = 6
-                    sheet.Cells(2, dayCol + 4).Value = "Утро"
+                    sheet.Cells(2, dayCol + 4).Value = "День"
                     sheet.Columns(dayCol + 4).ColumnWidth = 6
-                    sheet.Cells(2, dayCol + 5).Value = "День"
-                    sheet.Columns(dayCol + 5).ColumnWidth = 6
-                    sheet.Range(sheet.Cells(1, dayCol), sheet.Cells(1, dayCol + 2)).Merge()
-                    sheet.Range(sheet.Cells(1, dayCol + 3), sheet.Cells(1, dayCol + 5)).Merge()
+                    sheet.Range(sheet.Cells(1, dayCol), sheet.Cells(1, dayCol + 1)).Merge()
+                    sheet.Range(sheet.Cells(1, dayCol + 2), sheet.Cells(1, dayCol + 4)).Merge()
                     rowCount = 3
                     for poz in dataPrognoz['4']:
                         if poz != '0':
                             sheet.Cells(rowCount, dayCol).Value = dataPrognoz['4'][poz]
                             sheet.Cells(rowCount, dayCol + 1).Value = dataPrognoz['5'][poz]
-                            sheet.Cells(rowCount, dayCol + 2).Value = dataPrognoz['3'][poz]
-                            if (dataPrognoz[str(pointCounter)][poz] * dataKdayweek[str(headersKdayweek.index(point))][
-                                str(date)]) / dataPrognoz['3'][poz] < 1:
+                            # sheet.Cells(rowCount, dayCol + 2).Value = dataPrognoz['3'][poz]
+                            if (dataPrognoz[str(pointCounter)][poz] * dataKdayweek[str(headersKdayweek.index(point))][str(date)]) / dataPrognoz['3'][poz] < 1:
                                 itogo = dataPrognoz['3'][poz]
                             else:
                                 itogo = ceil(dataPrognoz[str(pointCounter)][poz] *
                                              dataKdayweek[str(headersKdayweek.index(point))][str(date)])
-                            sheet.Cells(rowCount, dayCol + 3).Value = itogo
+                            sheet.Cells(rowCount, dayCol + 2).Value = itogo
                             morningLayout = round((itogo * 0.6) / dataPrognoz['3'][poz]) * dataPrognoz['3'][poz]
-                            sheet.Cells(rowCount, dayCol + 4).Value = morningLayout
+                            sheet.Cells(rowCount, dayCol + 3).Value = morningLayout
                             dayLayout = itogo - morningLayout
-                            sheet.Cells(rowCount, dayCol + 5).Value = dayLayout
+                            sheet.Cells(rowCount, dayCol + 4).Value = dayLayout
                             rowCount += 1
                     lastRow = rowCount
-                    sheet.Cells(lastRow, dayCol + 3).Value = f"=SUM(R[{1 - lastRow}]C:R[-1]C)"
-                    sheet.Cells(lastRow, dayCol + 4).Value = f"=SUM(R[{1 - lastRow}]C:R[-1]C)"
-                    sheet.Cells(lastRow, dayCol + 5).Value = f"=SUM(R[{1 - lastRow}]C:R[-1]C)"
-                    sheet.Range(sheet.Cells(1, dayCol), sheet.Cells(lastRow, dayCol+5)).Borders(2).Weight = 2
-                    sheet.Range(sheet.Cells(1, dayCol), sheet.Cells(lastRow, dayCol+5)).Borders(4).Weight = 2
-                    sheet.Range(sheet.Cells(1, dayCol), sheet.Cells(lastRow, dayCol+5)).Borders(7).Weight = 3
-                    sheet.Range(sheet.Cells(1, dayCol), sheet.Cells(lastRow, dayCol+5)).Borders(8).Weight = 3
-                    sheet.Range(sheet.Cells(1, dayCol), sheet.Cells(lastRow, dayCol+5)).Borders(9).Weight = 3
-                    sheet.Range(sheet.Cells(1, dayCol), sheet.Cells(lastRow, dayCol+5)).Borders(10).Weight = 3
+                    sheet.Cells(lastRow, dayCol + 2).Value = f"=SUM(R[{3 - lastRow}]C:R[-1]C)"
+                    sheet.Cells(lastRow, dayCol + 3).Value = f"=SUM(R[{3 - lastRow}]C:R[-1]C)"
+                    sheet.Cells(lastRow, dayCol + 4).Value = f"=SUM(R[{3 - lastRow}]C:R[-1]C)"
+                    sheet.Range(sheet.Cells(1, dayCol), sheet.Cells(lastRow, dayCol+4)).Borders(2).Weight = 2
+                    sheet.Range(sheet.Cells(1, dayCol), sheet.Cells(lastRow, dayCol+4)).Borders(4).Weight = 2
+                    sheet.Range(sheet.Cells(1, dayCol), sheet.Cells(lastRow, dayCol+4)).Borders(7).Weight = 3
+                    sheet.Range(sheet.Cells(1, dayCol), sheet.Cells(lastRow, dayCol+4)).Borders(8).Weight = 3
+                    sheet.Range(sheet.Cells(1, dayCol), sheet.Cells(lastRow, dayCol+4)).Borders(9).Weight = 3
+                    sheet.Range(sheet.Cells(1, dayCol), sheet.Cells(lastRow, dayCol+4)).Borders(10).Weight = 3
                     if dayCol != 1:
                         sheet.Columns(dayCol).PageBreak = True
-                    dayCol += 6
+                    dayCol += 5
                 Excel.DisplayAlerts = False
                 pointExcel.SaveAs(Filename=(folderName + '\\' + point + '.xlsx'))
                 pointExcel.Close()

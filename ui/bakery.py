@@ -831,7 +831,7 @@ class Ui_WindowBakery(object):
         self.btn_prosmotrPrognoz.setText(_translate("WindowBakery", "Посмотреть"))
         self.btn_editPrognoz.setText(_translate("WindowBakery", "Редактировать"))
         self.btn_editNormativ.setText(_translate("WindowBakery", "Редактировать"))
-        self.btn_Normativ.setText(_translate("WindowBakery", "Установить"))
+        self.btn_Normativ.setText(_translate("WindowBakery", "Сформировать"))
         self.btn_edit_koeff_DayWeek.setText(_translate("WindowBakery", "Редактировать"))
         self.btn_download_Normativ.setText(_translate("WindowBakery", "ВЫГРУЗИТЬ НОРМАТИВЫ"))
         self.label_OLAP_P_2.setText(_translate("WindowBakery", "Выберите кондитерские для автозаказа"))

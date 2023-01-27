@@ -592,7 +592,7 @@ background-color: rgba(228, 107, 134, 1)
 }</string>
     </property>
     <property name="text">
-     <string>Установить</string>
+     <string>Сформировать</string>
     </property>
     <property name="checkable">
      <bool>false</bool>
