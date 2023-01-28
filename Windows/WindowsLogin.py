@@ -2,6 +2,9 @@ from PyQt6 import QtWidgets
 from ui.login import Ui_WindowLogin
 from handler.check_db import CheckThread
 import Windows.WindowsViborRazdela
+import win32com.client
+from PyQt6.QtWidgets import QMessageBox
+from PyQt6 import QtGui
 
 class WindowLogin(QtWidgets.QMainWindow):
     def __init__(self):
@@ -13,6 +16,21 @@ class WindowLogin(QtWidgets.QMainWindow):
         self.ui.label_login_password.setFocus()  # Фокус по умолчанию на тексте
         self.base_line_edit = [self.ui.line_login, self.ui.line_password]
         self.ui.btn_login.clicked.connect(self.login)
+        try:
+            win32com.client.Dispatch("Excel.Application")
+        except:
+            self.dialogNOExcel()
+            exit()
+
+    def dialogNOExcel(self):
+        dialogBox = QMessageBox()
+        dialogBox.setText(
+            "На вашем компьютере не установлен пакет Microsoft Office EXCEL.\nПрограмма не сможет работать корректно.\nПожалуйста установите пакет Microsoft Office EXCEL 10 или выше и перезапустите программу!")
+        dialogBox.setWindowIcon(QtGui.QIcon("image/icon.png"))
+        dialogBox.setWindowTitle('Прекращение работы!')
+        dialogBox.setIcon(QMessageBox.Icon.Critical)
+        dialogBox.setStandardButtons(QMessageBox.StandardButton.Ok)
+        dialogBox.exec()
 
     # Проверка пустоты логина и пароля(декоратор)
     def check_input(funct):
