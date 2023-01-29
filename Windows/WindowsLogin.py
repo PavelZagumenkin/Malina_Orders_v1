@@ -5,6 +5,7 @@ import Windows.WindowsViborRazdela
 import win32com.client
 from PyQt6.QtWidgets import QMessageBox
 from PyQt6 import QtGui
+import sys
 
 class WindowLogin(QtWidgets.QMainWindow):
     def __init__(self):
@@ -20,7 +21,8 @@ class WindowLogin(QtWidgets.QMainWindow):
             win32com.client.Dispatch("Excel.Application")
         except:
             self.dialogNOExcel()
-            exit()
+            sys.exit()
+
 
     def dialogNOExcel(self):
         dialogBox = QMessageBox()
