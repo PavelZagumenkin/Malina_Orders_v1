@@ -538,8 +538,6 @@ class WindowBakery(QtWidgets.QMainWindow):
                     sheet.Columns(dayCol).ColumnWidth = 6
                     sheet.Cells(2, dayCol + 1).Value = "Наименование"
                     sheet.Columns(dayCol + 1).ColumnWidth = 45
-                    # sheet.Cells(2, dayCol + 2).Value = "Норма"
-                    # sheet.Columns(dayCol + 2).ColumnWidth = 6
                     sheet.Cells(2, dayCol + 2).Value = "Всего"
                     sheet.Columns(dayCol + 2).ColumnWidth = 6
                     sheet.Cells(2, dayCol + 3).Value = "Утро"
@@ -553,12 +551,10 @@ class WindowBakery(QtWidgets.QMainWindow):
                         if poz != '0':
                             sheet.Cells(rowCount, dayCol).Value = dataPrognoz['4'][poz]
                             sheet.Cells(rowCount, dayCol + 1).Value = dataPrognoz['5'][poz]
-                            # sheet.Cells(rowCount, dayCol + 2).Value = dataPrognoz['3'][poz]
-                            if (dataPrognoz[str(pointCounter)][poz] * dataKdayweek[str(headersKdayweek.index(point))][str(date)]) / dataPrognoz['3'][poz] < 1:
-                                itogo = dataPrognoz['3'][poz]
-                            else:
-                                itogo = ceil(dataPrognoz[str(pointCounter)][poz] *
-                                             dataKdayweek[str(headersKdayweek.index(point))][str(date)])
+                            itogo = (dataPrognoz[str(pointCounter)][poz] * dataKdayweek[str(headersKdayweek.index(point))][str(date)]) / dataPrognoz['3'][poz]
+                            if itogo < 1:
+                                itogo = ceil(itogo)
+                            itogo = round(itogo * dataPrognoz['3'][poz])
                             sheet.Cells(rowCount, dayCol + 2).Value = itogo
                             morningLayout = round((itogo * 0.6) / dataPrognoz['3'][poz]) * dataPrognoz['3'][poz]
                             sheet.Cells(rowCount, dayCol + 3).Value = morningLayout
