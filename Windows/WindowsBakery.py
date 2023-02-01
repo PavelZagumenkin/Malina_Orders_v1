@@ -59,7 +59,7 @@ class WindowBakery(QtWidgets.QMainWindow):
         self.ui.btn_deletePrognoz.clicked.connect(self.dialogDeletePrognoz)
         self.ui.btn_prosmotr_koeff_DayWeek.clicked.connect(self.dayWeekTablesView)
         self.ui.btn_edit_koeff_DayWeek.clicked.connect(self.dayWeekTablesRedact)
-        self.ui.btn_delete_koeff_DayWeek.clicked.connect(self.dayWeekTablesDelete)
+        self.ui.btn_delete_koeff_DayWeek.clicked.connect(self.dialogDeleteKDayWeek)
         self.ui.btn_Normativ.clicked.connect(self.normativ)
         self.ui.btn_editNormativ.clicked.connect(self.normativTablesRedact)
         self.ui.btn_deleteNormativ.clicked.connect(self.dialogDeleteNormativ)
@@ -97,7 +97,7 @@ class WindowBakery(QtWidgets.QMainWindow):
             self.ui.btn_prosmotrPrognoz.setEnabled(True)
             self.ui.btn_editPrognoz.setEnabled(True)
             self.ui.btn_deletePrognoz.setEnabled(True)
-            if self.proverkaNormativa(self.periodDay) == 0:
+            if self.proverkaNormativa(self.periodDay) == 0 and self.proverkaPeriodaKDayWeek(self.periodDay) == 1:
                 self.ui.btn_Normativ.setEnabled(True)
             if self.proverkaPeriodaKDayWeek(self.periodDay) == 1:
                 self.ui.btn_download_Layout.setEnabled(True)
@@ -111,7 +111,9 @@ class WindowBakery(QtWidgets.QMainWindow):
             self.ui.btn_edit_koeff_DayWeek.setEnabled(False)
             self.ui.btn_delete_koeff_DayWeek.setEnabled(False)
             self.ui.btn_download_Layout.setEnabled(False)
-        elif self.proverkaPeriodaKDayWeek(self.periodDay) == 1:
+            self.ui.btn_Normativ.setEnabled(False)
+        elif self.proverkaPeriodaKDayWeek(self.periodDay) == 1 and self.proverkaPerioda(self.periodDay) == 1:
+            self.ui.btn_Normativ.setEnabled(True)
             self.ui.btn_koeff_DayWeek.setEnabled(False)
             self.ui.btn_prosmotr_koeff_DayWeek.setEnabled(True)
             self.ui.btn_edit_koeff_DayWeek.setEnabled(True)
@@ -334,7 +336,7 @@ class WindowBakery(QtWidgets.QMainWindow):
 
     def dialogDeletePrognoz(self):
         dialogBox = QMessageBox()
-        dialogBox.setText("Вы действительно хотите удалить сформированный прогноз и норматив с изначальными данными?")
+        dialogBox.setText("Вы действительно хотите удалить сформированный прогноз и норматив(если сформирован) с изначальными данными?")
         dialogBox.setWindowIcon(QtGui.QIcon("image/icon.png"))
         dialogBox.setWindowTitle('Удаление прогноза продаж')
         dialogBox.setIcon(QMessageBox.Icon.Critical)
@@ -345,6 +347,21 @@ class WindowBakery(QtWidgets.QMainWindow):
     def dialogButtonClickedPrognoz(self, button_clicked):
         if button_clicked.text() == "OK":
             self.prognozTablesDelete()
+            self.normativTablesDelete()
+
+    def dialogDeleteKDayWeek(self):
+        dialogBox = QMessageBox()
+        dialogBox.setText("Вы действительно хотите удалить сформированные коэффициенты по дням недели и норматив(если сформирован) с изначальными данными?")
+        dialogBox.setWindowIcon(QtGui.QIcon("image/icon.png"))
+        dialogBox.setWindowTitle('Удаление прогноза продаж')
+        dialogBox.setIcon(QMessageBox.Icon.Critical)
+        dialogBox.setStandardButtons(QMessageBox.StandardButton.Ok | QMessageBox.StandardButton.Cancel)
+        dialogBox.buttonClicked.connect(self.dialogButtonClickedKDayWeek)
+        dialogBox.exec()
+
+    def dialogButtonClickedKDayWeek(self, button_clicked):
+        if button_clicked.text() == "OK":
+            self.dayWeekTablesDelete()
             self.normativTablesDelete()
 
     def dialogDeleteNormativ(self):
