@@ -1,5 +1,6 @@
 from PyQt6 import QtWidgets, QtGui, QtCore
 import json
+from math import ceil
 from ui.bakeryTables import Ui_WindowBakeryTables
 from PyQt6.QtGui import QFont
 from PyQt6.QtWidgets import QTableWidgetItem
@@ -25,6 +26,12 @@ class WindowBakeryNormativEdit(QtWidgets.QMainWindow):
         self.data = json.loads(self.prognoz[1].strip("\'"))
         global data
         data = self.data
+        kdayweek = self.poiskKDayWeekExcel(periodDay)
+        headersKdayweek = json.loads(kdayweek[0].strip("\'"))
+        dataKdayweek = json.loads(kdayweek[1].strip("\'"))
+        keysDataKdayweek = ['0']
+        for key in keysDataKdayweek:
+            dataKdayweek.pop(key, None)
         self.ui.tableWidget.setRowCount(len(self.data['2']))
         self.ui.tableWidget.setColumnCount(len(self.headers))
         self.headers[0] = 'Кф. пекарни'
@@ -61,12 +68,27 @@ class WindowBakeryNormativEdit(QtWidgets.QMainWindow):
                     self.ui.tableWidget.cellWidget(int(row), 0).setSingleStep(0.10)
                     self.ui.tableWidget.cellWidget(int(row), 0).valueChanged.connect(self.raschetNormativov)
                 else:
-                    item = QTableWidgetItem(str(self.data[col][row]))
+                    # Перемножаем на каждый коэффициент дня недели и округляем до выкладки. Собираем сумму таких значей по каждой кондитерской.
+                    if int(col) > 6 and int(row) > 0:
+                        point = self.headers[int(col) - 2]
+                        summ = 0
+                        for kfDay in dataKdayweek[str(headersKdayweek.index(point))]:
+                            if kfDay != '0':
+                                layout = self.data['3'][row]
+                                okrDoLayuot = (self.data[col][row] * dataKdayweek[str(headersKdayweek.index(point))][kfDay]) / layout
+                                if okrDoLayuot < 1:
+                                    okrDoLayuot = ceil(okrDoLayuot)
+                                okrDoLayuot = round(okrDoLayuot * layout)
+                                summ = summ + okrDoLayuot
+                        data[col][row] = summ / 7
+                        item = QTableWidgetItem(str(summ / 7))
+                    else:
+                        item = QTableWidgetItem(str(self.data[col][row]))
                     self.ui.tableWidget.setItem(int(row), int(col) - 2, item)
         # Перемножаем значения в таблице на значения коэффициентов сохраненных в БД
         for col in range(5, self.ui.tableWidget.columnCount()):
             for row in range(1, self.ui.tableWidget.rowCount()):
-                result = round(float(data[str(col + 2)][str(row)]) * float(self.ui.tableWidget.cellWidget(0, col).value()) * float(self.ui.tableWidget.cellWidget(row, 0).value()), 2)
+                result = round(float(data[str(col + 2)][str(row)]) * float(self.ui.tableWidget.cellWidget(0, col).value()) * float(self.ui.tableWidget.cellWidget(row, 0).value()), 0)
                 self.ui.tableWidget.setItem(row, col, QTableWidgetItem(str(result)))
         # Вставляем кнопку Сохранить и закрыть
         self.SaveAndClose = QtWidgets.QPushButton()
@@ -98,6 +120,12 @@ class WindowBakeryNormativEdit(QtWidgets.QMainWindow):
         self.ui.tableWidget.item(0, 4).setFlags(QtCore.Qt.ItemFlag.ItemIsEnabled)
         self.addPeriodInNormativ(self.periodDay)
 
+
+    def poiskKDayWeekExcel(self, periodDay):
+        self.check_db.thr_poiskDataPeriodaKdayWeek(periodDay)
+        return (prognoz)
+
+
     def deleteNormativInDB(self, period):
         self.check_db.thr_deleteNormativ(period)
 
@@ -109,11 +137,11 @@ class WindowBakeryNormativEdit(QtWidgets.QMainWindow):
         index = self.ui.tableWidget.indexAt(buttonClicked.pos())
         if index.row() == 0:
             for i in range(1, self.ui.tableWidget.rowCount()):
-                result = round(float(data[str(index.column()+2)][str(i)]) * float(self.ui.tableWidget.cellWidget(0, index.column()).value()) * float(self.ui.tableWidget.cellWidget(i, 0).value()), 2)
+                result = round(float(data[str(index.column()+2)][str(i)]) * float(self.ui.tableWidget.cellWidget(0, index.column()).value()) * float(self.ui.tableWidget.cellWidget(i, 0).value()), 0)
                 self.ui.tableWidget.setItem(i, index.column(), QTableWidgetItem(str(result)))
         else:
             for i in range(5, self.ui.tableWidget.columnCount()):
-                result = round(float(data[str(i+2)][str(index.row())]) * float(self.ui.tableWidget.cellWidget(index.row(), 0).value()) * float(self.ui.tableWidget.cellWidget(0, i).value()), 2)
+                result = round(float(data[str(i+2)][str(index.row())]) * float(self.ui.tableWidget.cellWidget(index.row(), 0).value()) * float(self.ui.tableWidget.cellWidget(0, i).value()), 0)
                 self.ui.tableWidget.setItem(index.row(), i, QTableWidgetItem(str(result)))
 
     def saveAndCloseDef(self):
