@@ -112,14 +112,14 @@ class WindowBakery(QtWidgets.QMainWindow):
             self.ui.btn_delete_koeff_DayWeek.setEnabled(False)
             self.ui.btn_download_Layout.setEnabled(False)
             self.ui.btn_Normativ.setEnabled(False)
-        elif self.proverkaPeriodaKDayWeek(self.periodDay) == 1 and self.proverkaPerioda(self.periodDay) == 1:
-            self.ui.btn_Normativ.setEnabled(True)
+        elif self.proverkaPeriodaKDayWeek(self.periodDay) == 1:
             self.ui.btn_koeff_DayWeek.setEnabled(False)
             self.ui.btn_prosmotr_koeff_DayWeek.setEnabled(True)
             self.ui.btn_edit_koeff_DayWeek.setEnabled(True)
             self.ui.btn_delete_koeff_DayWeek.setEnabled(True)
             if self.proverkaPerioda(self.periodDay) == 1:
                 self.ui.btn_download_Layout.setEnabled(True)
+                self.ui.btn_Normativ.setEnabled(True)
             else:
                 self.ui.btn_download_Layout.setEnabled(False)
 

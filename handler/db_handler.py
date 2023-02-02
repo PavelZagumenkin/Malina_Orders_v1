@@ -159,7 +159,12 @@ def deleteKDayWeekInDB(period):
 def saveLayout(kod, name, layuot):
     con = sqlite3.connect('db/malina_orders.db')
     cur = con.cursor()
-    cur.execute(f"UPDATE catalog_food set NAME = '{name}', LAYOUT = '{layuot}' where KOD = '{kod}'")
+    cur.execute(f'SELECT * FROM catalog_food WHERE KOD="{kod}";')
+    value = cur.fetchall()
+    if value != []:
+        cur.execute(f"UPDATE catalog_food set NAME = '{name}', LAYOUT = '{layuot}' where KOD = '{kod}'")
+    else:
+        cur.execute(f"INSERT INTO catalog_food (KOD, NAME, LAYOUT) VALUES ('{kod}', '{name}', '{layuot}');")
     con.commit()
     cur.close()
     con.close()
