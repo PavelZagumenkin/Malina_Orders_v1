@@ -1,4 +1,5 @@
-from PyQt6 import QtWidgets
+from PyQt6 import QtWidgets, QtCore
+from PyQt6.QtCore import Qt
 from ui.login import Ui_WindowLogin
 from handler.check_db import CheckThread
 import Windows.WindowsViborRazdela
@@ -23,6 +24,18 @@ class WindowLogin(QtWidgets.QMainWindow):
             self.dialogNOExcel()
             sys.exit()
 
+        # Устанавливаем иконку
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("image/icon.ico"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        self.setWindowIcon(icon)
+
+        # Добавляем картинку
+        self.label_logo_721 = QtWidgets.QLabel(parent=self.ui.centralwidget)
+        self.label_logo_721.setGeometry(QtCore.QRect(0, 0, 731, 721))
+        self.label_logo_721.setText("")
+        self.label_logo_721.setPixmap(QtGui.QPixmap("image/logo_721.png"))
+        self.label_logo_721.setScaledContents(False)
+        self.label_logo_721.setObjectName("label_logo_721")
 
     def dialogNOExcel(self):
         dialogBox = QMessageBox()
@@ -39,7 +52,7 @@ class WindowLogin(QtWidgets.QMainWindow):
         def wrapper(self):
             for line_edit in self.base_line_edit:
                 if len(line_edit.text()) == 0:
-                    self.ui.label_login_password.setStyleSheet("color: rgba(228, 107, 134, 1)");
+                    self.ui.label_login_password.setStyleSheet("color: rgba(228, 107, 134, 1)")
                     self.ui.label_login_password.setText('Поле логин или пароль пустое!')
                     return
             funct(self)
@@ -62,5 +75,9 @@ class WindowLogin(QtWidgets.QMainWindow):
             WindowViborRazdela = Windows.WindowsViborRazdela.WindowViborRazdela()
             WindowViborRazdela.show()
         else:
-            self.ui.label_login_password.setStyleSheet("color: rgba(228, 107, 134, 1)");
+            self.ui.label_login_password.setStyleSheet("color: rgba(228, 107, 134, 1)")
             self.ui.label_login_password.setText('Неверный логин или пароль!')
+
+    def keyPressEvent(self, event):
+        if event.key() == Qt.Key.Key_Return or event.key() == Qt.Key.Key_Enter:
+            self.ui.btn_login.click()  # Имитируем нажатие кнопки btn_login

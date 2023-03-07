@@ -16,7 +16,7 @@ class Ui_WindowViborRazdela(object):
         WindowViborRazdela.setMinimumSize(QtCore.QSize(370, 540))
         WindowViborRazdela.setMaximumSize(QtCore.QSize(370, 540))
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("image/icon.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        icon.addPixmap(QtGui.QPixmap("../image/icon.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         WindowViborRazdela.setWindowIcon(icon)
         self.centralwidget = QtWidgets.QWidget(WindowViborRazdela)
         self.centralwidget.setObjectName("centralwidget")
@@ -61,6 +61,33 @@ class Ui_WindowViborRazdela(object):
         self.btn_bakery.setCheckable(False)
         self.btn_bakery.setObjectName("btn_bakery")
         self.verticalLayout.addWidget(self.btn_bakery)
+        self.btn_pie = QtWidgets.QPushButton(self.centralwidget)
+        self.btn_pie.setMinimumSize(QtCore.QSize(0, 65))
+        self.btn_pie.setMaximumSize(QtCore.QSize(500, 65))
+        self.btn_pie.setBaseSize(QtCore.QSize(0, 0))
+        font = QtGui.QFont()
+        font.setFamily("Trebuchet MS")
+        font.setPointSize(22)
+        font.setBold(False)
+        font.setWeight(50)
+        self.btn_pie.setFont(font)
+        self.btn_pie.setStyleSheet("QPushButton {\n"
+"background-color: rgb(228, 107, 134);\n"
+"border: none;\n"
+"border-radius: 10px}\n"
+"\n"
+"QPushButton:hover {\n"
+"border: 1px solid  rgb(0, 0, 0);\n"
+"background-color: rgba(228, 107, 134, 0.9)\n"
+"}\n"
+"\n"
+"QPushButton:pressed {\n"
+"border:3px solid  rgb(0, 0, 0);\n"
+"background-color: rgba(228, 107, 134, 1)\n"
+"}")
+        self.btn_pie.setCheckable(False)
+        self.btn_pie.setObjectName("btn_pie")
+        self.verticalLayout.addWidget(self.btn_pie)
         self.btn_cakes = QtWidgets.QPushButton(self.centralwidget)
         self.btn_cakes.setMinimumSize(QtCore.QSize(0, 65))
         self.btn_cakes.setMaximumSize(QtCore.QSize(500, 65))
@@ -88,33 +115,6 @@ class Ui_WindowViborRazdela(object):
         self.btn_cakes.setCheckable(False)
         self.btn_cakes.setObjectName("btn_cakes")
         self.verticalLayout.addWidget(self.btn_cakes)
-        self.btn_filling = QtWidgets.QPushButton(self.centralwidget)
-        self.btn_filling.setMinimumSize(QtCore.QSize(0, 65))
-        self.btn_filling.setMaximumSize(QtCore.QSize(500, 65))
-        self.btn_filling.setBaseSize(QtCore.QSize(0, 0))
-        font = QtGui.QFont()
-        font.setFamily("Trebuchet MS")
-        font.setPointSize(22)
-        font.setBold(False)
-        font.setWeight(50)
-        self.btn_filling.setFont(font)
-        self.btn_filling.setStyleSheet("QPushButton {\n"
-"background-color: rgb(228, 107, 134);\n"
-"border: none;\n"
-"border-radius: 10px}\n"
-"\n"
-"QPushButton:hover {\n"
-"border: 1px solid  rgb(0, 0, 0);\n"
-"background-color: rgba(228, 107, 134, 0.9)\n"
-"}\n"
-"\n"
-"QPushButton:pressed {\n"
-"border:3px solid  rgb(0, 0, 0);\n"
-"background-color: rgba(228, 107, 134, 1)\n"
-"}")
-        self.btn_filling.setCheckable(False)
-        self.btn_filling.setObjectName("btn_filling")
-        self.verticalLayout.addWidget(self.btn_filling)
         self.btn_others = QtWidgets.QPushButton(self.centralwidget)
         self.btn_others.setMinimumSize(QtCore.QSize(0, 65))
         self.btn_others.setMaximumSize(QtCore.QSize(500, 65))
@@ -179,8 +179,8 @@ class Ui_WindowViborRazdela(object):
         WindowViborRazdela.setWindowTitle(_translate("WindowViborRazdela", "Выбор раздела"))
         self.label_title.setText(_translate("WindowViborRazdela", "Выберите раздел"))
         self.btn_bakery.setText(_translate("WindowViborRazdela", "ВЫПЕЧКА"))
+        self.btn_pie.setText(_translate("WindowViborRazdela", "ПИРОЖНЫЕ"))
         self.btn_cakes.setText(_translate("WindowViborRazdela", "ТОРТЫ"))
-        self.btn_filling.setText(_translate("WindowViborRazdela", "НАЧИНКИ"))
         self.btn_others.setText(_translate("WindowViborRazdela", "ОСТАЛЬНОЕ"))
         self.btn_exit.setText(_translate("WindowViborRazdela", "ВЫХОД"))
 

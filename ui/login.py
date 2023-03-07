@@ -23,7 +23,7 @@ class Ui_WindowLogin(object):
         WindowLogin.setMouseTracking(False)
         WindowLogin.setTabletTracking(False)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("image/icon.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        icon.addPixmap(QtGui.QPixmap("../image/icon.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         WindowLogin.setWindowIcon(icon)
         WindowLogin.setStyleSheet("background: #fff")
         self.centralwidget = QtWidgets.QWidget(WindowLogin)
@@ -94,7 +94,7 @@ class Ui_WindowLogin(object):
         self.label_logo_721 = QtWidgets.QLabel(self.centralwidget)
         self.label_logo_721.setGeometry(QtCore.QRect(0, 0, 731, 721))
         self.label_logo_721.setText("")
-        self.label_logo_721.setPixmap(QtGui.QPixmap("image/logo_721.png"))
+        self.label_logo_721.setPixmap(QtGui.QPixmap("../image/logo_721.png"))
         self.label_logo_721.setScaledContents(False)
         self.label_logo_721.setObjectName("label_logo_721")
         self.label_login_password = QtWidgets.QLabel(self.centralwidget)
@@ -129,10 +129,9 @@ class Ui_WindowLogin(object):
         _translate = QtCore.QCoreApplication.translate
         WindowLogin.setWindowTitle(_translate("WindowLogin", "Малина 64"))
         self.btn_login.setText(_translate("WindowLogin", "Начать работу"))
-        self.btn_login.setShortcut(_translate("WindowLogin", "Return"))
         self.line_login.setPlaceholderText(_translate("WindowLogin", "Логин"))
         self.label_autor_text.setText(_translate("WindowLogin", "Автор логиcтических расчетов Китов А.О. \n"
-" Разработчик Загуменкин П.И. \n" "Версия 1.05"))
+" Разработчик Загуменкин П.И."))
         self.line_password.setPlaceholderText(_translate("WindowLogin", "Пароль"))
         self.label_login_password.setText(_translate("WindowLogin", "Введите логин и пароль"))
         self.lable_suppot_text.setText(_translate("WindowLogin", "По всем вопросам работы программы \n"

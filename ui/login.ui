@@ -87,9 +87,6 @@ background-color: rgba(228, 107, 134, 1)
     <property name="text">
      <string>Начать работу</string>
     </property>
-    <property name="shortcut">
-     <string>Return</string>
-    </property>
     <property name="checkable">
      <bool>false</bool>
     </property>

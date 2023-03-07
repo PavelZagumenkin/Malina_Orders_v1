@@ -1,6 +1,6 @@
 from PyQt6 import QtWidgets
 from ui.viborRazdela import Ui_WindowViborRazdela
-import Windows.WindowsBakery, Windows.WindowsLogin
+import Windows.WindowsBakery, Windows.WindowsLogin, Windows.WindowsPie
 
 
 class WindowViborRazdela(QtWidgets.QMainWindow):
@@ -10,6 +10,7 @@ class WindowViborRazdela(QtWidgets.QMainWindow):
         self.ui.setupUi(self)
         self.ui.btn_exit.clicked.connect(self.logout)
         self.ui.btn_bakery.clicked.connect(self.bakeryOpen)
+        self.ui.btn_pie.clicked.connect(self.pieOpen)
 
     # Обработка логаута
     def logout(self):
@@ -29,3 +30,10 @@ class WindowViborRazdela(QtWidgets.QMainWindow):
         global WindowBakery
         WindowBakery = Windows.WindowsBakery.WindowBakery()
         WindowBakery.show()
+
+    # Закрываем выбор раздела, открываем пирожные
+    def pieOpen(self):
+        self.close()
+        global WindowPie
+        WindowPie = Windows.WindowsPie.WindowPie()
+        WindowPie.show()
