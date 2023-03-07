@@ -12,7 +12,7 @@ from handler.check_db import CheckThread
 import Windows.WindowsViborRazdela
 
 
-
+# тест коммит
 class WindowPie(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
