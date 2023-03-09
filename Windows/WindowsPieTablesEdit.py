@@ -40,7 +40,7 @@ class WindowPieTablesEdit(QtWidgets.QMainWindow):
         self.ui.tableWidget.setRowCount(endOLAPRow - 1)
         self.ui.tableWidget.setColumnCount(endOLAPCol + 3)
         self.columnLables = list(sheet_OLAP_P.Range(sheet_OLAP_P.Cells(1, 1), sheet_OLAP_P.Cells(1, endOLAPCol - 1)).Value[0])
-        self.columnLables.insert(0, "Выкладка")
+        self.columnLables.insert(0, "Квант")
         self.columnLables.insert(0, "Кф. товара")
         self.columnLables.insert(0, "")
         self.columnLables.insert(0, "")
@@ -237,13 +237,13 @@ class WindowPieTablesEdit(QtWidgets.QMainWindow):
         return int(layout)
 
     def insertInDB(self, savePeriod, saveHeaders, saveDB, saveNull):
-        self.check_db.thr_updatePrognoz(savePeriod, saveHeaders, saveDB, saveNull)
+        self.check_db.thr_updatePrognozPie(savePeriod, saveHeaders, saveDB, saveNull)
 
     def delPeriodInDB(self, period):
-        self.check_db.thr_delPeriod(period)
+        self.check_db.thr_delPeriodPie(period)
 
     def dialogAddLayout(self):
-        kol, ok = QInputDialog.getInt(self, "Отсуствует норма выкладки", f"Введите норму выкладки для {tovar_text} код изделия {kod_text}:")
+        kol, ok = QInputDialog.getInt(self, "Отсуствует квант поставки", f"Введите квант поставки для {tovar_text} код изделия {kod_text}:")
         if ok:
             self.check_db.thr_updateLayout(kod_text, tovar_text, int(kol))
             return(int(kol))
@@ -252,10 +252,10 @@ class WindowPieTablesEdit(QtWidgets.QMainWindow):
             return(1)
 
     def addPeriod(self, period):
-        self.check_db.thr_addPeriod(period)
+        self.check_db.thr_addPeriodPie(period)
 
     def proverkaPerioda(self, period):
-        self.check_db.thr_proverkaPerioda(period)
+        self.check_db.thr_proverkaPeriodaPie(period)
         return otvetPeriod
 
     def signal_period(self, value):
@@ -280,8 +280,8 @@ class WindowPieTablesEdit(QtWidgets.QMainWindow):
             event.accept()
             if self.proverkaPerioda(self.periodDay) == 0:
                 self.delPeriodInDB(self.periodDay)
-            global WindowBakery
-            WindowBakery = Windows.WindowsBakery.WindowBakery()
-            WindowBakery.show()
+            global WindowPie
+            WindowPie = Windows.WindowsPie.WindowPie()
+            WindowPie.show()
         else:
             event.ignore()

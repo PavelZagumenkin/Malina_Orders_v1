@@ -137,4 +137,17 @@ class CheckThread(QtCore.QThread):
     def thr_deleteKDayWeekPie(self, period):
         deleteKDayWeekPieInDB(period)
 
-    # Добавил данные в БД
+    # Обновление прогноза после редактирования
+    def thr_updatePrognozPie(self, savePeriod, saveHeaders, saveDB, saveNull):
+        updatePrognozPieInDB(savePeriod, saveHeaders, saveDB, saveNull)
+
+    # Удаляем пустой период
+    def thr_delPeriodPie(self, period):
+        deletePeriodPrognozPieInDB(period)
+
+    # Добавляем пустой период
+    def thr_addPeriodPie(self, period):
+        addPeriodPrognozPieInDB(period)
+
+
+
