@@ -15,6 +15,9 @@ class CheckThread(QtCore.QThread):
     def thr_login(self, login_text, password_text):
         login(login_text, password_text, self.mysignal)
 
+
+    # Работа с Выпечкой
+
     # Расстановка выкладки(поиск в БД в таблице layout)
     def thr_kod(self, kod_text):
         seach_kod(kod_text, self.layout)
@@ -109,3 +112,27 @@ class CheckThread(QtCore.QThread):
 
     def thr_deleteCookieData(self):
         delCookieData()
+
+
+    # Работа с Пирожными
+    # Проверка наличия созданной даты
+    def thr_proverkaPeriodaPie(self, period):
+        poiskPeriodaPrognozaPieInDB(period, self.period)
+
+
+    def thr_proverkaPeriodaKDayWeekPie(self, period):
+        poiskPeriodaKDayWeekPieInDB(period, self.period)
+
+    # Поиск прогноза по периоду
+    def thr_poiskPrognozaPie(self, period):
+        poiskDataPeriodaPrognozPie(period, self.prognoz)
+
+    def thr_poiskDataPeriodaKdayWeekPie(self, period):
+        poiskDataPeriodaKDayWeekPie(period, self.prognoz)
+
+    # Удаление прогноза из БД
+    def thr_deletePrognozPie(self, period):
+        deletePrognozPieInDB(period)
+
+    def thr_deleteKDayWeekPie(self, period):
+        deleteKDayWeekPieInDB(period)

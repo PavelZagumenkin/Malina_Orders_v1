@@ -10,6 +10,12 @@ from PyQt6.QtWidgets import QMessageBox
 from ui.pie import Ui_WindowPie
 from handler.check_db import CheckThread
 import Windows.WindowsViborRazdela
+import Windows.WindowsPieTablesEdit
+import Windows.WindowsPieTablesView
+import Windows.WindowsPieTablesRedact
+import Windows.WindowsPieTablesDayWeekEdit
+import Windows.WindowsPieTablesDayWeekView
+import Windows.WindowsPieTablesDayWeekRedact
 
 
 # тест коммит
@@ -40,18 +46,17 @@ class WindowPie(QtWidgets.QMainWindow):
         self.ui.btn_exit_pie.clicked.connect(self.viborRazdelaOpen)
         self.ui.btn_path_OLAP_P.clicked.connect(self.olap_p)
         self.ui.btn_path_dayWeek_pie.clicked.connect(self.olap_dayWeek_pie)
-        # self.ui.btn_koeff_Prognoz.clicked.connect(self.koeff_Prognoz)
-        # self.ui.btn_koeff_DayWeek.clicked.connect(self.koeff_DayWeek)
-        # self.proverkaPeriodaPrognozFunc()
-        # self.proverkaPeriodaKDayWeekFunc()
-        # self.proverkaNormativaFunc()
-        # self.ui.btn_prosmotrPrognoz.clicked.connect(self.prognozTablesView)
-        # self.ui.btn_editPrognoz.clicked.connect(self.prognozTablesRedact)
-        # self.ui.btn_deletePrognoz.clicked.connect(self.dialogDeletePrognoz)
-        # self.ui.btn_prosmotr_koeff_DayWeek.clicked.connect(self.dayWeekTablesView)
-        # self.ui.btn_edit_koeff_DayWeek.clicked.connect(self.dayWeekTablesRedact)
-        # self.ui.btn_delete_koeff_DayWeek.clicked.connect(self.dialogDeleteKDayWeek)
-        # self.ui.btn_download_plans.clicked.connect(self.saveFileDialogLayout)
+        self.ui.btn_koeff_Prognoz.clicked.connect(self.koeff_Prognoz)
+        self.ui.btn_koeff_DayWeek.clicked.connect(self.koeff_DayWeek)
+        self.proverkaPeriodaPrognozFunc()
+        self.proverkaPeriodaKDayWeekFunc()
+        self.ui.btn_prosmotrPrognoz.clicked.connect(self.prognozTablesView)
+        self.ui.btn_editPrognoz.clicked.connect(self.prognozTablesRedact)
+        self.ui.btn_deletePrognoz.clicked.connect(self.dialogDeletePrognoz)
+        self.ui.btn_prosmotr_koeff_DayWeek.clicked.connect(self.dayWeekTablesView)
+        self.ui.btn_edit_koeff_DayWeek.clicked.connect(self.dayWeekTablesRedact)
+        self.ui.btn_delete_koeff_DayWeek.clicked.connect(self.dialogDeleteKDayWeek)
+        self.ui.btn_download_plans.clicked.connect(self.saveFileDialogPlan)
 
     def proverkaData(self):
         if self.check_db.thr_proverkaData() == 0:
@@ -67,9 +72,8 @@ class WindowPie(QtWidgets.QMainWindow):
         self.check_db.thr_savecookieData(int(self.ui.dateEdit_startDay.date().toString('yyyy')), int(self.ui.dateEdit_startDay.date().toString('MM')), int(self.ui.dateEdit_startDay.date().toString('dd')))
         self.ui.dateEdit_EndDay.setDate(self.ui.dateEdit_startDay.date().addDays(6))
         self.periodDay = [self.ui.dateEdit_startDay.date(), self.ui.dateEdit_EndDay.date()]
-        # self.proverkaPeriodaPrognozFunc()
-        # self.proverkaPeriodaKDayWeekFunc()
-        # self.proverkaNormativaFunc()
+        self.proverkaPeriodaPrognozFunc()
+        self.proverkaPeriodaKDayWeekFunc()
 
     def proverkaPeriodaPrognozFunc(self):
         if self.proverkaPerioda(self.periodDay) == 0:
@@ -77,19 +81,16 @@ class WindowPie(QtWidgets.QMainWindow):
             self.ui.btn_prosmotrPrognoz.setEnabled(False)
             self.ui.btn_editPrognoz.setEnabled(False)
             self.ui.btn_deletePrognoz.setEnabled(False)
-            self.ui.btn_Normativ.setEnabled(False)
-            self.ui.btn_download_Layout.setEnabled(False)
+            self.ui.btn_download_plans.setEnabled(False)
         elif self.proverkaPerioda(self.periodDay) == 1:
             self.ui.btn_koeff_Prognoz.setEnabled(False)
             self.ui.btn_prosmotrPrognoz.setEnabled(True)
             self.ui.btn_editPrognoz.setEnabled(True)
             self.ui.btn_deletePrognoz.setEnabled(True)
-            if self.proverkaNormativa(self.periodDay) == 0 and self.proverkaPeriodaKDayWeek(self.periodDay) == 1:
-                self.ui.btn_Normativ.setEnabled(True)
             if self.proverkaPeriodaKDayWeek(self.periodDay) == 1:
-                self.ui.btn_download_Layout.setEnabled(True)
+                self.ui.btn_download_plans.setEnabled(True)
             else:
-                self.ui.btn_download_Layout.setEnabled(False)
+                self.ui.btn_download_plans.setEnabled(False)
 
     def proverkaPeriodaKDayWeekFunc(self):
         if self.proverkaPeriodaKDayWeek(self.periodDay) == 0:
@@ -97,48 +98,23 @@ class WindowPie(QtWidgets.QMainWindow):
             self.ui.btn_prosmotr_koeff_DayWeek.setEnabled(False)
             self.ui.btn_edit_koeff_DayWeek.setEnabled(False)
             self.ui.btn_delete_koeff_DayWeek.setEnabled(False)
-            self.ui.btn_download_Layout.setEnabled(False)
-            self.ui.btn_Normativ.setEnabled(False)
+            self.ui.btn_download_plans.setEnabled(False)
         elif self.proverkaPeriodaKDayWeek(self.periodDay) == 1:
             self.ui.btn_koeff_DayWeek.setEnabled(False)
             self.ui.btn_prosmotr_koeff_DayWeek.setEnabled(True)
             self.ui.btn_edit_koeff_DayWeek.setEnabled(True)
             self.ui.btn_delete_koeff_DayWeek.setEnabled(True)
             if self.proverkaPerioda(self.periodDay) == 1:
-                self.ui.btn_download_Layout.setEnabled(True)
-                self.ui.btn_Normativ.setEnabled(True)
+                self.ui.btn_download_plans.setEnabled(True)
             else:
-                self.ui.btn_download_Layout.setEnabled(False)
-
-    def proverkaNormativaFunc(self):
-        if self.proverkaNormativa(self.periodDay) == 0:
-            self.ui.btn_editNormativ.setEnabled(False)
-            self.ui.btn_download_Normativ.setEnabled(False)
-            self.ui.btn_deleteNormativ.setEnabled(False)
-        elif self.proverkaNormativa(self.periodDay) == 1:
-            self.ui.btn_Normativ.setEnabled(False)
-            self.ui.btn_editNormativ.setEnabled(True)
-            self.ui.btn_deleteNormativ.setEnabled(True)
-            self.ui.btn_download_Normativ.setEnabled(True)
-
-
-    def proverkaNormativa(self, period):
-        self.check_db.thr_proverkaNormativa(period)
-        return otvetNormativ
-
-    def signal_normativ(self, value):
-        global otvetNormativ
-        if value == 'Пусто':
-            otvetNormativ = 0
-        elif value == 'За этот период есть сформированный норматив':
-            otvetNormativ = 1
+                self.ui.btn_download_plans.setEnabled(False)
 
     def proverkaPerioda(self, period):
-        self.check_db.thr_proverkaPerioda(period)
+        self.check_db.thr_proverkaPeriodaPie(period)
         return otvetPeriod
 
     def proverkaPeriodaKDayWeek(self, period):
-        self.check_db.thr_proverkaPeriodaKDayWeek(period)
+        self.check_db.thr_proverkaPeriodaKDayWeekPie(period)
         return otvetPeriod
 
     def signal_period(self, value):
@@ -186,7 +162,7 @@ class WindowPie(QtWidgets.QMainWindow):
         Excel = win32com.client.Dispatch("Excel.Application")
         wb_OLAP_P = Excel.Workbooks.Open(pathOLAP_P)
         sheet_OLAP_P = wb_OLAP_P.ActiveSheet
-        if sheet_OLAP_P.Name != "OLAP отчет для Пекарни":
+        if sheet_OLAP_P.Name != "OLAP отчет для Пирожных":
             wb_OLAP_P.Close()
             Excel.Quit()
             self.ui.lineEdit_OLAP_P.setStyleSheet("padding-left: 5px; color: rgba(228, 107, 134, 1)")
@@ -212,7 +188,7 @@ class WindowPie(QtWidgets.QMainWindow):
     # Обрабытываем кнопку "Установить" для отчета по дням недели
     @check_DayWeek
     def koeff_DayWeek(self):
-        pathOLAP_DayWeek = self.ui.lineEdit_OLAP_dayWeek_bakery.text()
+        pathOLAP_DayWeek = self.ui.lineEdit_OLAP_dayWeek_pie.text()
         self.dayWeekTable(pathOLAP_DayWeek)
 
     # Проверка на правильность отчета и запуск таблици с коэффициентами
@@ -220,11 +196,11 @@ class WindowPie(QtWidgets.QMainWindow):
         Excel = win32com.client.Dispatch("Excel.Application")
         wb_OLAP_DayWeek = Excel.Workbooks.Open(pathOLAP_DayWeek)
         sheet_OLAP_DayWeek = wb_OLAP_DayWeek.ActiveSheet
-        if sheet_OLAP_DayWeek.Name != "OLAP продажи по дням недели для":
+        if sheet_OLAP_DayWeek.Name != "OLAP по дням недели для програм":
             wb_OLAP_DayWeek.Close()
             Excel.Quit()
-            self.ui.lineEdit_OLAP_dayWeek_bakery.setStyleSheet("padding-left: 5px; color: rgba(228, 107, 134, 1)")
-            self.ui.lineEdit_OLAP_dayWeek_bakery.setText(
+            self.ui.lineEdit_OLAP_dayWeek_pie.setStyleSheet("padding-left: 5px; color: rgba(228, 107, 134, 1)")
+            self.ui.lineEdit_OLAP_dayWeek_pie.setText(
                 'Файл отчета неверный, укажите OLAP по продажам по дням недели для Выпечки пекарне')
         else:
             wb_OLAP_DayWeek.Close()
@@ -239,19 +215,19 @@ class WindowPie(QtWidgets.QMainWindow):
         fullData = [headers, data]
 
     def poiskPrognoza(self, periodDay):
-        self.check_db.thr_poiskPrognoza(periodDay)
+        self.check_db.thr_poiskPrognozaPie(periodDay)
         return (headers)
 
     def poiskKDayWeek(self, periodDay):
-        self.check_db.thr_poiskDataPeriodaKdayWeek(periodDay)
+        self.check_db.thr_poiskDataPeriodaKdayWeekPie(periodDay)
         return (headers)
 
     def poiskPrognozaExcel(self, periodDay):
-        self.check_db.thr_poiskPrognoza(periodDay)
+        self.check_db.thr_poiskPrognozaPie(periodDay)
         return (fullData)
 
     def poiskKDayWeekExcel(self, periodDay):
-        self.check_db.thr_poiskDataPeriodaKdayWeek(periodDay)
+        self.check_db.thr_poiskDataPeriodaKdayWeekPie(periodDay)
         return (fullData)
 
     # Закрываем окно настроек, открываем выбор раздела
@@ -286,9 +262,9 @@ class WindowPie(QtWidgets.QMainWindow):
                     self.dialogNOvalidOLAP(points[i])
                     return
         self.hide()
-        global WindowBakeryTablesEdit
-        WindowBakeryTablesEdit = Windows.WindowsBakeryTablesEdit.WindowBakeryTablesEdit(pathOLAP_P, periodDay, points)
-        WindowBakeryTablesEdit.showMaximized()
+        global WindowPieTablesEdit
+        WindowPieTablesEdit = Windows.WindowsPieTablesEdit.WindowPieTablesEdit(pathOLAP_P, periodDay, points)
+        WindowPieTablesEdit.showMaximized()
 
     def dialogNOvalidOLAP(self, pointsNoOLAP):
         dialogBox = QMessageBox()
@@ -302,28 +278,20 @@ class WindowPie(QtWidgets.QMainWindow):
     def prognozTablesView(self):
         self.hide()
         periodDay = self.periodDay
-        global WindowBakeryTablesView
-        WindowBakeryTablesView = Windows.WindowsBakeryTablesView.WindowBakeryTableView(periodDay)
-        WindowBakeryTablesView.showMaximized()
+        global WindowPieTablesView
+        WindowPieTablesView = Windows.WindowsPieTablesView.WindowPieTableView(periodDay)
+        WindowPieTablesView.showMaximized()
 
     def prognozTablesRedact(self):
-        self.normativTablesDelete()
         self.hide()
         periodDay = self.periodDay
-        global WindowBakeryTablesRedact
-        WindowBakeryTablesRedact = Windows.WindowsBakeryTablesRedact.WindowBakeryTablesRedact(periodDay)
-        WindowBakeryTablesRedact.showMaximized()
-
-    def normativTablesRedact(self):
-        self.hide()
-        periodDay = self.periodDay
-        global WindowNormativTablesRedact
-        WindowNormativTablesRedact = Windows.WindowsBakeryNormativRedact.WindowBakeryNormativRedact(periodDay)
-        WindowNormativTablesRedact.showMaximized()
+        global WindowPieTablesRedact
+        WindowPieTablesRedact = Windows.WindowsPieTablesRedact.WindowPieTablesRedact(periodDay)
+        WindowPieTablesRedact.showMaximized()
 
     def dialogDeletePrognoz(self):
         dialogBox = QMessageBox()
-        dialogBox.setText("Вы действительно хотите удалить сформированный прогноз и норматив(если сформирован) с изначальными данными?")
+        dialogBox.setText("Вы действительно хотите удалить сформированный прогноз?")
         dialogBox.setWindowIcon(QtGui.QIcon("image/icon.png"))
         dialogBox.setWindowTitle('Удаление прогноза продаж')
         dialogBox.setIcon(QMessageBox.Icon.Critical)
@@ -334,13 +302,12 @@ class WindowPie(QtWidgets.QMainWindow):
     def dialogButtonClickedPrognoz(self, button_clicked):
         if button_clicked.text() == "OK":
             self.prognozTablesDelete()
-            self.normativTablesDelete()
 
     def dialogDeleteKDayWeek(self):
         dialogBox = QMessageBox()
-        dialogBox.setText("Вы действительно хотите удалить сформированные коэффициенты по дням недели и норматив(если сформирован) с изначальными данными?")
+        dialogBox.setText("Вы действительно хотите удалить сформированные коэффициенты по дням недели?")
         dialogBox.setWindowIcon(QtGui.QIcon("image/icon.png"))
-        dialogBox.setWindowTitle('Удаление прогноза продаж')
+        dialogBox.setWindowTitle('Удаление коэффициентов по дням недели')
         dialogBox.setIcon(QMessageBox.Icon.Critical)
         dialogBox.setStandardButtons(QMessageBox.StandardButton.Ok | QMessageBox.StandardButton.Cancel)
         dialogBox.buttonClicked.connect(self.dialogButtonClickedKDayWeek)
@@ -349,34 +316,11 @@ class WindowPie(QtWidgets.QMainWindow):
     def dialogButtonClickedKDayWeek(self, button_clicked):
         if button_clicked.text() == "OK":
             self.dayWeekTablesDelete()
-            self.normativTablesDelete()
-
-    def dialogDeleteNormativ(self):
-        dialogBox = QMessageBox()
-        dialogBox.setText("Вы действительно хотите удалить сформированный норматив с изначальными данными?")
-        dialogBox.setWindowIcon(QtGui.QIcon("image/icon.png"))
-        dialogBox.setWindowTitle('Удаление норматива')
-        dialogBox.setIcon(QMessageBox.Icon.Critical)
-        dialogBox.setStandardButtons(QMessageBox.StandardButton.Ok | QMessageBox.StandardButton.Cancel)
-        dialogBox.buttonClicked.connect(self.dialogButtonClickedNormativ)
-        dialogBox.exec()
-
-    def dialogButtonClickedNormativ(self, button_clicked):
-        if button_clicked.text() == "OK":
-            self.normativTablesDelete()
-
-    def normativTablesDelete(self):
-        period = self.periodDay
-        if self.proverkaNormativa(self.periodDay) == 1:
-            self.check_db.thr_deleteNormativ(period)
-            self.proverkaNormativaFunc()
-            self.proverkaPeriodaPrognozFunc()
 
     def prognozTablesDelete(self):
         period = self.periodDay
-        self.check_db.thr_deletePrognoz(period)
+        self.check_db.thr_deletePrognozPie(period)
         self.proverkaPeriodaPrognozFunc()
-        self.proverkaNormativaFunc()
 
     def dayWeekTablesOpen(self, pathOLAP_DayWeek, periodDay):
         Excel = win32com.client.Dispatch("Excel.Application")
@@ -402,110 +346,41 @@ class WindowPie(QtWidgets.QMainWindow):
                     self.dialogNOvalidOLAP(points[i])
                     return
         self.hide()
-        global WindowBakeryDayWeekEdit
-        WindowBakeryDayWeekEdit = Windows.WindowsBakeryTablesDayWeekEdit.WindowBakeryTableDayWeekEdit(pathOLAP_DayWeek,
-                                                                                                      periodDay, points)
-        WindowBakeryDayWeekEdit.showMaximized()
+        global WindowPieDayWeekEdit
+        WindowPieDayWeekEdit = Windows.WindowsPieTablesDayWeekEdit.WindowPieTableDayWeekEdit(pathOLAP_DayWeek, periodDay, points)
+        WindowPieDayWeekEdit.showMaximized()
 
     def dayWeekTablesView(self):
         self.hide()
-        global WindowBakeryTablesDayWeekView
-        WindowBakeryTablesDayWeekView = Windows.WindowsBakeryTablesDayWeekView.WindowBakeryTableDayWeekView(
+        global WindowPieTablesDayWeekView
+        WindowPieTablesDayWeekView = Windows.WindowsPieTablesDayWeekView.WindowPieTableDayWeekView(
             self.periodDay)
-        WindowBakeryTablesDayWeekView.showMaximized()
+        WindowPieTablesDayWeekView.showMaximized()
 
     def dayWeekTablesRedact(self):
         self.hide()
         periodDay = self.periodDay
-        global WindowBakeryTablesDayWeekRedact
-        WindowBakeryTablesDayWeekRedact = Windows.WindowsBakeryTablesDayWeekRedact.WindowBakeryTablesDayWeekRedact(
+        global WindowPieTablesDayWeekRedact
+        WindowPieTablesDayWeekRedact = Windows.WindowsPieTablesDayWeekRedact.WindowPieTablesDayWeekRedact(
             periodDay)
-        WindowBakeryTablesDayWeekRedact.showMaximized()
+        WindowPieTablesDayWeekRedact.showMaximized()
 
     def dayWeekTablesDelete(self):
         period = self.periodDay
-        self.check_db.thr_deleteKDayWeek(period)
+        self.check_db.thr_deleteKDayWeekPie(period)
         self.proverkaPeriodaKDayWeekFunc()
 
-    def normativ(self):
-        self.hide()
-        periodDay = self.periodDay
-        global WindowNormativEdit
-        WindowNormativEdit = Windows.WindowsBakeryNormativEdit.WindowBakeryNormativEdit(periodDay)
-        WindowNormativEdit.showMaximized()
-
-    def poiskNormativa(self, periodDay):
-        self.check_db.thr_poiskNormativa(periodDay)
-        return (otvetNormativ)
-
-    def signal_normativdata(self, value):
-        headers = value[0][2]
-        data = value[0][3]
-        global otvetNormativ
-        otvetNormativ = [headers, data]
-
-    def saveFileDialogNormativ(self):
-        fileName, _ = QFileDialog.getSaveFileName(
-            parent=self,
-            caption="Сохранение данных",
-            directory=os.path.expanduser(
-                '~') + r'\Desktop' + f"\Нормативы для пекарни с {self.periodDay[0].toString('dd.MM.yyyy')} по {self.periodDay[1].toString('dd.MM.yyyy')}.xlsx",
-            filter="Все файлы (*);")
-        if fileName:
-            self.ui.progressBar.show()
-            self.setEnabled(False)
-            progress = 0
-            normativData = self.poiskNormativa(self.periodDay)
-            headers = json.loads(normativData[0].strip("\'"))
-            data = json.loads(normativData[1].strip("\'"))
-            self.ui.progressBar.setValue(progress)
-            self.ui.progressBar.setMinimum(0)
-            self.ui.progressBar.setMaximum(len(data.keys()) - 3)
-            Excel = win32com.client.Dispatch("Excel.Application")
-            normativExcel = Excel.Workbooks.Add()
-            sheet = normativExcel.ActiveSheet
-            sheet.Columns(1).NumberFormat = "@"
-            for col in range(2, len(headers)):
-                sheet.Cells(1, col - 1).Value = headers[col]
-            for col in range(2, len(data.keys())):
-                for row in range(1, len(data.get(str(col)).keys())):
-                    if col > 4:
-                        sheet.Cells(int(row) + 1, col - 1).Value = round(data[str(col)][str(row)], 0)
-                    else:
-                        sheet.Cells(int(row) + 1, col - 1).Value = data[str(col)][str(row)]
-                self.ui.progressBar.setValue(progress)
-                progress += 1
-            sheet.Columns.AutoFit()
-            lastColumn = sheet.UsedRange.Columns.Count
-            lastRow = sheet.UsedRange.Rows.Count
-            sheet.Range("A1").AutoFilter(Field=1)
-            for col in range(4, lastColumn + 1):
-                sheet.Cells(lastRow + 1, col).Value = f"=SUM(R[{1 - lastRow}]C:R[-1]C)"
-            sheet.Range(sheet.Cells(1, 1), sheet.Cells(lastRow + 1, lastColumn)).Borders(2).Weight = 2
-            sheet.Range(sheet.Cells(1, 1), sheet.Cells(lastRow + 1, lastColumn)).Borders(4).Weight = 2
-            sheet.Range(sheet.Cells(1, 1), sheet.Cells(lastRow + 1, lastColumn)).Borders(7).Weight = 3
-            sheet.Range(sheet.Cells(1, 1), sheet.Cells(lastRow + 1, lastColumn)).Borders(8).Weight = 3
-            sheet.Range(sheet.Cells(1, 1), sheet.Cells(lastRow + 1, lastColumn)).Borders(9).Weight = 3
-            sheet.Range(sheet.Cells(1, 1), sheet.Cells(lastRow + 1, lastColumn)).Borders(10).Weight = 3
-            fileName = fileName.replace('/', '\\')
-            Excel.DisplayAlerts = False
-            normativExcel.SaveAs(Filename=fileName)
-            normativExcel.Close()
-            Excel.Quit()
-            self.setEnabled(True)
-            self.ui.progressBar.hide()
-
-    def saveFileDialogLayout(self):
+    def saveFileDialogPlan(self):
         folderName = QFileDialog.getExistingDirectory(
             parent=self,
-            caption="Выберите папку для сохранения выкладки",
+            caption="Выберите папку для сохранения планов на Пирожные",
             directory=os.path.expanduser('~') + r'\Desktop')
         if folderName:
             self.ui.progressBar.show()
             self.setEnabled(False)
             progress = 0
             folderName = folderName.replace('/',
-                                            '\\') + f"\Выкладка {self.periodDay[0].toString('dd.MM.yyyy')} по {self.periodDay[1].toString('dd.MM.yyyy')}"
+                                            '\\') + f"\Планы для Пирожных {self.periodDay[0].toString('dd.MM.yyyy')} по {self.periodDay[1].toString('dd.MM.yyyy')}"
             if os.path.exists(folderName) == True:
                 shutil.rmtree(folderName)
             os.mkdir(folderName)
