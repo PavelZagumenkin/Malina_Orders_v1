@@ -136,3 +136,5 @@ class CheckThread(QtCore.QThread):
 
     def thr_deleteKDayWeekPie(self, period):
         deleteKDayWeekPieInDB(period)
+
+    # Добавил данные в БД
