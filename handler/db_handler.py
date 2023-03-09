@@ -294,3 +294,72 @@ def delCookieData():
     con.commit()
     cur.close()
     con.close()
+
+
+# Работаем с пирожными
+
+def poiskPeriodaPrognozaPieInDB(period, signal):
+    con = sqlite3.connect('db/malina_orders.db')
+    cur = con.cursor()
+    cur.execute(f"SELECT * FROM prognoz_pie WHERE PERIOD='''{period}''';")
+    value = cur.fetchall()
+    if value == []:
+        signal.emit('Пусто')
+    else:
+        if value[0][2] == None:
+            signal.emit('Пусто')
+        if value[0][3] != None:
+            signal.emit('За этот период есть сформированный прогноз')
+    cur.close()
+    con.close()
+
+
+def poiskPeriodaKDayWeekPieInDB(period, signal):
+    con = sqlite3.connect('db/malina_orders.db')
+    cur = con.cursor()
+    cur.execute(f"SELECT * FROM kdayweek_pie WHERE PERIOD='''{period}''';")
+    value = cur.fetchall()
+    if value == []:
+        signal.emit('Пусто')
+    else:
+        if value[0][2] == None:
+            signal.emit('Пусто')
+        if value[0][3] != None:
+            signal.emit('За этот период есть сформированные коэффициенты долей продаж')
+    cur.close()
+    con.close()
+
+def poiskDataPeriodaPrognozPie(period, prognoz):
+    con = sqlite3.connect('db/malina_orders.db')
+    cur = con.cursor()
+    cur.execute(f"SELECT * FROM prognoz_pie WHERE PERIOD='''{period}''';")
+    value = cur.fetchall()
+    prognoz.emit(value)
+    cur.close()
+    con.close()
+
+def poiskDataPeriodaKDayWeekPie(period, prognoz):
+    con = sqlite3.connect('db/malina_orders.db')
+    cur = con.cursor()
+    cur.execute(f"SELECT * FROM kdayweek_pie WHERE PERIOD='''{period}''';")
+    value = cur.fetchall()
+    prognoz.emit(value)
+    cur.close()
+    con.close()
+
+def deletePrognozPieInDB(period):
+    con = sqlite3.connect('db/malina_orders.db')
+    cur = con.cursor()
+    cur.execute(f"DELETE FROM prognoz_pie where PERIOD = '''{period}'''")
+    con.commit()
+    cur.close()
+    con.close()
+
+def deleteKDayWeekPieInDB(period):
+    con = sqlite3.connect('db/malina_orders.db')
+    cur = con.cursor()
+    cur.execute(f"DELETE FROM kdayweek_pie where PERIOD = '''{period}'''")
+    con.commit()
+    cur.close()
+    con.close()
+
