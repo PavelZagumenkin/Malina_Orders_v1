@@ -387,3 +387,23 @@ def addPeriodPrognozPieInDB(period):
     cur.close()
     con.close()
 
+def seach_zames(kod, signal):
+    con = sqlite3.connect('db/malina_orders.db')
+    cur = con.cursor()
+    # Проверяем, есть ли такой код
+    cur.execute(f'SELECT * FROM catalog_food WHERE KOD="{kod}";')
+    value = cur.fetchall()
+    if value != []:
+        signal.emit(str(value[0][5]))
+    else:
+        signal.emit('Код отсутствует в БД')
+    cur.close()
+    con.close()
+
+def update_zames(kod_text, tovar_text, zames):
+    con = sqlite3.connect('db/malina_orders.db')
+    cur = con.cursor()
+    cur.execute(f"INSERT INTO catalog_food (KOD, NAME, ZAMESPIE) VALUES ('{kod_text}', '{tovar_text}', '{zames}');")
+    con.commit()
+    cur.close()
+    con.close()

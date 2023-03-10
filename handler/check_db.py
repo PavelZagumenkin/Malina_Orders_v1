@@ -4,6 +4,7 @@ from handler.db_handler import *
 class CheckThread(QtCore.QThread):
     mysignal = QtCore.pyqtSignal(str)
     layout = QtCore.pyqtSignal(str)
+    zames = QtCore.pyqtSignal(str)
     period = QtCore.pyqtSignal(str)
     prognoz = QtCore.pyqtSignal(list)
     kfBakery = QtCore.pyqtSignal(str)
@@ -149,5 +150,10 @@ class CheckThread(QtCore.QThread):
     def thr_addPeriodPie(self, period):
         addPeriodPrognozPieInDB(period)
 
+    def thr_zames(self, kod_text):
+        seach_zames(kod_text, self.zames)
+
+    def thr_updateZames(self, kod_text, tovar_text, zames):
+        update_zames(kod_text, tovar_text, zames)
 
 

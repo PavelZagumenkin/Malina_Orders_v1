@@ -17,6 +17,7 @@ class WindowPieTablesEdit(QtWidgets.QMainWindow):
         self.ui.setupUi(self)
         self.check_db = CheckThread()
         self.check_db.layout.connect(self.signal_layout)
+        self.check_db.zames.connect(self.signal_zames)
         self.check_db.period.connect(self.signal_period)
         self.periodDay = periodDay
         Excel = win32com.client.Dispatch("Excel.Application")
@@ -38,8 +39,9 @@ class WindowPieTablesEdit(QtWidgets.QMainWindow):
                 sheet_OLAP_P.Columns(a).Delete()
         endOLAPCol = sheet_OLAP_P.Cells.Find("Итого").Column
         self.ui.tableWidget.setRowCount(endOLAPRow - 1)
-        self.ui.tableWidget.setColumnCount(endOLAPCol + 3)
+        self.ui.tableWidget.setColumnCount(endOLAPCol + 4)
         self.columnLables = list(sheet_OLAP_P.Range(sheet_OLAP_P.Cells(1, 1), sheet_OLAP_P.Cells(1, endOLAPCol - 1)).Value[0])
+        self.columnLables.insert(0, "Замес")
         self.columnLables.insert(0, "Квант")
         self.columnLables.insert(0, "Кф. товара")
         self.columnLables.insert(0, "")
@@ -53,16 +55,16 @@ class WindowPieTablesEdit(QtWidgets.QMainWindow):
                 if item == None:
                     item = 0
                 item = QTableWidgetItem(str(item))
-                self.ui.tableWidget.setItem(row - 1, col + 3, item)
+                self.ui.tableWidget.setItem(row - 1, col + 4, item)
         global saveZnach
         saveZnach = {}
-        for col in range(7, self.ui.tableWidget.columnCount()):
+        for col in range(8, self.ui.tableWidget.columnCount()):
             saveZnach[col] = {}
             for row in range(1, self.ui.tableWidget.rowCount()):
                 saveZnach[col][row] = float(self.ui.tableWidget.item(row, col).text())
-        self.ui.tableWidget.setItem(0, 6, QTableWidgetItem("Кф. кондитерской"))
-        self.ui.tableWidget.item(0, 6).setFont(self.font)
-        for col_spin in range(7, self.ui.tableWidget.columnCount()):
+        self.ui.tableWidget.setItem(0, 7, QTableWidgetItem("Кф. кондитерской"))
+        self.ui.tableWidget.item(0, 7).setFont(self.font)
+        for col_spin in range(8, self.ui.tableWidget.columnCount()):
             self.DspinboxCol = QtWidgets.QDoubleSpinBox()
             self.DspinboxCol.wheelEvent = lambda event: None
             self.ui.tableWidget.setCellWidget(0, col_spin, self.DspinboxCol)
@@ -71,16 +73,21 @@ class WindowPieTablesEdit(QtWidgets.QMainWindow):
             self.ui.tableWidget.cellWidget(0, col_spin).valueChanged.connect(self.raschetPrognoz)
         for row_spin in range(1, self.ui.tableWidget.rowCount()):
             self.DspinboxRow = QtWidgets.QDoubleSpinBox()
-            self.SpinboxRow = QtWidgets.QSpinBox()
+            self.SpinboxRowKvant = QtWidgets.QSpinBox()
+            self.SpinboxRowZames = QtWidgets.QSpinBox()
             self.DspinboxRow.wheelEvent = lambda event: None
-            self.SpinboxRow.wheelEvent = lambda event: None
+            self.SpinboxRowKvant.wheelEvent = lambda event: None
+            self.SpinboxRowZames.wheelEvent = lambda event: None
             self.ui.tableWidget.setCellWidget(row_spin, 2, self.DspinboxRow)
             self.ui.tableWidget.cellWidget(row_spin, 2).setValue(1.00)
             self.ui.tableWidget.cellWidget(row_spin, 2).setSingleStep(0.05)
             self.ui.tableWidget.cellWidget(row_spin, 2).valueChanged.connect(self.raschetPrognoz)
-            self.ui.tableWidget.setCellWidget(row_spin, 3, self.SpinboxRow)
-            self.ui.tableWidget.cellWidget(row_spin, 3).setValue(self.poisk_kod(self.ui.tableWidget.item(row_spin, 4).text(), self.ui.tableWidget.item(row_spin, 5).text()))
+            self.ui.tableWidget.setCellWidget(row_spin, 3, self.SpinboxRowKvant)
+            self.ui.tableWidget.cellWidget(row_spin, 3).setValue(self.poisk_kod(self.ui.tableWidget.item(row_spin, 5).text(), self.ui.tableWidget.item(row_spin, 6).text()))
             self.ui.tableWidget.cellWidget(row_spin, 3).setSingleStep(1)
+            self.ui.tableWidget.setCellWidget(row_spin, 4, self.SpinboxRowZames)
+            self.ui.tableWidget.cellWidget(row_spin, 4).setValue(self.poisk_zames(self.ui.tableWidget.item(row_spin, 5).text(), self.ui.tableWidget.item(row_spin, 6).text()))
+            self.ui.tableWidget.cellWidget(row_spin, 4).setSingleStep(1)
         for row_button in range(1, self.ui.tableWidget.rowCount()):
             self.copyRowButton = QtWidgets.QPushButton()
             self.ui.tableWidget.setCellWidget(row_button, 0, self.copyRowButton)
@@ -97,15 +104,15 @@ class WindowPieTablesEdit(QtWidgets.QMainWindow):
             self.ui.tableWidget.cellWidget(row_button, 1).setIcon(iconCross)
             self.ui.tableWidget.cellWidget(row_button, 1).clicked.connect(self.deleteRow)
         self.SaveAndClose = QtWidgets.QPushButton()
-        self.ui.tableWidget.setCellWidget(0, 5, self.SaveAndClose)
-        self.ui.tableWidget.cellWidget(0, 5).setText('Сохранить и закрыть')
+        self.ui.tableWidget.setCellWidget(0, 6, self.SaveAndClose)
+        self.ui.tableWidget.cellWidget(0, 6).setText('Сохранить и закрыть')
         font = QtGui.QFont()
         font.setFamily("Trebuchet MS")
         font.setPointSize(12)
         font.bold()
         font.setWeight(50)
-        self.ui.tableWidget.cellWidget(0, 5).setFont(font)
-        self.ui.tableWidget.cellWidget(0, 5).setStyleSheet("QPushButton {\n"
+        self.ui.tableWidget.cellWidget(0, 6).setFont(font)
+        self.ui.tableWidget.cellWidget(0, 6).setStyleSheet("QPushButton {\n"
                                             "background-color: rgb(228, 107, 134);\n"
                                             "border: none;\n"
                                             "border-radius: 10px}\n"
@@ -119,14 +126,15 @@ class WindowPieTablesEdit(QtWidgets.QMainWindow):
                                             "border:3px solid  rgb(0, 0, 0);\n"
                                             "background-color: rgba(228, 107, 134, 1)\n"
                                             "}")
-        self.ui.tableWidget.cellWidget(0, 5).clicked.connect(self.saveAndCloseDef)
+        self.ui.tableWidget.cellWidget(0, 6).clicked.connect(self.saveAndCloseDef)
         self.ui.tableWidget.setColumnWidth(0, 20)
         self.ui.tableWidget.setColumnWidth(1, 20)
         self.ui.tableWidget.setColumnWidth(2, 90)
         self.ui.tableWidget.setColumnWidth(3, 90)
-        self.ui.tableWidget.setColumnWidth(4, 110)
-        self.ui.tableWidget.setColumnWidth(5, 290)
-        self.ui.tableWidget.setColumnWidth(6, 130)
+        self.ui.tableWidget.setColumnWidth(4, 90)
+        self.ui.tableWidget.setColumnWidth(5, 110)
+        self.ui.tableWidget.setColumnWidth(6, 290)
+        self.ui.tableWidget.setColumnWidth(7, 130)
         self.addPeriod(self.periodDay)
 
     def saveAndCloseDef(self):
@@ -236,6 +244,21 @@ class WindowPieTablesEdit(QtWidgets.QMainWindow):
         self.check_db.thr_kod(kod_text)
         return int(layout)
 
+    def signal_zames(self, value):
+        global zames
+        if value != 'Код отсутствует в БД':
+            zames = value
+        else:
+            zames = self.dialogAddZames()
+    # Поиск замеса в базе данных
+    def poisk_zames(self, kod, tovar):
+        global kod_tovara
+        kod_tovara = kod
+        global tovar_name
+        tovar_name = tovar
+        self.check_db.thr_zames(kod_tovara)
+        return int(zames)
+
     def insertInDB(self, savePeriod, saveHeaders, saveDB, saveNull):
         self.check_db.thr_updatePrognozPie(savePeriod, saveHeaders, saveDB, saveNull)
 
@@ -249,6 +272,15 @@ class WindowPieTablesEdit(QtWidgets.QMainWindow):
             return(int(kol))
         else:
             self.check_db.thr_updateLayout(kod_text, tovar_text, 1)
+            return(1)
+
+    def dialogAddZames(self):
+        kol, ok = QInputDialog.getInt(self, "Отсуствует норма замеса", f"Введите норму замеса для {tovar_text} код изделия {kod_text}:")
+        if ok:
+            self.check_db.thr_updateZames(kod_text, tovar_text, int(kol))
+            return(int(kol))
+        else:
+            self.check_db.thr_updateZames(kod_text, tovar_text, 1)
             return(1)
 
     def addPeriod(self, period):
