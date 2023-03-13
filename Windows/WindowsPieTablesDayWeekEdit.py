@@ -10,7 +10,7 @@ import Windows.WindowsPie
 
 
 class WindowPieTableDayWeekEdit(QtWidgets.QMainWindow):
-    def __init__(self, pathOLAP_dayWeek_bakery, periodDay, points):
+    def __init__(self, pathOLAP_dayWeek_pie, periodDay, points):
         super().__init__()
         self.ui = Ui_WindowBakeryTables()
         self.ui.setupUi(self)
@@ -18,26 +18,26 @@ class WindowPieTableDayWeekEdit(QtWidgets.QMainWindow):
         self.check_db = CheckThread()
         self.check_db.period.connect(self.signal_period)
         Excel = win32com.client.Dispatch("Excel.Application")
-        wb_OLAP_dayWeek_bakery = Excel.Workbooks.Open(pathOLAP_dayWeek_bakery)
-        sheet_OLAP_dayWeek_bakery = wb_OLAP_dayWeek_bakery.ActiveSheet
-        firstOLAPRow = sheet_OLAP_dayWeek_bakery.Range("A:A").Find("День недели").Row
+        wb_OLAP_dayWeek_pie = Excel.Workbooks.Open(pathOLAP_dayWeek_pie)
+        sheet_OLAP_dayWeek_pie = wb_OLAP_dayWeek_pie.ActiveSheet
+        firstOLAPRow = sheet_OLAP_dayWeek_pie.Range("A:A").Find("День недели").Row
         # Фильтруем точки по Checkbox-сам
         for i in range(len(points)):
-            ValidPoints = sheet_OLAP_dayWeek_bakery.Rows(firstOLAPRow).Find(points[i])
+            ValidPoints = sheet_OLAP_dayWeek_pie.Rows(firstOLAPRow).Find(points[i])
             if ValidPoints == None:
-                sheet_OLAP_dayWeek_bakery.Columns(ValidPoints.Column).Delete()
+                sheet_OLAP_dayWeek_pie.Columns(ValidPoints.Column).Delete()
         # Удаляем пустые столбцы и строки
-        endOLAPCol = sheet_OLAP_dayWeek_bakery.Cells.Find("Выпечка пекарни всего").Column
+        endOLAPCol = sheet_OLAP_dayWeek_pie.Cells.Find("Выпечка пекарни всего").Column
         for a in range(endOLAPCol-1, 1, -1):
-            if sheet_OLAP_dayWeek_bakery.Cells(firstOLAPRow, a).Value is None:
-                sheet_OLAP_dayWeek_bakery.Columns(a).Delete()
-        endOLAPCol = sheet_OLAP_dayWeek_bakery.Cells.Find("Выпечка пекарни всего").Column
+            if sheet_OLAP_dayWeek_pie.Cells(firstOLAPRow, a).Value is None:
+                sheet_OLAP_dayWeek_pie.Columns(a).Delete()
+        endOLAPCol = sheet_OLAP_dayWeek_pie.Cells.Find("Выпечка пекарни всего").Column
         for _ in range(firstOLAPRow - 1):
-            sheet_OLAP_dayWeek_bakery.Rows(1).Delete()
-        endOLAPRow = sheet_OLAP_dayWeek_bakery.Range("A:A").Find("Итого").Row
+            sheet_OLAP_dayWeek_pie.Rows(1).Delete()
+        endOLAPRow = sheet_OLAP_dayWeek_pie.Range("A:A").Find("Итого").Row
         self.ui.tableWidget.setRowCount(endOLAPRow - 1)
         self.ui.tableWidget.setColumnCount(endOLAPCol)
-        self.columnLables = list(sheet_OLAP_dayWeek_bakery.Range(sheet_OLAP_dayWeek_bakery.Cells(1, 1), sheet_OLAP_dayWeek_bakery.Cells(1, endOLAPCol - 1)).Value[0])
+        self.columnLables = list(sheet_OLAP_dayWeek_pie.Range(sheet_OLAP_dayWeek_pie.Cells(1, 1), sheet_OLAP_dayWeek_pie.Cells(1, endOLAPCol - 1)).Value[0])
         self.columnLables.insert(0, "Коэфф. Дня")
         self.ui.tableWidget.setHorizontalHeaderLabels(self.columnLables)
         self.font = QtGui.QFont("Times", 10, QFont.Weight.Bold)
@@ -60,7 +60,7 @@ class WindowPieTableDayWeekEdit(QtWidgets.QMainWindow):
             self.ui.tableWidget.cellWidget(row_spin, 0).valueChanged.connect(self.raschetKDayWeek)
         for col in range(1, endOLAPCol):
             for row in range(2, endOLAPRow):
-                item = sheet_OLAP_dayWeek_bakery.Cells(row, col).Value
+                item = sheet_OLAP_dayWeek_pie.Cells(row, col).Value
                 if item == None:
                     item = 0
                 item = QTableWidgetItem(str(item))
@@ -96,8 +96,8 @@ class WindowPieTableDayWeekEdit(QtWidgets.QMainWindow):
                                                            "background-color: rgba(228, 107, 134, 1)\n"
                                                            "}")
         self.ui.tableWidget.cellWidget(0, 0).clicked.connect(self.saveAndCloseDef)
-        self.ui.tableWidget.setColumnWidth(0, 170)
-        self.ui.tableWidget.setColumnWidth(1, 130)
+        self.ui.tableWidget.resizeColumnsToContents()
+        self.ui.tableWidget.setColumnWidth(0, 190)
         self.addPeriod(self.periodDay)
 
     #Увеличение или уменьшение доли продаж.

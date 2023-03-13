@@ -1,6 +1,4 @@
-from PyQt6 import QtWidgets, QtGui, QtCore
-from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import *
+from PyQt6 import QtWidgets, QtGui
 import json
 from ui.bakeryTables import Ui_WindowBakeryTables
 import win32com.client
@@ -10,36 +8,6 @@ from PyQt6.QtWidgets import QMessageBox
 from PyQt6.QtWidgets import QInputDialog
 from handler.check_db import CheckThread
 import Windows.WindowsBakery
-
-class MyHeaderView(QHeaderView):
-    def __init__(self, parent=None):
-
-        super().__init__(QtCore.Qt.Orientation.Horizontal, parent)
-        self._font = QtGui.QFont("Times", 10, QFont.Weight.Bold)
-        self._metrics = QtGui.QFontMetrics(self._font)
-        self._descent = self._metrics.descent()
-
-    def paintSection(self, painter, rect, index):
-        data = self._get_data(index)
-        if index == 2 or index == 3 or index >= 7:
-            painter.rotate(-90)
-            painter.setFont(self._font)
-            painter.setBrush(QtGui.QBrush(Qt.GlobalColor.white))
-            painter.setPen(QtGui.QPen(Qt.GlobalColor.black))
-            painter.drawRect(rect)
-            painter.drawText(
-                QtCore.QPointF(- rect.height(), rect.left() + (rect.width() + self._descent) / 2), data)
-        else:
-            super().paintSection(painter, rect, index)
-
-    def sizeHint(self):
-        return QtCore.QSize(0, self._get_text_width() + 2)
-
-    def _get_text_width(self):
-        return max([self._metrics.boundingRect(self._get_data(i)).width() for i in range(0, self.model().columnCount())])
-
-    def _get_data(self, index):
-        return self.model().headerData(index, self.orientation())
 
 class WindowBakeryTablesEdit(QtWidgets.QMainWindow):
     def __init__(self, pathOLAP_P, periodDay, points):
@@ -75,11 +43,10 @@ class WindowBakeryTablesEdit(QtWidgets.QMainWindow):
         self.columnLables.insert(0, "Кф. товара")
         self.columnLables.insert(0, "")
         self.columnLables.insert(0, "")
-        self.headerView = MyHeaderView()
-        self.ui.tableWidget.setHorizontalHeader(self.headerView)
         self.ui.tableWidget.setHorizontalHeaderLabels(self.columnLables)
         self.font = QtGui.QFont("Times", 10, QFont.Weight.Bold)
         self.ui.tableWidget.horizontalHeader().setFont(self.font)
+        # self.ui.tableWidget.setStyleSheet("QHeaderView {background-color: #ffffff;}")
         for col in range(1, endOLAPCol):
             for row in range(2, endOLAPRow):
                 item = sheet_OLAP_P.Cells(row, col).Value
@@ -153,19 +120,7 @@ class WindowBakeryTablesEdit(QtWidgets.QMainWindow):
                                             "background-color: rgba(228, 107, 134, 1)\n"
                                             "}")
         self.ui.tableWidget.cellWidget(0, 5).clicked.connect(self.saveAndCloseDef)
-        for i in range(0, self.ui.tableWidget.columnCount()):
-            if i == 0 or i == 1:
-                self.ui.tableWidget.setColumnWidth(i, 20)
-            elif i == 2 or i == 3:
-                self.ui.tableWidget.setColumnWidth(i, 55)
-            elif i == 4:
-                self.ui.tableWidget.setColumnWidth(i, 110)
-            elif i == 5:
-                self.ui.tableWidget.setColumnWidth(i, 290)
-            elif i == 6:
-                self.ui.tableWidget.setColumnWidth(i, 130)
-            elif i > 6:
-                self.ui.tableWidget.setColumnWidth(i, 55)
+        self.ui.tableWidget.resizeColumnsToContents()
         self.addPeriod(self.periodDay)
 
     def saveAndCloseDef(self):

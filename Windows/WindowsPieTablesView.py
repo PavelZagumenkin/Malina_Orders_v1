@@ -22,11 +22,6 @@ class WindowPieTableView(QtWidgets.QMainWindow):
         self.ui.tableWidget.setRowCount(len(self.data['2']))
         self.ui.tableWidget.setColumnCount(len(self.headers))
         self.ui.tableWidget.setHorizontalHeaderLabels(self.headers)
-        self.ui.tableWidget.setColumnWidth(0, 90)
-        self.ui.tableWidget.setColumnWidth(1, 90)
-        self.ui.tableWidget.setColumnWidth(2, 110)
-        self.ui.tableWidget.setColumnWidth(3, 290)
-        self.ui.tableWidget.setColumnWidth(4, 130)
         self.font = QtGui.QFont("Times", 10, QFont.Weight.Bold)
         self.ui.tableWidget.horizontalHeader().setFont(self.font)
         for col in self.data:
@@ -43,6 +38,7 @@ class WindowPieTableView(QtWidgets.QMainWindow):
         self.ui.tableWidget.setItem(0, 4, QTableWidgetItem("Кф. кондитерской"))
         self.ui.tableWidget.item(0, 4).setFont(self.font)
         self.ui.tableWidget.item(0, 4).setFlags(QtCore.Qt.ItemFlag.ItemIsEnabled)
+        self.ui.tableWidget.resizeColumnsToContents()
 
     def signal_prognoz(self, value):
         headers = value[0][2]

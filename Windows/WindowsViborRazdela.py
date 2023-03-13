@@ -1,4 +1,4 @@
-from PyQt6 import QtWidgets
+from PyQt6 import QtWidgets, QtGui
 from ui.viborRazdela import Ui_WindowViborRazdela
 import Windows.WindowsBakery, Windows.WindowsLogin, Windows.WindowsPie
 
@@ -11,6 +11,11 @@ class WindowViborRazdela(QtWidgets.QMainWindow):
         self.ui.btn_exit.clicked.connect(self.logout)
         self.ui.btn_bakery.clicked.connect(self.bakeryOpen)
         self.ui.btn_pie.clicked.connect(self.pieOpen)
+
+        # Устанавливаем иконку
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("image/icon.ico"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        self.setWindowIcon(icon)
 
     # Обработка логаута
     def logout(self):

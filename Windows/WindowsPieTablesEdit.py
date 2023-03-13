@@ -127,14 +127,7 @@ class WindowPieTablesEdit(QtWidgets.QMainWindow):
                                             "background-color: rgba(228, 107, 134, 1)\n"
                                             "}")
         self.ui.tableWidget.cellWidget(0, 6).clicked.connect(self.saveAndCloseDef)
-        self.ui.tableWidget.setColumnWidth(0, 20)
-        self.ui.tableWidget.setColumnWidth(1, 20)
-        self.ui.tableWidget.setColumnWidth(2, 90)
-        self.ui.tableWidget.setColumnWidth(3, 90)
-        self.ui.tableWidget.setColumnWidth(4, 90)
-        self.ui.tableWidget.setColumnWidth(5, 110)
-        self.ui.tableWidget.setColumnWidth(6, 290)
-        self.ui.tableWidget.setColumnWidth(7, 130)
+        self.ui.tableWidget.resizeColumnsToContents()
         self.addPeriod(self.periodDay)
 
     def saveAndCloseDef(self):

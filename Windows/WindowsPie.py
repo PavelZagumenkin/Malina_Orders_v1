@@ -175,11 +175,11 @@ class WindowPie(QtWidgets.QMainWindow):
     # Проверяем на пустоту поля для отчета по дням недели
     def check_DayWeek(funct_bakery):
         def wrapper(self):
-            if len(self.ui.lineEdit_OLAP_dayWeek_bakery.text()) == 0 or self.ui.lineEdit_OLAP_dayWeek_bakery.text() == 'Файл отчета неверный, укажите OLAP по продажам по дням недели за 7 дней':
-                self.ui.lineEdit_OLAP_dayWeek_bakery.setStyleSheet("padding-left: 5px; color: rgba(228, 107, 134, 1)")
-                self.ui.lineEdit_OLAP_dayWeek_bakery.setText('Не выбран файл отчета!')
+            if len(self.ui.lineEdit_OLAP_dayWeek_pie.text()) == 0 or self.ui.lineEdit_OLAP_dayWeek_pie.text() == 'Файл отчета неверный, укажите OLAP по продажам по дням недели за 7 дней':
+                self.ui.lineEdit_OLAP_dayWeek_pie.setStyleSheet("padding-left: 5px; color: rgba(228, 107, 134, 1)")
+                self.ui.lineEdit_OLAP_dayWeek_pie.setText('Не выбран файл отчета!')
                 return
-            elif self.ui.lineEdit_OLAP_dayWeek_bakery.text() == 'Не выбран файл отчета!':
+            elif self.ui.lineEdit_OLAP_dayWeek_pie.text() == 'Не выбран файл отчета!':
                 return
             funct_bakery(self)
 
@@ -324,15 +324,15 @@ class WindowPie(QtWidgets.QMainWindow):
 
     def dayWeekTablesOpen(self, pathOLAP_DayWeek, periodDay):
         Excel = win32com.client.Dispatch("Excel.Application")
-        wb_OLAP_dayWeek_bakery = Excel.Workbooks.Open(pathOLAP_DayWeek)
-        sheet_OLAP_dayWeek_bakery = wb_OLAP_dayWeek_bakery.ActiveSheet
-        firstOLAPRow = sheet_OLAP_dayWeek_bakery.Range("A:A").Find("День недели").Row
+        wb_OLAP_dayWeek_pie = Excel.Workbooks.Open(pathOLAP_DayWeek)
+        sheet_OLAP_dayWeek_pie = wb_OLAP_dayWeek_pie.ActiveSheet
+        firstOLAPRow = sheet_OLAP_dayWeek_pie.Range("A:A").Find("День недели").Row
         if self.proverkaPerioda(self.periodDay) == 0:
             pointsCheck = self.ui.formLayoutWidget.findChildren(QtWidgets.QCheckBox)
             points = []
             for i in range(len(pointsCheck)):
                 if pointsCheck[i].isChecked():
-                    ValidPoints = sheet_OLAP_dayWeek_bakery.Rows(firstOLAPRow).Find(pointsCheck[i].text())
+                    ValidPoints = sheet_OLAP_dayWeek_pie.Rows(firstOLAPRow).Find(pointsCheck[i].text())
                     if ValidPoints == None:
                         self.dialogNOvalidOLAP(pointsCheck[i].text())
                         return
@@ -341,7 +341,7 @@ class WindowPie(QtWidgets.QMainWindow):
             points = json.loads(self.poiskPrognoza(self.periodDay).strip("\'"))
             del points[0:5]
             for i in range(len(points)):
-                ValidPoints = sheet_OLAP_dayWeek_bakery.Rows(firstOLAPRow).Find(points[i])
+                ValidPoints = sheet_OLAP_dayWeek_pie.Rows(firstOLAPRow).Find(points[i])
                 if ValidPoints == None:
                     self.dialogNOvalidOLAP(points[i])
                     return

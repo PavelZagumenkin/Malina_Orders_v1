@@ -96,8 +96,8 @@ class WindowBakeryTableDayWeekEdit(QtWidgets.QMainWindow):
                                                            "background-color: rgba(228, 107, 134, 1)\n"
                                                            "}")
         self.ui.tableWidget.cellWidget(0, 0).clicked.connect(self.saveAndCloseDef)
-        self.ui.tableWidget.setColumnWidth(0, 170)
-        self.ui.tableWidget.setColumnWidth(1, 130)
+        self.ui.tableWidget.resizeColumnsToContents()
+        self.ui.tableWidget.setColumnWidth(0, 190)
         self.addPeriod(self.periodDay)
 
     #Увеличение или уменьшение доли продаж.

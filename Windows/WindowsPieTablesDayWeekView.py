@@ -22,8 +22,6 @@ class WindowPieTableDayWeekView(QtWidgets.QMainWindow):
         self.ui.tableWidget.setRowCount(len(self.data['2']))
         self.ui.tableWidget.setColumnCount(len(self.headers))
         self.ui.tableWidget.setHorizontalHeaderLabels(self.headers)
-        self.ui.tableWidget.setColumnWidth(0, 170)
-        self.ui.tableWidget.setColumnWidth(1, 130)
         self.font = QtGui.QFont("Times", 10, QFont.Weight.Bold)
         self.ui.tableWidget.horizontalHeader().setFont(self.font)
         for col in self.data:
@@ -41,6 +39,7 @@ class WindowPieTableDayWeekView(QtWidgets.QMainWindow):
                     self.ui.tableWidget.item(int(row), int(col)).setFlags(QtCore.Qt.ItemFlag.ItemIsEnabled)
         self.ui.tableWidget.setItem(0, 1, QTableWidgetItem("Кф. кондитерской"))
         self.ui.tableWidget.item(0, 1).setFont(self.font)
+        self.ui.tableWidget.resizeColumnsToContents()
 
     def signal_prognoz(self, value):
         headers = value[0][2]
