@@ -1,6 +1,7 @@
 from PyQt6 import QtWidgets, QtGui
 import win32com.client
 import json
+import textwrap
 from ui.bakeryTables import Ui_WindowBakeryTables
 from PyQt6.QtWidgets import QTableWidgetItem
 from PyQt6.QtWidgets import QMessageBox
@@ -39,7 +40,11 @@ class WindowBakeryTableDayWeekEdit(QtWidgets.QMainWindow):
         self.ui.tableWidget.setColumnCount(endOLAPCol)
         self.columnLables = list(sheet_OLAP_dayWeek_bakery.Range(sheet_OLAP_dayWeek_bakery.Cells(1, 1), sheet_OLAP_dayWeek_bakery.Cells(1, endOLAPCol - 1)).Value[0])
         self.columnLables.insert(0, "Коэфф. Дня")
-        self.ui.tableWidget.setHorizontalHeaderLabels(self.columnLables)
+        self.wrap = []
+        for header in self.columnLables:
+            wrap = textwrap.fill(header, width=7)
+            self.wrap.append(wrap)
+        self.ui.tableWidget.setHorizontalHeaderLabels(self.wrap)
         self.font = QtGui.QFont("Times", 10, QFont.Weight.Bold)
         self.ui.tableWidget.horizontalHeader().setFont(self.font)
         self.ui.tableWidget.setItem(0, 1, QTableWidgetItem("Кф. кондитерской"))

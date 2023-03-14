@@ -1,5 +1,6 @@
 from PyQt6 import QtWidgets, QtGui
 import json
+import textwrap
 from ui.bakeryTables import Ui_WindowBakeryTables
 import win32com.client
 from PyQt6.QtGui import QFont
@@ -43,7 +44,11 @@ class WindowBakeryTablesEdit(QtWidgets.QMainWindow):
         self.columnLables.insert(0, "Кф. товара")
         self.columnLables.insert(0, "")
         self.columnLables.insert(0, "")
-        self.ui.tableWidget.setHorizontalHeaderLabels(self.columnLables)
+        self.wrap = []
+        for header in self.columnLables:
+            wrap = textwrap.fill(header, width=7)
+            self.wrap.append(wrap)
+        self.ui.tableWidget.setHorizontalHeaderLabels(self.wrap)
         self.font = QtGui.QFont("Times", 10, QFont.Weight.Bold)
         self.ui.tableWidget.horizontalHeader().setFont(self.font)
         # self.ui.tableWidget.setStyleSheet("QHeaderView {background-color: #ffffff;}")

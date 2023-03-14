@@ -1,5 +1,6 @@
 from PyQt6 import QtWidgets, QtGui, QtCore
 import json
+import textwrap
 from ui.bakeryTables import Ui_WindowBakeryTables
 from PyQt6.QtGui import QFont
 from PyQt6.QtWidgets import QTableWidgetItem
@@ -23,7 +24,11 @@ class WindowBakeryNormativRedact(QtWidgets.QMainWindow):
         saveZnach =json.loads(self.normativ[2].strip("\'"))
         self.ui.tableWidget.setRowCount(len(self.data['0']))
         self.ui.tableWidget.setColumnCount(len(self.headers))
-        self.ui.tableWidget.setHorizontalHeaderLabels(self.headers)
+        self.wrap = []
+        for header in self.headers:
+            wrap = textwrap.fill(header, width=7)
+            self.wrap.append(wrap)
+        self.ui.tableWidget.setHorizontalHeaderLabels(self.wrap)
         self.font = QtGui.QFont("Times", 10, QFont.Weight.Bold)
         self.ui.tableWidget.horizontalHeader().setFont(self.font)
         self.periodDay = periodDay
