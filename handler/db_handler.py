@@ -407,3 +407,16 @@ def update_zames(kod_text, tovar_text, zames):
     con.commit()
     cur.close()
     con.close()
+
+def saveLayoutZames(kod, name, layuot, zames):
+    con = sqlite3.connect('db/malina_orders.db')
+    cur = con.cursor()
+    cur.execute(f'SELECT * FROM catalog_food WHERE KOD="{kod}";')
+    value = cur.fetchall()
+    if value != []:
+        cur.execute(f"UPDATE catalog_food set NAME = '{name}', LAYOUT = '{layuot}', ZAMESPIE = '{zames}' where KOD = '{kod}'")
+    else:
+        cur.execute(f"INSERT INTO catalog_food (KOD, NAME, LAYOUT, ZAMESPIE) VALUES ('{kod}', '{name}', '{layuot}', {zames});")
+    con.commit()
+    cur.close()
+    con.close()

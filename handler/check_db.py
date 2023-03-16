@@ -156,4 +156,7 @@ class CheckThread(QtCore.QThread):
     def thr_updateZames(self, kod_text, tovar_text, zames):
         update_zames(kod_text, tovar_text, zames)
 
+    def thr_saveLayoutZamesInDB(self, kod, name, layout, zames):
+        saveLayoutZames(kod, name, layout, zames)
+
 

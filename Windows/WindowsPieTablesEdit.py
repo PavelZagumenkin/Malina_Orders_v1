@@ -145,25 +145,25 @@ class WindowPieTablesEdit(QtWidgets.QMainWindow):
         for col in range(2, self.ui.tableWidget.columnCount()):
             saveDB[col] = {}
             for row in range(0, self.ui.tableWidget.rowCount()):
-                if col == 2 or col == 3 or row == 0:
+                if col == 2 or col == 3 or col == 4 or row == 0:
                     if self.ui.tableWidget.cellWidget(row, col) == None:
                         saveDB[col][row] = 0
-                    elif (row == 0 and col == 4) or (row == 0 and col == 5):
+                    elif (row == 0 and col == 5) or (row == 0 and col == 6):
                         saveDB[col][row] = 0
                     else:
                         saveDB[col][row] = float(self.ui.tableWidget.cellWidget(row, col).value())
-                elif col == 4 or col == 5 or col == 6:
+                elif col == 5 or col == 6 or col == 7:
                     saveDB[col][row] = self.ui.tableWidget.item(row, col).text()
                 else:
                     saveDB[col][row] = float(self.ui.tableWidget.item(row, col).text())
         self.insertInDB(savePeriod, json.dumps(saveHeaders, ensure_ascii=False), json.dumps(saveDB, ensure_ascii=False), json.dumps(saveNull, ensure_ascii=False))
         for i in range(1, self.ui.tableWidget.rowCount()):
-            self.saveLayoutInDB(self.ui.tableWidget.item(i, 4).text(), self.ui.tableWidget.item(i, 5).text(), int(self.ui.tableWidget.cellWidget(i, 3).value()))
+            self.saveLayoutZamesInDB(self.ui.tableWidget.item(i, 5).text(), self.ui.tableWidget.item(i, 6).text(), int(self.ui.tableWidget.cellWidget(i, 3).value()), int(self.ui.tableWidget.cellWidget(i, 4).value()))
         self.close()
 
     # Сохраняем новые значения выкладки
-    def saveLayoutInDB(self, kod, name, layout):
-        self.check_db.thr_saveLayoutInDB(kod, name, layout)
+    def saveLayoutZamesInDB(self, kod, name, layout, zames):
+        self.check_db.thr_saveLayoutZamesInDB(kod, name, layout, zames)
 
     def raschetPrognoz(self):
         buttonClicked = self.sender()
@@ -173,7 +173,7 @@ class WindowPieTablesEdit(QtWidgets.QMainWindow):
                 result = round(float(saveZnach[index.column()][i]) * float(self.ui.tableWidget.cellWidget(0, index.column()).value()) * float(self.ui.tableWidget.cellWidget(i, 2).value()), 2)
                 self.ui.tableWidget.setItem(i, index.column(), QTableWidgetItem(str(result)))
         else:
-            for i in range(7, self.ui.tableWidget.columnCount()):
+            for i in range(8, self.ui.tableWidget.columnCount()):
                 result = round(float(saveZnach[i][index.row()]) * float(self.ui.tableWidget.cellWidget(index.row(), 2).value()) * float(self.ui.tableWidget.cellWidget(0, i).value()), 2)
                 self.ui.tableWidget.setItem(index.row(), i, QTableWidgetItem(str(result)))
 
@@ -198,8 +198,10 @@ class WindowPieTablesEdit(QtWidgets.QMainWindow):
         self.ui.tableWidget.cellWidget(rowPosition, 1).clicked.connect(self.deleteRow)
         self.DspinboxRow = QtWidgets.QDoubleSpinBox()
         self.SpinboxRow = QtWidgets.QSpinBox()
+        self.SpinboxRowZames = QtWidgets.QSpinBox()
         self.DspinboxRow.wheelEvent = lambda event: None
         self.SpinboxRow.wheelEvent = lambda event: None
+        self.SpinboxRowZames.wheelEvent = lambda event: None
         self.ui.tableWidget.setCellWidget(rowPosition, 2, self.DspinboxRow)
         self.ui.tableWidget.cellWidget(rowPosition, 2).setValue(1.00)
         self.ui.tableWidget.cellWidget(rowPosition, 2).setSingleStep(0.05)
@@ -207,20 +209,28 @@ class WindowPieTablesEdit(QtWidgets.QMainWindow):
         self.ui.tableWidget.setCellWidget(rowPosition, 3, self.SpinboxRow)
         self.ui.tableWidget.cellWidget(rowPosition, 3).setValue(1)
         self.ui.tableWidget.cellWidget(rowPosition, 3).setSingleStep(1)
-        for c in range(6, 7):
+        self.ui.tableWidget.setCellWidget(rowPosition, 4, self.SpinboxRowZames)
+        self.ui.tableWidget.cellWidget(rowPosition, 4).setValue(1)
+        self.ui.tableWidget.cellWidget(rowPosition, 4).setSingleStep(1)
+        for c in range(5, 7):
+            if c == 5:
+                self.ui.tableWidget.setItem(rowPosition, c, QTableWidgetItem('Код'))
+            elif c == 6:
+                self.ui.tableWidget.setItem(rowPosition, c, QTableWidgetItem('Введите название блюда'))
+        for c in range(7, 8):
             self.ui.tableWidget.setItem(rowPosition, c, QTableWidgetItem(self.ui.tableWidget.item(index.row(), c).text()))
-        for c in range(7, self.ui.tableWidget.columnCount()):
+        for c in range(8, self.ui.tableWidget.columnCount()):
             self.ui.tableWidget.setItem(rowPosition, c, QTableWidgetItem(str(round(saveZnach[c][index.row()] * float(self.ui.tableWidget.cellWidget(0, c).value()), 2))))
-        for c in range(7, self.ui.tableWidget.columnCount()):
+        for c in range(8, self.ui.tableWidget.columnCount()):
             saveZnach[c][rowPosition] = round(float(self.ui.tableWidget.item(rowPosition, c).text()) / float(self.ui.tableWidget.cellWidget(0, c).value()), 2)
 
     def deleteRow(self):
         buttonClicked = self.sender()
         index = self.ui.tableWidget.indexAt(buttonClicked.pos())
         self.ui.tableWidget.removeRow(index.row())
-        for c in range(7, self.ui.tableWidget.columnCount()):
+        for c in range(8, self.ui.tableWidget.columnCount()):
             del saveZnach[c][index.row()]
-        for c in range(7, self.ui.tableWidget.columnCount()):
+        for c in range(8, self.ui.tableWidget.columnCount()):
             counter = index.row() + 1
             for r in range(index.row(), self.ui.tableWidget.rowCount()):
                 saveZnach[c][r] = saveZnach[c].pop(counter)
@@ -273,12 +283,12 @@ class WindowPieTablesEdit(QtWidgets.QMainWindow):
             return(1)
 
     def dialogAddZames(self):
-        kol, ok = QInputDialog.getInt(self, "Отсуствует норма замеса", f"Введите норму замеса для {tovar_text} код изделия {kod_text}:")
+        kol, ok = QInputDialog.getInt(self, "Отсуствует норма замеса", f"Введите норму замеса для {tovar_name} код изделия {kod_tovara}:")
         if ok:
-            self.check_db.thr_updateZames(kod_text, tovar_text, int(kol))
+            self.check_db.thr_updateZames(kod_tovara, tovar_name, int(kol))
             return(int(kol))
         else:
-            self.check_db.thr_updateZames(kod_text, tovar_text, 1)
+            self.check_db.thr_updateZames(kod_tovara, tovar_name, 1)
             return(1)
 
     def addPeriod(self, period):

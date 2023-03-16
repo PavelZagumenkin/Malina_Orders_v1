@@ -38,11 +38,11 @@ class WindowPieTableView(QtWidgets.QMainWindow):
                 else:
                     item = QTableWidgetItem(str(self.data[col][row]))
                 self.ui.tableWidget.setItem(int(row), int(col) - 2, item)
-                if (int(col) != 0 and int(row) != 0) or (int(col) != 1 and int(row) != 0) or (int(col) != 2 and int(row) != 0) or (int(col) != 3 and int(row) != 0):
+                if (int(col) != 0 and int(row) != 0) or (int(col) != 1 and int(row) != 0) or (int(col) != 2 and int(row) != 0) or (int(col) != 3 and int(row) != 0) or (int(col) != 4 and int(row) != 0):
                     self.ui.tableWidget.item(int(row), int(col) - 2).setFlags(QtCore.Qt.ItemFlag.ItemIsEnabled)
-        self.ui.tableWidget.setItem(0, 4, QTableWidgetItem("Кф. кондитерской"))
-        self.ui.tableWidget.item(0, 4).setFont(self.font)
-        self.ui.tableWidget.item(0, 4).setFlags(QtCore.Qt.ItemFlag.ItemIsEnabled)
+        self.ui.tableWidget.setItem(0, 5, QTableWidgetItem("Кф. кондитерской"))
+        self.ui.tableWidget.item(0, 5).setFont(self.font)
+        self.ui.tableWidget.item(0, 5).setFlags(QtCore.Qt.ItemFlag.ItemIsEnabled)
         self.ui.tableWidget.resizeColumnsToContents()
 
     def signal_prognoz(self, value):
@@ -52,7 +52,7 @@ class WindowPieTableView(QtWidgets.QMainWindow):
         prognoz = [headers, data]
 
     def poiskPrognoza(self, periodDay):
-        self.check_db.thr_poiskPrognoza(periodDay)
+        self.check_db.thr_poiskPrognozaPie(periodDay)
         return(prognoz)
 
     def closeEvent(self, event):
@@ -66,8 +66,8 @@ class WindowPieTableView(QtWidgets.QMainWindow):
         otvet = reply.exec()
         if otvet == QMessageBox.StandardButton.Yes:
             event.accept()
-            global WindowBakery
-            WindowBakery = Windows.WindowsBakery.WindowBakery()
-            WindowBakery.show()
+            global WindowPie
+            WindowPie = Windows.WindowsPie.WindowPie()
+            WindowPie.show()
         else:
             event.ignore()

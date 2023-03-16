@@ -200,6 +200,11 @@ class WindowBakeryTablesEdit(QtWidgets.QMainWindow):
         self.ui.tableWidget.setCellWidget(rowPosition, 3, self.SpinboxRow)
         self.ui.tableWidget.cellWidget(rowPosition, 3).setValue(1)
         self.ui.tableWidget.cellWidget(rowPosition, 3).setSingleStep(1)
+        for c in range(4, 6):
+            if c == 4:
+                self.ui.tableWidget.setItem(rowPosition, c, QTableWidgetItem('Код'))
+            elif c == 5:
+                self.ui.tableWidget.setItem(rowPosition, c, QTableWidgetItem('Введите название блюда'))
         for c in range(6, 7):
             self.ui.tableWidget.setItem(rowPosition, c, QTableWidgetItem(self.ui.tableWidget.item(index.row(), c).text()))
         for c in range(7, self.ui.tableWidget.columnCount()):
