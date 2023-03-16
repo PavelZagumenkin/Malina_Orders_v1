@@ -159,4 +159,13 @@ class CheckThread(QtCore.QThread):
     def thr_saveLayoutZamesInDB(self, kod, name, layout, zames):
         saveLayoutZames(kod, name, layout, zames)
 
+    def thr_addPeriodKDayWeekPie(self, period):
+        addPeriodKDayWeekPieInDB(period)
+
+    def thr_delPeriodKDayWeekPie(self, period):
+        deletePeriodKDayWeekPieInDB(period)
+
+    def thr_updateDayWeekPie(self, savePeriod, saveHeaders, saveDB, saveNull):
+        updateDayWeekPieInDB(savePeriod, saveHeaders, saveDB, saveNull)
+
 

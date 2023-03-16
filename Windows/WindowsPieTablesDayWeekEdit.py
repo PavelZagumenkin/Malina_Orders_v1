@@ -28,11 +28,11 @@ class WindowPieTableDayWeekEdit(QtWidgets.QMainWindow):
             if ValidPoints == None:
                 sheet_OLAP_dayWeek_pie.Columns(ValidPoints.Column).Delete()
         # Удаляем пустые столбцы и строки
-        endOLAPCol = sheet_OLAP_dayWeek_pie.Cells.Find("Выпечка пекарни всего").Column
+        endOLAPCol = sheet_OLAP_dayWeek_pie.Cells.Find("Пирожные всего").Column
         for a in range(endOLAPCol-1, 1, -1):
             if sheet_OLAP_dayWeek_pie.Cells(firstOLAPRow, a).Value is None:
                 sheet_OLAP_dayWeek_pie.Columns(a).Delete()
-        endOLAPCol = sheet_OLAP_dayWeek_pie.Cells.Find("Выпечка пекарни всего").Column
+        endOLAPCol = sheet_OLAP_dayWeek_pie.Cells.Find("Пирожные всего").Column
         for _ in range(firstOLAPRow - 1):
             sheet_OLAP_dayWeek_pie.Rows(1).Delete()
         endOLAPRow = sheet_OLAP_dayWeek_pie.Range("A:A").Find("Итого").Row
@@ -140,16 +140,16 @@ class WindowPieTableDayWeekEdit(QtWidgets.QMainWindow):
         self.close()
 
     def addPeriod(self, period):
-        self.check_db.thr_addPeriodKDayWeek(period)
+        self.check_db.thr_addPeriodKDayWeekPie(period)
 
     def delPeriodInDB(self, period):
-        self.check_db.thr_delPeriodKDayWeek(period)
+        self.check_db.thr_delPeriodKDayWeekPie(period)
 
     def insertInDB(self, savePeriod, saveHeaders, saveDB, saveNull):
-        self.check_db.thr_updateDayWeek(savePeriod, saveHeaders, saveDB, saveNull)
+        self.check_db.thr_updateDayWeekPie(savePeriod, saveHeaders, saveDB, saveNull)
 
     def proverkaPerioda(self, period):
-        self.check_db.thr_proverkaPeriodaKDayWeek(period)
+        self.check_db.thr_proverkaPeriodaKDayWeekPie(period)
         return otvetPeriod
 
     def signal_period(self, value):
@@ -172,9 +172,9 @@ class WindowPieTableDayWeekEdit(QtWidgets.QMainWindow):
             event.accept()
             if self.proverkaPerioda(self.periodDay) == 0:
                 self.delPeriodInDB(self.periodDay)
-            global WindowBakery
-            WindowBakery = Windows.WindowsBakery.WindowBakery()
-            WindowBakery.show()
+            global WindowPie
+            WindowPie = Windows.WindowsPie.WindowPie()
+            WindowPie.show()
         else:
             event.ignore()
 

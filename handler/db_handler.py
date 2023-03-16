@@ -420,3 +420,27 @@ def saveLayoutZames(kod, name, layuot, zames):
     con.commit()
     cur.close()
     con.close()
+
+def addPeriodKDayWeekPieInDB(period):
+    con = sqlite3.connect('db/malina_orders.db')
+    cur = con.cursor()
+    cur.execute(f"INSERT INTO kdayweek_pie (PERIOD) VALUES ('''{period}''');")
+    con.commit()
+    cur.close()
+    con.close()
+
+def deletePeriodKDayWeekPieInDB(period):
+    con = sqlite3.connect('db/malina_orders.db')
+    cur = con.cursor()
+    cur.execute(f"DELETE FROM kdayweek_pie where PERIOD = '''{period}'''")
+    con.commit()
+    cur.close()
+    con.close()
+
+def updateDayWeekPieInDB(savePeriod, saveHeaders, saveDB, saveNull):
+    con = sqlite3.connect('db/malina_orders.db')
+    cur = con.cursor()
+    cur.execute(f"UPDATE kdayweek_pie set HEADERSKDAYWEEK = '''{saveHeaders}''', DATAKDAYWEEK = '''{saveDB}''', SAVENULLKDAYWEEK = '''{saveNull}''' where PERIOD = '''{savePeriod}'''")
+    con.commit()
+    cur.close()
+    con.close()

@@ -339,7 +339,7 @@ class WindowPie(QtWidgets.QMainWindow):
                     points.append(pointsCheck[i].text())
         else:
             points = json.loads(self.poiskPrognoza(self.periodDay).strip("\'"))
-            del points[0:5]
+            del points[0:6]
             for i in range(len(points)):
                 ValidPoints = sheet_OLAP_dayWeek_pie.Rows(firstOLAPRow).Find(points[i])
                 if ValidPoints == None:

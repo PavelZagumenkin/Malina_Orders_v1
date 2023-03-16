@@ -53,7 +53,7 @@ class WindowPieTableDayWeekView(QtWidgets.QMainWindow):
         prognoz = [headers, data]
 
     def poiskPrognoza(self, periodDay):
-        self.check_db.thr_poiskDataPeriodaKdayWeek(periodDay)
+        self.check_db.thr_poiskDataPeriodaKdayWeekPie(periodDay)
         return(prognoz)
 
     def closeEvent(self, event):
@@ -67,8 +67,8 @@ class WindowPieTableDayWeekView(QtWidgets.QMainWindow):
         otvet = reply.exec()
         if otvet == QMessageBox.StandardButton.Yes:
             event.accept()
-            global WindowBakery
-            WindowBakery = Windows.WindowsBakery.WindowBakery()
-            WindowBakery.show()
+            global WindowPie
+            WindowPie = Windows.WindowsPie.WindowPie()
+            WindowPie.show()
         else:
             event.ignore()
