@@ -94,7 +94,7 @@ class WindowPieTablesDayWeekRedact(QtWidgets.QMainWindow):
         kdayweek = [headers, data, saveNull]
 
     def poiskKdayWeek(self, periodDay):
-        self.check_db.thr_poiskDataPeriodaKdayWeek(periodDay)
+        self.check_db.thr_poiskDataPeriodaKdayWeekPie(periodDay)
         return(kdayweek)
 
     def saveAndCloseDef(self):
@@ -131,7 +131,7 @@ class WindowPieTablesDayWeekRedact(QtWidgets.QMainWindow):
 
 
     def updateInDB(self, savePeriod, saveHeaders, saveDB, saveNull):
-        self.check_db.thr_updateDayWeek(savePeriod, saveHeaders, saveDB, saveNull)
+        self.check_db.thr_updateDayWeekPie(savePeriod, saveHeaders, saveDB, saveNull)
 
     def closeEvent(self, event):
         reply = QMessageBox()
@@ -144,8 +144,8 @@ class WindowPieTablesDayWeekRedact(QtWidgets.QMainWindow):
         otvet = reply.exec()
         if otvet == QMessageBox.StandardButton.Yes:
             event.accept()
-            global WindowBakery
-            WindowBakery = Windows.WindowsBakery.WindowBakery()
-            WindowBakery.show()
+            global WindowPie
+            WindowPie = Windows.WindowsPie.WindowPie()
+            WindowPie.show()
         else:
             event.ignore()
