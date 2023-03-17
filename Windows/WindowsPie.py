@@ -17,8 +17,6 @@ import Windows.WindowsPieTablesDayWeekEdit
 import Windows.WindowsPieTablesDayWeekView
 import Windows.WindowsPieTablesDayWeekRedact
 
-
-# тест коммит
 class WindowPie(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
@@ -390,76 +388,114 @@ class WindowPie(QtWidgets.QMainWindow):
             kdayweek = self.poiskKDayWeekExcel(self.periodDay)
             headersKdayweek = json.loads(kdayweek[0].strip("\'"))
             dataKdayweek = json.loads(kdayweek[1].strip("\'"))
-            del headersPrognoz[:5]
-            keysDataPrognoz = ['0', '1', '2', '6']
+            del headersPrognoz[:6]
+            keysDataPrognoz = ['0', '1', '2', '7']
             self.ui.progressBar.setValue(progress)
             self.ui.progressBar.setMinimum(0)
-            self.ui.progressBar.setMaximum(len(headersPrognoz) - 1)
+            self.ui.progressBar.setMaximum(8)
             for key in keysDataPrognoz:
                 dataPrognoz.pop(key, None)
             keysDataKdayweek = ['0']
             for key in keysDataKdayweek:
                 dataKdayweek.pop(key, None)
+            print(headersPrognoz)
+            print(dataPrognoz)
+            print(headersKdayweek)
+            print(dataKdayweek)
             Excel = win32com.client.Dispatch("Excel.Application")
-            pointCounter = 7
-            for point in headersPrognoz:
-                pointExcel = Excel.Workbooks.Add()
-                sheet = pointExcel.ActiveSheet
-                sheet.Columns(1).NumberFormat = "@"
-                dayCol = 1
-                for day in range(0, 7):
-                    DayInPeriod = self.periodDay[0].addDays(day)
-                    date = (datetime.date(int(DayInPeriod.toString('yyyy')), int(DayInPeriod.toString('MM')),
-                                          int(DayInPeriod.toString('dd')))).isoweekday()
-                    sheet.Cells(1, dayCol).Value = point
-                    sheet.Cells(1, dayCol + 2).Value = DayInPeriod.toString('dd.MM.yyyy')
-                    sheet.Cells(2, dayCol).Value = "Код"
-                    sheet.Columns(dayCol).ColumnWidth = 6
-                    sheet.Cells(2, dayCol + 1).Value = "Наименование"
-                    sheet.Columns(dayCol + 1).ColumnWidth = 45
-                    sheet.Cells(2, dayCol + 2).Value = "Всего"
-                    sheet.Columns(dayCol + 2).ColumnWidth = 6
-                    sheet.Cells(2, dayCol + 3).Value = "Утро"
-                    sheet.Columns(dayCol + 3).ColumnWidth = 6
-                    sheet.Cells(2, dayCol + 4).Value = "День"
-                    sheet.Columns(dayCol + 4).ColumnWidth = 6
-                    sheet.Range(sheet.Cells(1, dayCol), sheet.Cells(1, dayCol + 1)).Merge()
-                    sheet.Range(sheet.Cells(1, dayCol + 2), sheet.Cells(1, dayCol + 4)).Merge()
-                    rowCount = 3
-                    for poz in dataPrognoz['4']:
-                        if poz != '0':
-                            sheet.Cells(rowCount, dayCol).Value = dataPrognoz['4'][poz]
-                            sheet.Cells(rowCount, dayCol + 1).Value = dataPrognoz['5'][poz]
-                            itogo = (dataPrognoz[str(pointCounter)][poz] * dataKdayweek[str(headersKdayweek.index(point))][str(date)]) / dataPrognoz['3'][poz]
-                            if itogo < 1:
-                                itogo = ceil(itogo)
-                            itogo = round(itogo * dataPrognoz['3'][poz])
-                            sheet.Cells(rowCount, dayCol + 2).Value = itogo
-                            morningLayout = round((itogo * 0.6) / dataPrognoz['3'][poz]) * dataPrognoz['3'][poz]
-                            sheet.Cells(rowCount, dayCol + 3).Value = morningLayout
-                            dayLayout = itogo - morningLayout
-                            sheet.Cells(rowCount, dayCol + 4).Value = dayLayout
-                            rowCount += 1
-                    lastRow = rowCount
-                    sheet.Cells(lastRow, dayCol + 2).Value = f"=SUM(R[{3 - lastRow}]C:R[-1]C)"
-                    sheet.Cells(lastRow, dayCol + 3).Value = f"=SUM(R[{3 - lastRow}]C:R[-1]C)"
-                    sheet.Cells(lastRow, dayCol + 4).Value = f"=SUM(R[{3 - lastRow}]C:R[-1]C)"
-                    sheet.Range(sheet.Cells(1, dayCol), sheet.Cells(lastRow, dayCol+4)).Borders(2).Weight = 2
-                    sheet.Range(sheet.Cells(1, dayCol), sheet.Cells(lastRow, dayCol+4)).Borders(4).Weight = 2
-                    sheet.Range(sheet.Cells(1, dayCol), sheet.Cells(lastRow, dayCol+4)).Borders(7).Weight = 3
-                    sheet.Range(sheet.Cells(1, dayCol), sheet.Cells(lastRow, dayCol+4)).Borders(8).Weight = 3
-                    sheet.Range(sheet.Cells(1, dayCol), sheet.Cells(lastRow, dayCol+4)).Borders(9).Weight = 3
-                    sheet.Range(sheet.Cells(1, dayCol), sheet.Cells(lastRow, dayCol+4)).Borders(10).Weight = 3
-                    if dayCol != 1:
-                        sheet.Columns(dayCol).PageBreak = True
-                    dayCol += 5
+            # for point in headersPrognoz:
+            #     pointExcel = Excel.Workbooks.Add()
+            #     sheet = pointExcel.ActiveSheet
+            #     sheet.Columns(1).NumberFormat = "@"
+            #     dayCol = 1
+            svodExcel = Excel.Workbooks.Add()
+            sheetSvod = svodExcel.ActiveSheet
+            sheetSvod.Columns(1).NumberFormat = "@"
+            for day in range(0, 7):
+                dayExcel = Excel.Workbooks.Add()
+                sheetDay = dayExcel.ActiveSheet
+                sheetDay.Columns(1).NumberFormat = "@"
+                DayInPeriod = self.periodDay[0].addDays(day)
+                date = (datetime.date(int(DayInPeriod.toString('yyyy')), int(DayInPeriod.toString('MM')), int(DayInPeriod.toString('dd')))).isoweekday()
+                sheetDay.Cells(1, 2).Value = 'Дата производства'
+                sheetDay.Cells(1, 3).Value = DayInPeriod.addDays(-1).toString('dd.MM.yyyy')
+                sheetDay.Cells(2, 2).Value = 'Дата отгрузки'
+                sheetDay.Cells(2, 3).Value = DayInPeriod.toString('dd.MM.yyyy')
+                sheetDay.Cells(3, 1).Value = 'Код блюда'
+                sheetDay.Cells(3, 2).Value = 'Блюдо'
+                sheetDay.Cells(3, 3).Value = 'Участок приготовления'
+                sheetDay.Cells(3, len(headersPrognoz) + 5).Value = 'ПЛАН'
+                col = 4
+                for point in headersPrognoz:
+                    sheetDay.Cells(3, col).Value = point
+                    col += 1
+                row = 4
+                for key in dataPrognoz['5']:
+                    if key != '0':
+                        sheetDay.Cells(row, 1).Value = dataPrognoz['5'][key]
+                        sheetDay.Cells(row, 2).Value = dataPrognoz['6'][key]
+                        sheetDay.Cells(row, 3).Value = 'Участок пирожных'
+                        summBluda = 0
+                        for col in range(4, len(headersPrognoz) + 4):
+                            point = sheetDay.Cells(3, col).Value
+                            sheetDay.Cells(row, col).Value = ceil(dataPrognoz[str(headersPrognoz.index(point) + 8)][key] * dataKdayweek[str(headersKdayweek.index(point))][str(date)] / dataPrognoz['3'][key]) * dataPrognoz['3'][key]
+                            summBluda += sheetDay.Cells(row, col).Value
+                        sheetDay.Cells(row, len(headersPrognoz) + 5).Value = ceil(ceil(summBluda / dataPrognoz['4'][key]) * dataPrognoz['4'][key] / dataPrognoz['3'][key]) * dataPrognoz['3'][key]
+                        row += 1
+
+
+            #         sheet.Cells(1, dayCol + 2).Value = DayInPeriod.toString('dd.MM.yyyy')
+            #         sheet.Cells(2, dayCol).Value = "Код"
+            #         sheet.Columns(dayCol).ColumnWidth = 6
+            #         sheet.Cells(2, dayCol + 1).Value = "Наименование"
+            #         sheet.Columns(dayCol + 1).ColumnWidth = 45
+            #         sheet.Cells(2, dayCol + 2).Value = "Всего"
+            #         sheet.Columns(dayCol + 2).ColumnWidth = 6
+            #         sheet.Cells(2, dayCol + 3).Value = "Утро"
+            #         sheet.Columns(dayCol + 3).ColumnWidth = 6
+            #         sheet.Cells(2, dayCol + 4).Value = "День"
+            #         sheet.Columns(dayCol + 4).ColumnWidth = 6
+            #         sheet.Range(sheet.Cells(1, dayCol), sheet.Cells(1, dayCol + 1)).Merge()
+            #         sheet.Range(sheet.Cells(1, dayCol + 2), sheet.Cells(1, dayCol + 4)).Merge()
+            #         rowCount = 3
+            #         for poz in dataPrognoz['4']:
+            #             if poz != '0':
+            #                 sheet.Cells(rowCount, dayCol).Value = dataPrognoz['4'][poz]
+            #                 sheet.Cells(rowCount, dayCol + 1).Value = dataPrognoz['5'][poz]
+            #                 itogo = (dataPrognoz[str(pointCounter)][poz] * dataKdayweek[str(headersKdayweek.index(point))][str(date)]) / dataPrognoz['3'][poz]
+            #                 if itogo < 1:
+            #                     itogo = ceil(itogo)
+            #                 itogo = round(itogo * dataPrognoz['3'][poz])
+            #                 sheet.Cells(rowCount, dayCol + 2).Value = itogo
+            #                 morningLayout = round((itogo * 0.6) / dataPrognoz['3'][poz]) * dataPrognoz['3'][poz]
+            #                 sheet.Cells(rowCount, dayCol + 3).Value = morningLayout
+            #                 dayLayout = itogo - morningLayout
+            #                 sheet.Cells(rowCount, dayCol + 4).Value = dayLayout
+            #                 rowCount += 1
+            #         lastRow = rowCount
+            #         sheet.Cells(lastRow, dayCol + 2).Value = f"=SUM(R[{3 - lastRow}]C:R[-1]C)"
+            #         sheet.Cells(lastRow, dayCol + 3).Value = f"=SUM(R[{3 - lastRow}]C:R[-1]C)"
+            #         sheet.Cells(lastRow, dayCol + 4).Value = f"=SUM(R[{3 - lastRow}]C:R[-1]C)"
+            #         sheet.Range(sheet.Cells(1, dayCol), sheet.Cells(lastRow, dayCol+4)).Borders(2).Weight = 2
+            #         sheet.Range(sheet.Cells(1, dayCol), sheet.Cells(lastRow, dayCol+4)).Borders(4).Weight = 2
+            #         sheet.Range(sheet.Cells(1, dayCol), sheet.Cells(lastRow, dayCol+4)).Borders(7).Weight = 3
+            #         sheet.Range(sheet.Cells(1, dayCol), sheet.Cells(lastRow, dayCol+4)).Borders(8).Weight = 3
+            #         sheet.Range(sheet.Cells(1, dayCol), sheet.Cells(lastRow, dayCol+4)).Borders(9).Weight = 3
+            #         sheet.Range(sheet.Cells(1, dayCol), sheet.Cells(lastRow, dayCol+4)).Borders(10).Weight = 3
+            #         if dayCol != 1:
+            #             sheet.Columns(dayCol).PageBreak = True
+            #         dayCol += 5
                 Excel.DisplayAlerts = False
-                pointExcel.SaveAs(Filename=(folderName + '\\' + point + '.xlsx'))
-                pointExcel.Close()
-                Excel.Quit()
-                self.ui.progressBar.setValue(progress)
+                dayExcel.SaveAs(Filename=(folderName + '\\' + f'Пирожные {DayInPeriod.toString("dd.MM.yyyy")}' + '.xlsx'))
+                dayExcel.Close()
                 progress += 1
-                pointCounter += 1
+                self.ui.progressBar.setValue(progress)
+            svodExcel.SaveAs(Filename=(folderName + '\\' + f'Сводная по пирожным {self.periodDay[0].toString("dd.MM.yyyy")} - {self.periodDay[1].toString("dd.MM.yyyy")}' + '.xlsx'))
+            svodExcel.Close()
+            Excel.Quit()
+            progress += 1
+            self.ui.progressBar.setValue(progress)
+            #     pointCounter += 1
         self.setEnabled(True)
         self.ui.progressBar.hide()
 
