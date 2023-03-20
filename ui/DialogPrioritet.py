@@ -259,7 +259,7 @@ class Ui_DialogPrioritet(object):
 
     def retranslateUi(self, DialogPrioritet):
         _translate = QtCore.QCoreApplication.translate
-        DialogPrioritet.setWindowTitle(_translate("DialogPrioritet", "Приоритетные кондитерские"))
+        DialogPrioritet.setWindowTitle(_translate("DialogPrioritet", "Dialog"))
         self.cb_begovaya.setText(_translate("DialogPrioritet", "Беговая"))
         self.cb_rahova.setText(_translate("DialogPrioritet", "Рахова"))
         self.cb_volsk.setText(_translate("DialogPrioritet", "Вольск"))

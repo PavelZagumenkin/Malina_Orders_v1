@@ -555,7 +555,7 @@ background-color: rgba(228, 107, 134, 1)
      <bool>false</bool>
     </property>
    </widget>
-   <widget class="QLabel" name="label_OLAP_P_2">
+   <widget class="QLabel" name="label_select_konditerskoi">
     <property name="geometry">
      <rect>
       <x>830</x>
@@ -1504,12 +1504,83 @@ background-color: rgba(228, 107, 134, 1)
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>540</y>
+      <y>550</y>
       <width>761</width>
       <height>141</height>
      </rect>
     </property>
-    <layout class="QFormLayout" name="form_prioritet"/>
+    <layout class="QGridLayout" name="grid_prioritet">
+     <property name="leftMargin">
+      <number>15</number>
+     </property>
+     <property name="topMargin">
+      <number>5</number>
+     </property>
+     <property name="rightMargin">
+      <number>15</number>
+     </property>
+     <property name="bottomMargin">
+      <number>5</number>
+     </property>
+     <property name="horizontalSpacing">
+      <number>40</number>
+     </property>
+     <property name="verticalSpacing">
+      <number>10</number>
+     </property>
+    </layout>
+   </widget>
+   <widget class="Line" name="line_12">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>540</y>
+      <width>20</width>
+      <height>151</height>
+     </rect>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Vertical</enum>
+    </property>
+   </widget>
+   <widget class="Line" name="line_13">
+    <property name="geometry">
+     <rect>
+      <x>780</x>
+      <y>540</y>
+      <width>20</width>
+      <height>151</height>
+     </rect>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Vertical</enum>
+    </property>
+   </widget>
+   <widget class="Line" name="line_14">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>530</y>
+      <width>781</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
+   <widget class="Line" name="line_15">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>680</y>
+      <width>781</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
    </widget>
   </widget>
  </widget>

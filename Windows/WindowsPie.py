@@ -26,10 +26,16 @@ class DialogPrioritet(QtWidgets.QDialog):
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("image/icon.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.setWindowIcon(icon)
-        self.ui.btn_save.clicked.connect(self.savePrioritet)
 
     def savePrioritet(self):
+        pointsCheck = self.ui.formLayoutWidget.findChildren(QtWidgets.QCheckBox)
+        global pointsPrioritet
+        pointsPrioritet = []
+        for i in range(len(pointsCheck)):
+            if pointsCheck[i].isChecked():
+                pointsPrioritet.append(pointsCheck[i].text())
         self.close()
+        return pointsPrioritet
 
 class WindowPie(QtWidgets.QMainWindow):
     def __init__(self):
@@ -74,7 +80,33 @@ class WindowPie(QtWidgets.QMainWindow):
     def dialogPrioritet(self):
         global WindowsDialogPrioritet
         WindowsDialogPrioritet = DialogPrioritet()
+        WindowsDialogPrioritet.ui.btn_save.clicked.connect(self.getPointsPrioritet)
         WindowsDialogPrioritet.show()
+
+    def getPointsPrioritet(self):
+        global pointsPrioritet
+        pointsPrioritet = WindowsDialogPrioritet.savePrioritet()
+        while self.ui.grid_prioritet.count():
+            item = self.ui.grid_prioritet.takeAt(0)
+            widget = item.widget()
+            if widget is not None:
+                widget.deleteLater()
+        row = 0
+        col = 0
+        for i in pointsPrioritet:
+            font = QtGui.QFont()
+            font.setPointSize(11)
+            lable = QtWidgets.QLabel(f'{i}')
+            lable.setFont(font)
+            lable.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading|QtCore.Qt.AlignmentFlag.AlignLeft|QtCore.Qt.AlignmentFlag.AlignTop)
+            if col <= 3:
+                self.ui.grid_prioritet.addWidget(lable, row, col)
+                col += 1
+            else:
+                row += 1
+                col = 0
+                self.ui.grid_prioritet.addWidget(lable, row, col)
+                col += 1
 
     def proverkaData(self):
         if self.check_db.thr_proverkaData() == 0:
