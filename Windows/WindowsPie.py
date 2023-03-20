@@ -29,7 +29,6 @@ class DialogPrioritet(QtWidgets.QDialog):
 
     def savePrioritet(self):
         pointsCheck = self.ui.formLayoutWidget.findChildren(QtWidgets.QCheckBox)
-        global pointsPrioritet
         pointsPrioritet = []
         for i in range(len(pointsCheck)):
             if pointsCheck[i].isChecked():
@@ -74,8 +73,11 @@ class WindowPie(QtWidgets.QMainWindow):
         self.ui.btn_prosmotr_koeff_DayWeek.clicked.connect(self.dayWeekTablesView)
         self.ui.btn_edit_koeff_DayWeek.clicked.connect(self.dayWeekTablesRedact)
         self.ui.btn_delete_koeff_DayWeek.clicked.connect(self.dialogDeleteKDayWeek)
-        self.ui.btn_download_plans.clicked.connect(self.saveFileDialogPlan)
         self.ui.btn_prioritet.clicked.connect(self.dialogPrioritet)
+        self.ui.btn_download_plans.clicked.connect(self.saveFileDialogPlan)
+        global pointsPrioritet
+        pointsPrioritet = []
+
 
     def dialogPrioritet(self):
         global WindowsDialogPrioritet
@@ -496,16 +498,21 @@ class WindowPie(QtWidgets.QMainWindow):
                         sheetDay.Cells(row, len(headersPrognoz) + 4).Value = summBludaToZames
                         if summBludaToZames - summBludaToKvant > 0:
                             raspred = (summBludaToZames - summBludaToKvant) / dataPrognoz['3'][key]
-                            print(raspred)
-                            spisokZnachTokvant = list(sheetDay.Range(sheetDay.Cells(row, 4), sheetDay.Cells(row, len(headersPrognoz) + 3)).Value[0])
+                            spisokZnachToKvant = list(sheetDay.Range(sheetDay.Cells(row, 4), sheetDay.Cells(row, len(headersPrognoz) + 3)).Value[0])
                             # Инициализируем список с парами (индекс, значение)
-                            indexed_values = list(enumerate(spisokZnachTokvant))
+                            indexed_values = list(enumerate(spisokZnachToKvant))
                             # Сортируем список по убыванию значений
                             sorted_values = sorted(indexed_values, key=lambda x: x[1], reverse=True)
                             # Получаем список индексов первых n_max максимальных значений
                             max_indexes = [x[0] for x in sorted_values[:int(raspred)]]
+                            max_znach = [x[1] for x in sorted_values[:int(raspred)]]
                             # Выводим список с индексами максимальных значений
-                            print(max_indexes)  # выводим [2, 7, 4]
+                            print(int(raspred))
+                            print(max_indexes)
+                            print(max_znach)
+                            for i in max_indexes:
+                                print(headersPrognoz[i], end="")
+                            print(*pointsPrioritet)
                         row += 1
 
             #         sheet.Cells(1, dayCol + 2).Value = DayInPeriod.toString('dd.MM.yyyy')
