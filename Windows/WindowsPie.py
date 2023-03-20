@@ -8,6 +8,7 @@ from PyQt6 import QtCore, QtWidgets, QtGui
 from PyQt6.QtWidgets import QFileDialog
 from PyQt6.QtWidgets import QMessageBox
 from ui.pie import Ui_WindowPie
+from ui.DialogPrioritet import Ui_DialogPrioritet
 from handler.check_db import CheckThread
 import Windows.WindowsViborRazdela
 import Windows.WindowsPieTablesEdit
@@ -16,6 +17,19 @@ import Windows.WindowsPieTablesRedact
 import Windows.WindowsPieTablesDayWeekEdit
 import Windows.WindowsPieTablesDayWeekView
 import Windows.WindowsPieTablesDayWeekRedact
+
+class DialogPrioritet(QtWidgets.QDialog):
+    def __init__(self):
+        super().__init__()
+        self.ui = Ui_DialogPrioritet()
+        self.ui.setupUi(self)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("image/icon.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        self.setWindowIcon(icon)
+        self.ui.btn_save.clicked.connect(self.savePrioritet)
+
+    def savePrioritet(self):
+        self.close()
 
 class WindowPie(QtWidgets.QMainWindow):
     def __init__(self):
@@ -55,6 +69,12 @@ class WindowPie(QtWidgets.QMainWindow):
         self.ui.btn_edit_koeff_DayWeek.clicked.connect(self.dayWeekTablesRedact)
         self.ui.btn_delete_koeff_DayWeek.clicked.connect(self.dialogDeleteKDayWeek)
         self.ui.btn_download_plans.clicked.connect(self.saveFileDialogPlan)
+        self.ui.btn_prioritet.clicked.connect(self.dialogPrioritet)
+
+    def dialogPrioritet(self):
+        global WindowsDialogPrioritet
+        WindowsDialogPrioritet = DialogPrioritet()
+        WindowsDialogPrioritet.show()
 
     def proverkaData(self):
         if self.check_db.thr_proverkaData() == 0:
@@ -398,10 +418,6 @@ class WindowPie(QtWidgets.QMainWindow):
             keysDataKdayweek = ['0']
             for key in keysDataKdayweek:
                 dataKdayweek.pop(key, None)
-            print(headersPrognoz)
-            print(dataPrognoz)
-            print(headersKdayweek)
-            print(dataKdayweek)
             Excel = win32com.client.Dispatch("Excel.Application")
             # for point in headersPrognoz:
             #     pointExcel = Excel.Workbooks.Add()
@@ -424,7 +440,9 @@ class WindowPie(QtWidgets.QMainWindow):
                 sheetDay.Cells(3, 1).Value = 'Код блюда'
                 sheetDay.Cells(3, 2).Value = 'Блюдо'
                 sheetDay.Cells(3, 3).Value = 'Участок приготовления'
-                sheetDay.Cells(3, len(headersPrognoz) + 5).Value = 'ПЛАН'
+                sheetDay.Cells(3, len(headersPrognoz) + 4).Value = 'ПЛАН'
+                sheetDay.Cells(3, len(headersPrognoz) + 5).Value = 'ФАКТ'
+                sheetDay.Cells(3, len(headersPrognoz) + 6).Value = 'РАЗНИЦА'
                 col = 4
                 for point in headersPrognoz:
                     sheetDay.Cells(3, col).Value = point
@@ -435,14 +453,28 @@ class WindowPie(QtWidgets.QMainWindow):
                         sheetDay.Cells(row, 1).Value = dataPrognoz['5'][key]
                         sheetDay.Cells(row, 2).Value = dataPrognoz['6'][key]
                         sheetDay.Cells(row, 3).Value = 'Участок пирожных'
-                        summBluda = 0
+                        summBludaToKvant = 0
                         for col in range(4, len(headersPrognoz) + 4):
                             point = sheetDay.Cells(3, col).Value
                             sheetDay.Cells(row, col).Value = ceil(dataPrognoz[str(headersPrognoz.index(point) + 8)][key] * dataKdayweek[str(headersKdayweek.index(point))][str(date)] / dataPrognoz['3'][key]) * dataPrognoz['3'][key]
-                            summBluda += sheetDay.Cells(row, col).Value
-                        sheetDay.Cells(row, len(headersPrognoz) + 5).Value = ceil(ceil(summBluda / dataPrognoz['4'][key]) * dataPrognoz['4'][key] / dataPrognoz['3'][key]) * dataPrognoz['3'][key]
+                            summBludaToKvant += sheetDay.Cells(row, col).Value
+                        summBludaToZames = ceil(summBludaToKvant / dataPrognoz['4'][key]) * dataPrognoz['4'][key]
+                        while summBludaToZames < summBludaToKvant:
+                            summBludaToZames += dataPrognoz['4'][key]
+                        sheetDay.Cells(row, len(headersPrognoz) + 4).Value = summBludaToZames
+                        if summBludaToZames - summBludaToKvant > 0:
+                            raspred = (summBludaToZames - summBludaToKvant) / dataPrognoz['3'][key]
+                            print(raspred)
+                            spisokZnachTokvant = list(sheetDay.Range(sheetDay.Cells(row, 4), sheetDay.Cells(row, len(headersPrognoz) + 3)).Value[0])
+                            # Инициализируем список с парами (индекс, значение)
+                            indexed_values = list(enumerate(spisokZnachTokvant))
+                            # Сортируем список по убыванию значений
+                            sorted_values = sorted(indexed_values, key=lambda x: x[1], reverse=True)
+                            # Получаем список индексов первых n_max максимальных значений
+                            max_indexes = [x[0] for x in sorted_values[:int(raspred)]]
+                            # Выводим список с индексами максимальных значений
+                            print(max_indexes)  # выводим [2, 7, 4]
                         row += 1
-
 
             #         sheet.Cells(1, dayCol + 2).Value = DayInPeriod.toString('dd.MM.yyyy')
             #         sheet.Cells(2, dayCol).Value = "Код"

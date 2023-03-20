@@ -690,6 +690,44 @@ class Ui_WindowPie(object):
         self.progressBar.setInvertedAppearance(False)
         self.progressBar.setTextDirection(QtWidgets.QProgressBar.Direction.TopToBottom)
         self.progressBar.setObjectName("progressBar")
+        self.label_prioritet = QtWidgets.QLabel(self.centralwidget)
+        self.label_prioritet.setGeometry(QtCore.QRect(140, 490, 251, 31))
+        font = QtGui.QFont()
+        font.setFamily("Trebuchet MS")
+        font.setPointSize(12)
+        self.label_prioritet.setFont(font)
+        self.label_prioritet.setObjectName("label_prioritet")
+        self.btn_prioritet = QtWidgets.QPushButton(self.centralwidget)
+        self.btn_prioritet.setEnabled(True)
+        self.btn_prioritet.setGeometry(QtCore.QRect(410, 480, 271, 51))
+        font = QtGui.QFont()
+        font.setFamily("Trebuchet MS")
+        font.setPointSize(16)
+        font.setBold(False)
+        font.setWeight(50)
+        self.btn_prioritet.setFont(font)
+        self.btn_prioritet.setStyleSheet("QPushButton {\n"
+"background-color: rgb(228, 107, 134);\n"
+"border: none;\n"
+"border-radius: 10px}\n"
+"\n"
+"QPushButton:hover {\n"
+"border: 1px solid  rgb(0, 0, 0);\n"
+"background-color: rgba(228, 107, 134, 0.9)\n"
+"}\n"
+"\n"
+"QPushButton:pressed {\n"
+"border:3px solid  rgb(0, 0, 0);\n"
+"background-color: rgba(228, 107, 134, 1)\n"
+"}")
+        self.btn_prioritet.setCheckable(False)
+        self.btn_prioritet.setObjectName("btn_prioritet")
+        self.formLayoutWidget_2 = QtWidgets.QWidget(self.centralwidget)
+        self.formLayoutWidget_2.setGeometry(QtCore.QRect(20, 540, 761, 141))
+        self.formLayoutWidget_2.setObjectName("formLayoutWidget_2")
+        self.form_prioritet = QtWidgets.QFormLayout(self.formLayoutWidget_2)
+        self.form_prioritet.setContentsMargins(0, 0, 0, 0)
+        self.form_prioritet.setObjectName("form_prioritet")
         WindowPie.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(WindowPie)
@@ -745,6 +783,8 @@ class Ui_WindowPie(object):
         self.cb_entuziastov.setText(_translate("WindowPie", "Энтузиастов"))
         self.btn_download_plans.setText(_translate("WindowPie", "ВЫГРУЗИТЬ ПЛАН"))
         self.progressBar.setFormat(_translate("WindowPie", "%p%"))
+        self.label_prioritet.setText(_translate("WindowPie", "Задать приоритет распределения"))
+        self.btn_prioritet.setText(_translate("WindowPie", "Выберите кондитеские"))
 
 
 if __name__ == "__main__":
