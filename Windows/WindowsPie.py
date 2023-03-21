@@ -4,6 +4,7 @@ import shutil
 from math import ceil
 import win32com.client
 import json
+import random
 from PyQt6 import QtCore, QtWidgets, QtGui
 from PyQt6.QtWidgets import QFileDialog
 from PyQt6.QtWidgets import QMessageBox
@@ -453,11 +454,6 @@ class WindowPie(QtWidgets.QMainWindow):
             for key in keysDataKdayweek:
                 dataKdayweek.pop(key, None)
             Excel = win32com.client.Dispatch("Excel.Application")
-            # for point in headersPrognoz:
-            #     pointExcel = Excel.Workbooks.Add()
-            #     sheet = pointExcel.ActiveSheet
-            #     sheet.Columns(1).NumberFormat = "@"
-            #     dayCol = 1
             svodExcel = Excel.Workbooks.Add()
             sheetSvod = svodExcel.ActiveSheet
             sheetSvod.Columns(1).NumberFormat = "@"
@@ -466,6 +462,7 @@ class WindowPie(QtWidgets.QMainWindow):
                 sheetDay = dayExcel.ActiveSheet
                 sheetDay.Columns(1).NumberFormat = "@"
                 DayInPeriod = self.periodDay[0].addDays(day)
+                print(DayInPeriod.toString('dd.MM.yyyy'))
                 date = (datetime.date(int(DayInPeriod.toString('yyyy')), int(DayInPeriod.toString('MM')), int(DayInPeriod.toString('dd')))).isoweekday()
                 sheetDay.Cells(1, 2).Value = 'Дата производства'
                 sheetDay.Cells(1, 3).Value = DayInPeriod.addDays(-1).toString('dd.MM.yyyy')
@@ -474,6 +471,11 @@ class WindowPie(QtWidgets.QMainWindow):
                 sheetDay.Cells(3, 1).Value = 'Код блюда'
                 sheetDay.Cells(3, 2).Value = 'Блюдо'
                 sheetDay.Cells(3, 3).Value = 'Участок приготовления'
+                sheetSvod.Cells(1, 1).Value = 'Код блюда'
+                sheetSvod.Cells(1, 2).Value = 'Блюдо'
+                sheetSvod.Cells(1, 3).Value = 'Участок приготовления'
+                sheetSvod.Cells(1, 11).Value = 'ИТОГО'
+                sheetSvod.Cells(1, 4 + day).Value = DayInPeriod.addDays(-1).toString('dd.MM.yyyy')
                 sheetDay.Cells(3, len(headersPrognoz) + 4).Value = 'ПЛАН'
                 sheetDay.Cells(3, len(headersPrognoz) + 5).Value = 'ФАКТ'
                 sheetDay.Cells(3, len(headersPrognoz) + 6).Value = 'РАЗНИЦА'
@@ -487,6 +489,9 @@ class WindowPie(QtWidgets.QMainWindow):
                         sheetDay.Cells(row, 1).Value = dataPrognoz['5'][key]
                         sheetDay.Cells(row, 2).Value = dataPrognoz['6'][key]
                         sheetDay.Cells(row, 3).Value = 'Участок пирожных'
+                        sheetSvod.Cells(row-2, 1).Value = dataPrognoz['5'][key]
+                        sheetSvod.Cells(row-2, 2).Value = dataPrognoz['6'][key]
+                        sheetSvod.Cells(row-2, 3).Value = 'Участок пирожных'
                         summBludaToKvant = 0
                         for col in range(4, len(headersPrognoz) + 4):
                             point = sheetDay.Cells(3, col).Value
@@ -496,6 +501,7 @@ class WindowPie(QtWidgets.QMainWindow):
                         while summBludaToZames < summBludaToKvant:
                             summBludaToZames += dataPrognoz['4'][key]
                         sheetDay.Cells(row, len(headersPrognoz) + 4).Value = summBludaToZames
+                        sheetSvod.Cells(row - 2, 4 + day).Value = summBludaToZames
                         if summBludaToZames - summBludaToKvant > 0:
                             raspred = (summBludaToZames - summBludaToKvant) / dataPrognoz['3'][key]
                             spisokZnachToKvant = list(sheetDay.Range(sheetDay.Cells(row, 4), sheetDay.Cells(row, len(headersPrognoz) + 3)).Value[0])
@@ -506,56 +512,59 @@ class WindowPie(QtWidgets.QMainWindow):
                             # Получаем список индексов первых n_max максимальных значений
                             max_indexes = [x[0] for x in sorted_values[:int(raspred)]]
                             max_znach = [x[1] for x in sorted_values[:int(raspred)]]
-                            # Выводим список с индексами максимальных значений
-                            print(int(raspred))
-                            print(max_indexes)
-                            print(max_znach)
-                            for i in max_indexes:
-                                print(headersPrognoz[i], end="")
-                            print(*pointsPrioritet)
+                            # print(f'Работаем со строкой: {row}')
+                            # print(f'Необходимо распределить квантов:  {int(raspred)}')
+                            # print(f'Индексы максимальных значений для распределения:  {max_indexes}')
+                            # print(f'Максимальные значения для распределения:  {max_znach}')
+                            # print('Кондитерские с максимальными индексами:', end='')
+                            # for i in max_indexes:
+                            #     print({headersPrognoz[i]}, end=" ")
+                            # print()
+                            # print(f'Точки приоритета: {pointsPrioritet}')
+                            for znach in max_znach:
+                                if spisokZnachToKvant.count(znach) > 1:
+                                    # print(f'В строке найдено максимальных значений: {spisokZnachToKvant.count(znach)}')
+                                    savePointPrioritet = []
+                                    for point in pointsPrioritet:
+                                        columnPoint = sheetDay.Cells.Find(point).Column
+                                        if znach == sheetDay.Cells(row, columnPoint).Value:
+                                            savePointPrioritet.append(point)
+                                    # print(f'Список приоритетных кондитерских, где найдены максимальные значения: {savePointPrioritet}')
+                                    if len(savePointPrioritet) == 0:
+                                        spisok_indexes = []
+                                        for one_znach in range(len(spisokZnachToKvant)):
+                                            if spisokZnachToKvant[one_znach] == znach:
+                                                spisok_indexes.append(one_znach)
+                                        # print(f'Список индексов где лежат максимальные значения, если кондитерские не найдены в списке приоритетных {spisok_indexes}')
+                                        columnPoint = sheetDay.Cells.Find(headersPrognoz[random.choice(spisok_indexes)]).Column
+                                        # print(f'Получаем столбец рандомом для кондитерской, если ее нет в приоритетных кондитерских: {columnPoint}')
+                                        sheetDay.Cells(row, columnPoint).Value += dataPrognoz['3'][key]
+                                    elif len(savePointPrioritet) == 1:
+                                        columnPoint = sheetDay.Cells.Find(savePointPrioritet[0]).Column
+                                        # print(f'Найдена всего одна кондитерская среди приоритетных значит получаем ее столбец: {columnPoint}')
+                                        sheetDay.Cells(row, columnPoint).Value += dataPrognoz['3'][key]
+                                    elif len(savePointPrioritet) > 1:
+                                        columnPoint = sheetDay.Cells.Find(random.choice(savePointPrioritet)).Column
+                                        # print(f'Найдена несколько кондитерских среди приоритетных значит получаем столбец рандомом: {columnPoint}')
+                                        sheetDay.Cells(row, columnPoint).Value += dataPrognoz['3'][key]
+                                else:
+                                    columnPoint = sheetDay.Cells.Find(headersPrognoz[max_indexes[0]]).Column
+                                    # print(f'Получаем столбец для единственнонайденного максимального значения в строке: {columnPoint}')
+                                    sheetDay.Cells(row, columnPoint).Value += dataPrognoz['3'][key]
+                        sheetDay.Cells(row, len(headersPrognoz) + 6).Value = f"=RC[-2]-RC[-1]"
+                        sheetDay.Cells(row, len(headersPrognoz) + 4).Value = f"=SUM(RC[{-len(headersPrognoz)}]:RC[-1])"
                         row += 1
-
-            #         sheet.Cells(1, dayCol + 2).Value = DayInPeriod.toString('dd.MM.yyyy')
-            #         sheet.Cells(2, dayCol).Value = "Код"
-            #         sheet.Columns(dayCol).ColumnWidth = 6
-            #         sheet.Cells(2, dayCol + 1).Value = "Наименование"
-            #         sheet.Columns(dayCol + 1).ColumnWidth = 45
-            #         sheet.Cells(2, dayCol + 2).Value = "Всего"
-            #         sheet.Columns(dayCol + 2).ColumnWidth = 6
-            #         sheet.Cells(2, dayCol + 3).Value = "Утро"
-            #         sheet.Columns(dayCol + 3).ColumnWidth = 6
-            #         sheet.Cells(2, dayCol + 4).Value = "День"
-            #         sheet.Columns(dayCol + 4).ColumnWidth = 6
-            #         sheet.Range(sheet.Cells(1, dayCol), sheet.Cells(1, dayCol + 1)).Merge()
-            #         sheet.Range(sheet.Cells(1, dayCol + 2), sheet.Cells(1, dayCol + 4)).Merge()
-            #         rowCount = 3
-            #         for poz in dataPrognoz['4']:
-            #             if poz != '0':
-            #                 sheet.Cells(rowCount, dayCol).Value = dataPrognoz['4'][poz]
-            #                 sheet.Cells(rowCount, dayCol + 1).Value = dataPrognoz['5'][poz]
-            #                 itogo = (dataPrognoz[str(pointCounter)][poz] * dataKdayweek[str(headersKdayweek.index(point))][str(date)]) / dataPrognoz['3'][poz]
-            #                 if itogo < 1:
-            #                     itogo = ceil(itogo)
-            #                 itogo = round(itogo * dataPrognoz['3'][poz])
-            #                 sheet.Cells(rowCount, dayCol + 2).Value = itogo
-            #                 morningLayout = round((itogo * 0.6) / dataPrognoz['3'][poz]) * dataPrognoz['3'][poz]
-            #                 sheet.Cells(rowCount, dayCol + 3).Value = morningLayout
-            #                 dayLayout = itogo - morningLayout
-            #                 sheet.Cells(rowCount, dayCol + 4).Value = dayLayout
-            #                 rowCount += 1
-            #         lastRow = rowCount
-            #         sheet.Cells(lastRow, dayCol + 2).Value = f"=SUM(R[{3 - lastRow}]C:R[-1]C)"
-            #         sheet.Cells(lastRow, dayCol + 3).Value = f"=SUM(R[{3 - lastRow}]C:R[-1]C)"
-            #         sheet.Cells(lastRow, dayCol + 4).Value = f"=SUM(R[{3 - lastRow}]C:R[-1]C)"
-            #         sheet.Range(sheet.Cells(1, dayCol), sheet.Cells(lastRow, dayCol+4)).Borders(2).Weight = 2
-            #         sheet.Range(sheet.Cells(1, dayCol), sheet.Cells(lastRow, dayCol+4)).Borders(4).Weight = 2
-            #         sheet.Range(sheet.Cells(1, dayCol), sheet.Cells(lastRow, dayCol+4)).Borders(7).Weight = 3
-            #         sheet.Range(sheet.Cells(1, dayCol), sheet.Cells(lastRow, dayCol+4)).Borders(8).Weight = 3
-            #         sheet.Range(sheet.Cells(1, dayCol), sheet.Cells(lastRow, dayCol+4)).Borders(9).Weight = 3
-            #         sheet.Range(sheet.Cells(1, dayCol), sheet.Cells(lastRow, dayCol+4)).Borders(10).Weight = 3
-            #         if dayCol != 1:
-            #             sheet.Columns(dayCol).PageBreak = True
-            #         dayCol += 5
+                for col in range(4, len(headersPrognoz) + 7):
+                    sheetDay.Cells(row, col).Value = f"=SUM(R[{4 - row}]C:R[-1]C)"
+                sheetDay.Columns(1).ColumnWidth = 10
+                sheetDay.Columns(2).ColumnWidth = 40
+                sheetDay.Columns(3).ColumnWidth = 20
+                sheetDay.Range(sheetDay.Cells(1, 1), sheetDay.Cells(row, len(headersPrognoz)+6)).Borders(2).Weight = 2
+                sheetDay.Range(sheetDay.Cells(1, 1), sheetDay.Cells(row, len(headersPrognoz)+6)).Borders(4).Weight = 2
+                sheetDay.Range(sheetDay.Cells(1, 1), sheetDay.Cells(row, len(headersPrognoz)+6)).Borders(7).Weight = 3
+                sheetDay.Range(sheetDay.Cells(1, 1), sheetDay.Cells(row, len(headersPrognoz)+6)).Borders(8).Weight = 3
+                sheetDay.Range(sheetDay.Cells(1, 1), sheetDay.Cells(row, len(headersPrognoz)+6)).Borders(9).Weight = 3
+                sheetDay.Range(sheetDay.Cells(1, 1), sheetDay.Cells(row, len(headersPrognoz)+6)).Borders(10).Weight = 3
                 Excel.DisplayAlerts = False
                 dayExcel.SaveAs(Filename=(folderName + '\\' + f'Пирожные {DayInPeriod.toString("dd.MM.yyyy")}' + '.xlsx'))
                 dayExcel.Close()
@@ -566,7 +575,6 @@ class WindowPie(QtWidgets.QMainWindow):
             Excel.Quit()
             progress += 1
             self.ui.progressBar.setValue(progress)
-            #     pointCounter += 1
         self.setEnabled(True)
         self.ui.progressBar.hide()
 
