@@ -3,7 +3,6 @@ import os
 import shutil
 from math import ceil
 import win32com.client
-from win32com.client import constants
 import json
 import random
 from PyQt6 import QtCore, QtWidgets, QtGui
@@ -571,7 +570,7 @@ class WindowPie(QtWidgets.QMainWindow):
                 sheetDay.Range(sheetDay.Cells(1, 1), sheetDay.Cells(row, len(headersPrognoz)+6)).Borders(8).Weight = 3
                 sheetDay.Range(sheetDay.Cells(1, 1), sheetDay.Cells(row, len(headersPrognoz)+6)).Borders(9).Weight = 3
                 sheetDay.Range(sheetDay.Cells(1, 1), sheetDay.Cells(row, len(headersPrognoz)+6)).Borders(10).Weight = 3
-                sheetDay.PageSetup.Orientation = constants.xlLandscape
+                sheetDay.PageSetup.Orientation = 2
                 sheetDay.PageSetup.Zoom = False
                 sheetDay.PageSetup.FitToPagesWide = 1
                 sheetDay.PageSetup.FitToPagesTall = 1
