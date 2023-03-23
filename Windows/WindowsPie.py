@@ -3,6 +3,7 @@ import os
 import shutil
 from math import ceil
 import win32com.client
+from win32com.client import constants
 import json
 import random
 from PyQt6 import QtCore, QtWidgets, QtGui
@@ -78,6 +79,7 @@ class WindowPie(QtWidgets.QMainWindow):
         self.ui.btn_download_plans.clicked.connect(self.saveFileDialogPlan)
         global pointsPrioritet
         pointsPrioritet = []
+
 
 
     def dialogPrioritet(self):
@@ -462,7 +464,7 @@ class WindowPie(QtWidgets.QMainWindow):
                 sheetDay = dayExcel.ActiveSheet
                 sheetDay.Columns(1).NumberFormat = "@"
                 DayInPeriod = self.periodDay[0].addDays(day)
-                print(DayInPeriod.toString('dd.MM.yyyy'))
+                # print(DayInPeriod.toString('dd.MM.yyyy'))
                 date = (datetime.date(int(DayInPeriod.toString('yyyy')), int(DayInPeriod.toString('MM')), int(DayInPeriod.toString('dd')))).isoweekday()
                 sheetDay.Cells(1, 2).Value = 'Дата производства'
                 sheetDay.Cells(1, 3).Value = DayInPeriod.addDays(-1).toString('dd.MM.yyyy')
@@ -473,7 +475,7 @@ class WindowPie(QtWidgets.QMainWindow):
                 sheetDay.Cells(3, 3).Value = 'Участок приготовления'
                 sheetSvod.Cells(1, 1).Value = 'Код блюда'
                 sheetSvod.Cells(1, 2).Value = 'Блюдо'
-                sheetSvod.Cells(1, 3).Value = 'Участок приготовления'
+                sheetSvod.Cells(1, 3).Value = 'Участок \nприготовления'
                 sheetSvod.Cells(1, 11).Value = 'ИТОГО'
                 sheetSvod.Cells(1, 4 + day).Value = DayInPeriod.addDays(-1).toString('dd.MM.yyyy')
                 sheetDay.Cells(3, len(headersPrognoz) + 4).Value = 'ПЛАН'
@@ -556,20 +558,52 @@ class WindowPie(QtWidgets.QMainWindow):
                         row += 1
                 for col in range(4, len(headersPrognoz) + 7):
                     sheetDay.Cells(row, col).Value = f"=SUM(R[{4 - row}]C:R[-1]C)"
+                sheetDay.Cells(row, 3).Value = 'ИТОГО'
                 sheetDay.Columns(1).ColumnWidth = 10
-                sheetDay.Columns(2).ColumnWidth = 40
-                sheetDay.Columns(3).ColumnWidth = 20
+                sheetDay.Columns(2).ColumnWidth = 45
+                sheetDay.Columns(3).ColumnWidth = 25
+                for col in range(4, len(headersPrognoz)+7):
+                    sheetDay.Columns(col).ColumnWidth = 5
+                sheetDay.Range(sheetDay.Cells(3, 4), sheetDay.Cells(3, len(headersPrognoz)+6)).Orientation = 90
                 sheetDay.Range(sheetDay.Cells(1, 1), sheetDay.Cells(row, len(headersPrognoz)+6)).Borders(2).Weight = 2
                 sheetDay.Range(sheetDay.Cells(1, 1), sheetDay.Cells(row, len(headersPrognoz)+6)).Borders(4).Weight = 2
                 sheetDay.Range(sheetDay.Cells(1, 1), sheetDay.Cells(row, len(headersPrognoz)+6)).Borders(7).Weight = 3
                 sheetDay.Range(sheetDay.Cells(1, 1), sheetDay.Cells(row, len(headersPrognoz)+6)).Borders(8).Weight = 3
                 sheetDay.Range(sheetDay.Cells(1, 1), sheetDay.Cells(row, len(headersPrognoz)+6)).Borders(9).Weight = 3
                 sheetDay.Range(sheetDay.Cells(1, 1), sheetDay.Cells(row, len(headersPrognoz)+6)).Borders(10).Weight = 3
+                sheetDay.PageSetup.Orientation = constants.xlLandscape
+                sheetDay.PageSetup.Zoom = False
+                sheetDay.PageSetup.FitToPagesWide = 1
+                sheetDay.PageSetup.FitToPagesTall = 1
                 Excel.DisplayAlerts = False
                 dayExcel.SaveAs(Filename=(folderName + '\\' + f'Пирожные {DayInPeriod.toString("dd.MM.yyyy")}' + '.xlsx'))
                 dayExcel.Close()
                 progress += 1
                 self.ui.progressBar.setValue(progress)
+            lastColumn = sheetSvod.UsedRange.Columns.Count
+            lastRow = sheetSvod.UsedRange.Rows.Count
+            for row in range(2, lastRow + 2):
+                sheetSvod.Cells(row, lastColumn).Value = f"=SUM(RC[-8]:RC[-1])"
+                sheetSvod.Cells(row, 2).WrapText = True
+            lastRow = sheetSvod.UsedRange.Rows.Count
+            for col in range(4, lastColumn):
+                sheetSvod.Range(sheetSvod.Cells(lastRow, col), sheetSvod.Cells(lastRow, col)).Value = f"=SUM(R[-{lastRow-2}]C:R[-1]C)"
+            sheetSvod.Columns(1).ColumnWidth = 10
+            sheetSvod.Columns(2).ColumnWidth = 35
+            sheetSvod.Columns(3).ColumnWidth = 20
+            sheetSvod.Range("1:1").RowHeight = 70
+            for col in range(4, 11):
+                sheetSvod.Columns(col).ColumnWidth = 5
+            sheetSvod.Range(sheetSvod.Cells(1, 4), sheetSvod.Cells(1, 11)).Orientation = 90
+            sheetSvod.Range(sheetSvod.Cells(1, 1), sheetSvod.Cells(lastRow, lastColumn)).Borders(2).Weight = 2
+            sheetSvod.Range(sheetSvod.Cells(1, 1), sheetSvod.Cells(lastRow, lastColumn)).Borders(4).Weight = 2
+            sheetSvod.Range(sheetSvod.Cells(1, 1), sheetSvod.Cells(lastRow, lastColumn)).Borders(7).Weight = 3
+            sheetSvod.Range(sheetSvod.Cells(1, 1), sheetSvod.Cells(lastRow, lastColumn)).Borders(8).Weight = 3
+            sheetSvod.Range(sheetSvod.Cells(1, 1), sheetSvod.Cells(lastRow, lastColumn)).Borders(9).Weight = 3
+            sheetSvod.Range(sheetSvod.Cells(1, 1), sheetSvod.Cells(lastRow, lastColumn)).Borders(10).Weight = 3
+            sheetSvod.PageSetup.Zoom = False
+            sheetSvod.PageSetup.FitToPagesWide = 1
+            sheetSvod.PageSetup.FitToPagesTall = 1
             svodExcel.SaveAs(Filename=(folderName + '\\' + f'Сводная по пирожным {self.periodDay[0].toString("dd.MM.yyyy")} - {self.periodDay[1].toString("dd.MM.yyyy")}' + '.xlsx'))
             svodExcel.Close()
             Excel.Quit()
