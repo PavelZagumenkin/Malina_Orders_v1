@@ -153,8 +153,8 @@ class CheckThread(QtCore.QThread):
     def thr_zames(self, kod_text):
         seach_zames(kod_text, self.zames)
 
-    def thr_updateZames(self, kod_text, tovar_text, zames):
-        update_zames(kod_text, tovar_text, zames)
+    def thr_updateZames(self, kod_text, zames):
+        update_zames(kod_text, zames)
 
     def thr_saveLayoutZamesInDB(self, kod, name, layout, zames):
         saveLayoutZames(kod, name, layout, zames)
@@ -167,5 +167,6 @@ class CheckThread(QtCore.QThread):
 
     def thr_updateDayWeekPie(self, savePeriod, saveHeaders, saveDB, saveNull):
         updateDayWeekPieInDB(savePeriod, saveHeaders, saveDB, saveNull)
+
 
 

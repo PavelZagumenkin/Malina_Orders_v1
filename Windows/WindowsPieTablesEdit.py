@@ -258,6 +258,7 @@ class WindowPieTablesEdit(QtWidgets.QMainWindow):
             zames = value
         else:
             zames = self.dialogAddZames()
+
     # Поиск замеса в базе данных
     def poisk_zames(self, kod, tovar):
         global kod_tovara
@@ -285,10 +286,10 @@ class WindowPieTablesEdit(QtWidgets.QMainWindow):
     def dialogAddZames(self):
         kol, ok = QInputDialog.getInt(self, "Отсуствует норма замеса", f"Введите норму замеса для {tovar_name} код изделия {kod_tovara}:")
         if ok:
-            self.check_db.thr_updateZames(kod_tovara, tovar_name, int(kol))
+            self.check_db.thr_updateZames(kod_tovara, int(kol))
             return(int(kol))
         else:
-            self.check_db.thr_updateZames(kod_tovara, tovar_name, 1)
+            self.check_db.thr_updateZames(kod_tovara, 1)
             return(1)
 
     def addPeriod(self, period):

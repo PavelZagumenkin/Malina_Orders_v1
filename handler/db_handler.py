@@ -392,18 +392,18 @@ def seach_zames(kod, signal):
     cur = con.cursor()
     # Проверяем, есть ли такой код
     cur.execute(f'SELECT * FROM catalog_food WHERE KOD="{kod}";')
-    value = cur.fetchall()
-    if value != []:
-        signal.emit(str(value[0][5]))
+    value = cur.fetchone()[5]
+    if value != None:
+        signal.emit(str(value))
     else:
         signal.emit('Код отсутствует в БД')
     cur.close()
     con.close()
 
-def update_zames(kod_text, tovar_text, zames):
+def update_zames(kod_text, zames):
     con = sqlite3.connect('db/malina_orders.db')
     cur = con.cursor()
-    cur.execute(f"INSERT INTO catalog_food (KOD, NAME, ZAMESPIE) VALUES ('{kod_text}', '{tovar_text}', '{zames}');")
+    cur.execute(f"UPDATE catalog_food set ZAMESPIE = '{zames}' where KOD = '{kod_text}';")
     con.commit()
     cur.close()
     con.close()
@@ -412,11 +412,11 @@ def saveLayoutZames(kod, name, layuot, zames):
     con = sqlite3.connect('db/malina_orders.db')
     cur = con.cursor()
     cur.execute(f'SELECT * FROM catalog_food WHERE KOD="{kod}";')
-    value = cur.fetchall()
-    if value != []:
-        cur.execute(f"UPDATE catalog_food set NAME = '{name}', LAYOUT = '{layuot}', ZAMESPIE = '{zames}' where KOD = '{kod}'")
+    value = cur.fetchone()[5]
+    if value != None:
+        cur.execute(f"UPDATE catalog_food set NAME = '{name}', LAYOUT = '{layuot}', ZAMESPIE = '{zames}' where KOD = '{kod}';")
     else:
-        cur.execute(f"INSERT INTO catalog_food (KOD, NAME, LAYOUT, ZAMESPIE) VALUES ('{kod}', '{name}', '{layuot}', {zames});")
+        cur.execute(f"INSERT INTO catalog_food (KOD, NAME, LAYOUT, ZAMESPIE) VALUES ('{kod}', '{name}', '{layuot}', '{zames}');")
     con.commit()
     cur.close()
     con.close()
