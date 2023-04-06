@@ -18,6 +18,7 @@ class WindowBakeryTableDayWeekEdit(QtWidgets.QMainWindow):
         self.setWindowTitle("Продажи по дням недели")
         self.check_db = CheckThread()
         self.check_db.period.connect(self.signal_period)
+
         Excel = win32com.client.Dispatch("Excel.Application")
         wb_OLAP_dayWeek_bakery = Excel.Workbooks.Open(pathOLAP_dayWeek_bakery)
         sheet_OLAP_dayWeek_bakery = wb_OLAP_dayWeek_bakery.ActiveSheet
@@ -54,6 +55,7 @@ class WindowBakeryTableDayWeekEdit(QtWidgets.QMainWindow):
             self.DspinboxCol.wheelEvent = lambda event: None
             self.ui.tableWidget.setCellWidget(0, col_spin, self.DspinboxCol)
             self.ui.tableWidget.cellWidget(0, col_spin).setValue(0.00)
+            self.ui.tableWidget.cellWidget(0, col_spin).setMinimum(-1.00)
             self.ui.tableWidget.cellWidget(0, col_spin).setSingleStep(0.01)
             self.ui.tableWidget.cellWidget(0, col_spin).valueChanged.connect(self.raschetKDayWeek)
         for row_spin in range(1, self.ui.tableWidget.rowCount()):
@@ -61,6 +63,7 @@ class WindowBakeryTableDayWeekEdit(QtWidgets.QMainWindow):
             self.DspinboxRow.wheelEvent = lambda event: None
             self.ui.tableWidget.setCellWidget(row_spin, 0, self.DspinboxRow)
             self.ui.tableWidget.cellWidget(row_spin, 0).setValue(0.00)
+            self.ui.tableWidget.cellWidget(row_spin, 0).setMinimum(-1.00)
             self.ui.tableWidget.cellWidget(row_spin, 0).setSingleStep(0.01)
             self.ui.tableWidget.cellWidget(row_spin, 0).valueChanged.connect(self.raschetKDayWeek)
         for col in range(1, endOLAPCol):
@@ -103,7 +106,21 @@ class WindowBakeryTableDayWeekEdit(QtWidgets.QMainWindow):
         self.ui.tableWidget.cellWidget(0, 0).clicked.connect(self.saveAndCloseDef)
         self.ui.tableWidget.resizeColumnsToContents()
         self.ui.tableWidget.setColumnWidth(0, 190)
+        for col in range(2, self.ui.tableWidget.columnCount()):
+            for row in range(1, self.ui.tableWidget.rowCount()):
+                self.ui.tableWidget.cellChanged.connect(lambda row, col: self.on_cell_changed(row, col))
         self.addPeriod(self.periodDay)
+
+    def on_cell_changed(self, row, col):
+            # Получаем содержимое ячейки и проверяем, является ли оно числом
+            try:
+                value = float(self.ui.tableWidget.item(row, col).text())
+            except ValueError:
+                value = None
+
+            # Если содержимое не является числом, то заменяем его на пустую строку
+            if value is None:
+                self.ui.tableWidget.setItem(row, col, QTableWidgetItem(str(0.0)))
 
     #Увеличение или уменьшение доли продаж.
     def raschetKDayWeek(self):

@@ -48,6 +48,7 @@ class WindowPieTablesDayWeekRedact(QtWidgets.QMainWindow):
             self.DspinboxCol.wheelEvent = lambda event: None
             self.ui.tableWidget.setCellWidget(0, col_spin, self.DspinboxCol)
             self.ui.tableWidget.cellWidget(0, col_spin).setValue(float(self.ui.tableWidget.item(0, col_spin).text()))
+            self.ui.tableWidget.cellWidget(0, col_spin).setMinimum(-1.00)
             self.ui.tableWidget.cellWidget(0, col_spin).setSingleStep(0.01)
             self.ui.tableWidget.cellWidget(0, col_spin).valueChanged.connect(self.raschetKDayWeek)
         for row_spin in range(1, self.ui.tableWidget.rowCount()):
@@ -55,6 +56,7 @@ class WindowPieTablesDayWeekRedact(QtWidgets.QMainWindow):
             self.DspinboxRow.wheelEvent = lambda event: None
             self.ui.tableWidget.setCellWidget(row_spin, 0, self.DspinboxRow)
             self.ui.tableWidget.cellWidget(row_spin, 0).setValue(float(self.ui.tableWidget.item(row_spin, 0).text()))
+            self.ui.tableWidget.cellWidget(row_spin, 0).setMinimum(-1.00)
             self.ui.tableWidget.cellWidget(row_spin, 0).setSingleStep(0.01)
             self.ui.tableWidget.cellWidget(row_spin, 0).valueChanged.connect(self.raschetKDayWeek)
         self.periodDay = periodDay
