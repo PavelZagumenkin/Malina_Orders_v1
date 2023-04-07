@@ -126,7 +126,23 @@ class WindowBakeryTablesEdit(QtWidgets.QMainWindow):
                                             "}")
         self.ui.tableWidget.cellWidget(0, 5).clicked.connect(self.saveAndCloseDef)
         self.ui.tableWidget.resizeColumnsToContents()
+        self.ui.tableWidget.cellChanged.connect(lambda row, col: self.on_cell_changed(row, col))
         self.addPeriod(self.periodDay)
+
+    def on_cell_changed(self, row, col):
+        if row >= 1 and col >=7:
+            # Получаем содержимое ячейки и проверяем, является ли оно числом
+            try:
+                value = float(self.ui.tableWidget.item(row, col).text())
+            except ValueError:
+                value = None
+
+        # Если содержимое не является числом, то заменяем его на 0.0
+            if value is None:
+                QtWidgets.QMessageBox.information(self, "Error", 'Вы ввели не число')
+                self.ui.tableWidget.setItem(row, col, QTableWidgetItem(str(0.0)))
+        else:
+            return
 
     def saveAndCloseDef(self):
         savePeriod = self.periodDay

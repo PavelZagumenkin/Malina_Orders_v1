@@ -465,6 +465,7 @@ class WindowBakery(QtWidgets.QMainWindow):
                 '~') + r'\Desktop' + f"\Нормативы для пекарни с {self.periodDay[0].toString('dd.MM.yyyy')} по {self.periodDay[1].toString('dd.MM.yyyy')}.xlsx",
             filter="Все файлы (*);")
         if fileName:
+            print(fileName)
             self.ui.progressBar.show()
             self.setEnabled(False)
             progress = 0
@@ -507,6 +508,9 @@ class WindowBakery(QtWidgets.QMainWindow):
             Excel.Quit()
             self.setEnabled(True)
             self.ui.progressBar.hide()
+            path_to_folder, file_name = os.path.split(fileName)
+            print(path_to_folder)
+            os.startfile(path_to_folder)  # открытие папки
 
     def saveFileDialogLayout(self):
         folderName = QFileDialog.getExistingDirectory(
@@ -600,6 +604,7 @@ class WindowBakery(QtWidgets.QMainWindow):
                 pointCounter += 1
         self.setEnabled(True)
         self.ui.progressBar.hide()
+        os.startfile(folderName)  # открытие папки
 
     def delCookieData(self):
         self.check_db.thr_deleteCookieData()

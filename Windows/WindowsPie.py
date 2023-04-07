@@ -610,6 +610,7 @@ class WindowPie(QtWidgets.QMainWindow):
             self.ui.progressBar.setValue(progress)
         self.setEnabled(True)
         self.ui.progressBar.hide()
+        os.startfile(folderName)  # открытие папки
 
     def delCookieData(self):
         self.check_db.thr_deleteCookieData()

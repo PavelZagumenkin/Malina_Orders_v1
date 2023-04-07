@@ -839,21 +839,6 @@ background-color: rgba(228, 107, 134, 1)
       <number>5</number>
      </property>
      <item row="0" column="0">
-      <widget class="QCheckBox" name="cb_begovaya">
-       <property name="font">
-        <font>
-         <pointsize>11</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Беговая</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
       <widget class="QCheckBox" name="cb_volsk">
        <property name="font">
         <font>
@@ -868,7 +853,7 @@ background-color: rgba(228, 107, 134, 1)
        </property>
       </widget>
      </item>
-     <item row="2" column="0">
+     <item row="1" column="0">
       <widget class="QCheckBox" name="cb_gorkogo">
        <property name="font">
         <font>
@@ -883,7 +868,7 @@ background-color: rgba(228, 107, 134, 1)
        </property>
       </widget>
      </item>
-     <item row="3" column="0">
+     <item row="2" column="0">
       <widget class="QCheckBox" name="cb_grand">
        <property name="font">
         <font>
@@ -898,7 +883,7 @@ background-color: rgba(228, 107, 134, 1)
        </property>
       </widget>
      </item>
-     <item row="4" column="0">
+     <item row="3" column="0">
       <widget class="QCheckBox" name="cb_kr">
        <property name="font">
         <font>
@@ -913,7 +898,7 @@ background-color: rgba(228, 107, 134, 1)
        </property>
       </widget>
      </item>
-     <item row="5" column="0">
+     <item row="4" column="0">
       <widget class="QCheckBox" name="cb_lenina">
        <property name="font">
         <font>
@@ -928,7 +913,7 @@ background-color: rgba(228, 107, 134, 1)
        </property>
       </widget>
      </item>
-     <item row="6" column="0">
+     <item row="5" column="0">
       <widget class="QCheckBox" name="cb_magazin">
        <property name="font">
         <font>
@@ -943,7 +928,7 @@ background-color: rgba(228, 107, 134, 1)
        </property>
       </widget>
      </item>
-     <item row="7" column="0">
+     <item row="6" column="0">
       <widget class="QCheckBox" name="cb_madonna">
        <property name="font">
         <font>
@@ -955,22 +940,7 @@ background-color: rgba(228, 107, 134, 1)
        </property>
       </widget>
      </item>
-     <item row="9" column="0">
-      <widget class="QCheckBox" name="cb_marks">
-       <property name="font">
-        <font>
-         <pointsize>11</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Маркс</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="8" column="0">
+     <item row="7" column="0">
       <widget class="QCheckBox" name="cb_michurina">
        <property name="font">
         <font>
@@ -988,7 +958,22 @@ background-color: rgba(228, 107, 134, 1)
        </property>
       </widget>
      </item>
-     <item row="10" column="0">
+     <item row="8" column="0">
+      <widget class="QCheckBox" name="cb_marks">
+       <property name="font">
+        <font>
+         <pointsize>11</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Маркс</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="9" column="0">
       <widget class="QCheckBox" name="cb_moskovskaya">
        <property name="font">
         <font>
@@ -1003,7 +988,7 @@ background-color: rgba(228, 107, 134, 1)
        </property>
       </widget>
      </item>
-     <item row="11" column="0">
+     <item row="10" column="0">
       <widget class="QCheckBox" name="cb_orang">
        <property name="font">
         <font>
@@ -1018,7 +1003,7 @@ background-color: rgba(228, 107, 134, 1)
        </property>
       </widget>
      </item>
-     <item row="12" column="0">
+     <item row="11" column="0">
       <widget class="QCheckBox" name="cb_pobeda">
        <property name="font">
         <font>
@@ -1033,7 +1018,7 @@ background-color: rgba(228, 107, 134, 1)
        </property>
       </widget>
      </item>
-     <item row="13" column="0">
+     <item row="12" column="0">
       <widget class="QCheckBox" name="cb_pavilon">
        <property name="font">
         <font>
@@ -1045,7 +1030,7 @@ background-color: rgba(228, 107, 134, 1)
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
+     <item row="13" column="0">
       <widget class="QCheckBox" name="cb_rahova">
        <property name="font">
         <font>
@@ -1060,7 +1045,7 @@ background-color: rgba(228, 107, 134, 1)
        </property>
       </widget>
      </item>
-     <item row="1" column="1">
+     <item row="0" column="1">
       <widget class="QCheckBox" name="cb_rokot">
        <property name="font">
         <font>
@@ -1075,7 +1060,7 @@ background-color: rgba(228, 107, 134, 1)
        </property>
       </widget>
      </item>
-     <item row="2" column="1">
+     <item row="1" column="1">
       <widget class="QCheckBox" name="cb_svoboda">
        <property name="font">
         <font>
@@ -1090,7 +1075,7 @@ background-color: rgba(228, 107, 134, 1)
        </property>
       </widget>
      </item>
-     <item row="3" column="1">
+     <item row="2" column="1">
       <widget class="QCheckBox" name="cb_solnechnii">
        <property name="font">
         <font>
@@ -1105,7 +1090,7 @@ background-color: rgba(228, 107, 134, 1)
        </property>
       </widget>
      </item>
-     <item row="4" column="1">
+     <item row="3" column="1">
       <widget class="QCheckBox" name="cb_stargrad">
        <property name="font">
         <font>
@@ -1120,7 +1105,7 @@ background-color: rgba(228, 107, 134, 1)
        </property>
       </widget>
      </item>
-     <item row="5" column="1">
+     <item row="4" column="1">
       <widget class="QCheckBox" name="cb_stepnaya">
        <property name="font">
         <font>
@@ -1135,7 +1120,7 @@ background-color: rgba(228, 107, 134, 1)
        </property>
       </widget>
      </item>
-     <item row="6" column="1">
+     <item row="5" column="1">
       <widget class="QCheckBox" name="cb_tarhova">
        <property name="font">
         <font>
@@ -1150,7 +1135,7 @@ background-color: rgba(228, 107, 134, 1)
        </property>
       </widget>
      </item>
-     <item row="7" column="1">
+     <item row="6" column="1">
       <widget class="QCheckBox" name="cb_topol">
        <property name="font">
         <font>
@@ -1165,7 +1150,7 @@ background-color: rgba(228, 107, 134, 1)
        </property>
       </widget>
      </item>
-     <item row="8" column="1">
+     <item row="7" column="1">
       <widget class="QCheckBox" name="cb_trnavskaya">
        <property name="font">
         <font>
@@ -1180,7 +1165,7 @@ background-color: rgba(228, 107, 134, 1)
        </property>
       </widget>
      </item>
-     <item row="9" column="1">
+     <item row="8" column="1">
       <widget class="QCheckBox" name="cb_ust_kurdym">
        <property name="font">
         <font>
@@ -1195,7 +1180,7 @@ background-color: rgba(228, 107, 134, 1)
        </property>
       </widget>
      </item>
-     <item row="10" column="1">
+     <item row="9" column="1">
       <widget class="QCheckBox" name="cb_fridriha">
        <property name="font">
         <font>
@@ -1210,7 +1195,7 @@ background-color: rgba(228, 107, 134, 1)
        </property>
       </widget>
      </item>
-     <item row="11" column="1">
+     <item row="10" column="1">
       <widget class="QCheckBox" name="cb_chehova">
        <property name="enabled">
         <bool>true</bool>
@@ -1231,7 +1216,7 @@ background-color: rgba(228, 107, 134, 1)
        </property>
       </widget>
      </item>
-     <item row="12" column="1">
+     <item row="11" column="1">
       <widget class="QCheckBox" name="cb_entuziastov">
        <property name="font">
         <font>
