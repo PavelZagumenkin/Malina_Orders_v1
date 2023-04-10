@@ -428,6 +428,7 @@ class WindowBakery(QtWidgets.QMainWindow):
         WindowBakeryTablesDayWeekView.showMaximized()
 
     def dayWeekTablesRedact(self):
+        self.normativTablesDelete()
         self.hide()
         periodDay = self.periodDay
         global WindowBakeryTablesDayWeekRedact
@@ -465,7 +466,6 @@ class WindowBakery(QtWidgets.QMainWindow):
                 '~') + r'\Desktop' + f"\Нормативы для пекарни с {self.periodDay[0].toString('dd.MM.yyyy')} по {self.periodDay[1].toString('dd.MM.yyyy')}.xlsx",
             filter="Все файлы (*);")
         if fileName:
-            print(fileName)
             self.ui.progressBar.show()
             self.setEnabled(False)
             progress = 0
@@ -509,7 +509,6 @@ class WindowBakery(QtWidgets.QMainWindow):
             self.setEnabled(True)
             self.ui.progressBar.hide()
             path_to_folder, file_name = os.path.split(fileName)
-            print(path_to_folder)
             os.startfile(path_to_folder)  # открытие папки
 
     def saveFileDialogLayout(self):

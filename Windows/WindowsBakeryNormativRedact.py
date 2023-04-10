@@ -22,8 +22,9 @@ class WindowBakeryNormativRedact(QtWidgets.QMainWindow):
         self.data = json.loads(self.normativ[1].strip("\'"))
         global saveZnach
         saveZnach =json.loads(self.normativ[2].strip("\'"))
-        self.ui.tableWidget.setRowCount(len(self.data['0']))
-        self.ui.tableWidget.setColumnCount(len(self.headers))
+        self.ui.tableWidget.setRowCount(len(self.data['0'])+1)
+        self.ui.tableWidget.setColumnCount(len(self.headers)+1)
+        self.headers.append('ИТОГО')
         self.wrap = []
         for header in self.headers:
             wrap = textwrap.fill(header, width=7)
@@ -87,10 +88,32 @@ class WindowBakeryNormativRedact(QtWidgets.QMainWindow):
                                                            "}")
         self.ui.tableWidget.cellWidget(0, 3).clicked.connect(self.saveAndCloseDef)
         self.ui.tableWidget.setItem(0, 4, QTableWidgetItem("Кф. склада кондитерской"))
+        self.ui.tableWidget.setItem(self.ui.tableWidget.rowCount() - 1, 4, QTableWidgetItem("ИТОГО"))
         self.ui.tableWidget.cellChanged.connect(lambda row, col: self.on_cell_changed(row, col))
         self.ui.tableWidget.item(0, 4).setFont(self.font)
         self.ui.tableWidget.item(0, 4).setFlags(QtCore.Qt.ItemFlag.ItemIsEnabled)
         self.ui.tableWidget.resizeColumnsToContents()
+        self.row_summ()
+        self.col_summ()
+
+    def row_summ(self):
+        for col in range(5, self.ui.tableWidget.columnCount()):
+            column_summ = 0
+            for row in range(1, self.ui.tableWidget.rowCount()-1):
+                item = self.ui.tableWidget.item(row, col)
+                if item is not None:
+                    column_summ += float(self.ui.tableWidget.item(row, col).text())
+            self.ui.tableWidget.setItem(self.ui.tableWidget.rowCount()-1, col, QTableWidgetItem(str(column_summ)))
+
+    def col_summ(self):
+        for row in range(1, self.ui.tableWidget.rowCount()):
+            row_summ = 0
+            for col in range(5, self.ui.tableWidget.columnCount()-1):
+                item = self.ui.tableWidget.item(row, col)
+                if item is not None:
+                    row_summ += float(self.ui.tableWidget.item(row, col).text())
+            self.ui.tableWidget.setItem(row, self.ui.tableWidget.columnCount()-1, QTableWidgetItem(str(row_summ)))
+
 
     def on_cell_changed(self, row, col):
         if row >= 1 and col >= 5:
@@ -111,22 +134,26 @@ class WindowBakeryNormativRedact(QtWidgets.QMainWindow):
         buttonClicked = self.sender()
         index = self.ui.tableWidget.indexAt(buttonClicked.pos())
         if index.row() == 0:
-            for i in range(1, self.ui.tableWidget.rowCount()):
-                result = round(float(saveZnach[str(index.column()+2)][str(i)]) * float(self.ui.tableWidget.cellWidget(0, index.column()).value()) * float(self.ui.tableWidget.cellWidget(i, 0).value()), 2)
+            for i in range(1, self.ui.tableWidget.rowCount()-1):
+                result = round(float(saveZnach[str(index.column()+2)][str(i)]) * float(self.ui.tableWidget.cellWidget(0, index.column()).value()) * float(self.ui.tableWidget.cellWidget(i, 0).value()), 0)
                 self.ui.tableWidget.setItem(i, index.column(), QTableWidgetItem(str(result)))
         else:
-            for i in range(5, self.ui.tableWidget.columnCount()):
-                result = round(float(saveZnach[str(i+2)][str(index.row())]) * float(self.ui.tableWidget.cellWidget(index.row(), 0).value()) * float(self.ui.tableWidget.cellWidget(0, i).value()), 2)
+            for i in range(5, self.ui.tableWidget.columnCount()-1):
+                result = round(float(saveZnach[str(i+2)][str(index.row())]) * float(self.ui.tableWidget.cellWidget(index.row(), 0).value()) * float(self.ui.tableWidget.cellWidget(0, i).value()), 0)
                 self.ui.tableWidget.setItem(index.row(), i, QTableWidgetItem(str(result)))
+        self.row_summ()
+        self.col_summ()
+
 
     def saveAndCloseDef(self):
         savePeriod = self.periodDay
         saveNull = saveZnach.copy()
         saveHeaders = self.headers.copy()
+        saveHeaders.remove('ИТОГО')
         saveDB = {}
-        for col in range(0, self.ui.tableWidget.columnCount()):
+        for col in range(0, self.ui.tableWidget.columnCount()-1):
             saveDB[col] = {}
-            for row in range(0, self.ui.tableWidget.rowCount()):
+            for row in range(0, self.ui.tableWidget.rowCount()-1):
                 if col == 0 or row == 0:
                     if self.ui.tableWidget.cellWidget(row, col) == None:
                         saveDB[col][row] = 0
@@ -140,10 +167,10 @@ class WindowBakeryNormativRedact(QtWidgets.QMainWindow):
                     saveDB[col][row] = float(self.ui.tableWidget.item(row, col).text())
         self.insertNormativInDB(savePeriod, json.dumps(saveHeaders, ensure_ascii=False),
                                 json.dumps(saveDB, ensure_ascii=False), json.dumps(saveNull, ensure_ascii=False))
-        for row in range(1, self.ui.tableWidget.rowCount()):
+        for row in range(1, self.ui.tableWidget.rowCount()-1):
             self.saveKfBakeryInDB(self.ui.tableWidget.item(row, 2).text(), self.ui.tableWidget.item(row, 3).text(),
                                   round(float(self.ui.tableWidget.cellWidget(row, 0).value()), 3))
-        for col in range(5, self.ui.tableWidget.columnCount()):
+        for col in range(5, self.ui.tableWidget.columnCount()-1):
             self.saveKfSkladaInDB(self.ui.tableWidget.horizontalHeaderItem(col).text(), round(float(self.ui.tableWidget.cellWidget(0, col).value()), 2))
         self.close()
 

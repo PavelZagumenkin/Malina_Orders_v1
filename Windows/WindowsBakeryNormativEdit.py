@@ -33,9 +33,10 @@ class WindowBakeryNormativEdit(QtWidgets.QMainWindow):
         keysDataKdayweek = ['0']
         for key in keysDataKdayweek:
             dataKdayweek.pop(key, None)
-        self.ui.tableWidget.setRowCount(len(self.data['2']))
-        self.ui.tableWidget.setColumnCount(len(self.headers))
+        self.ui.tableWidget.setRowCount(len(self.data['2'])+1)
+        self.ui.tableWidget.setColumnCount(len(self.headers)+1)
         self.headers[0] = 'Кф. пекарни'
+        self.headers.append('ИТОГО')
         self.wrap = []
         for header in self.headers:
             wrap = textwrap.fill(header, width=7)
@@ -86,8 +87,8 @@ class WindowBakeryNormativEdit(QtWidgets.QMainWindow):
                         item = QTableWidgetItem(str(self.data[col][row]))
                     self.ui.tableWidget.setItem(int(row), int(col) - 2, item)
         # Перемножаем значения в таблице на значения коэффициентов сохраненных в БД
-        for col in range(5, self.ui.tableWidget.columnCount()):
-            for row in range(1, self.ui.tableWidget.rowCount()):
+        for col in range(5, self.ui.tableWidget.columnCount()-1):
+            for row in range(1, self.ui.tableWidget.rowCount()-1):
                 result = round(float(data[str(col + 2)][str(row)]) * float(self.ui.tableWidget.cellWidget(0, col).value()) * float(self.ui.tableWidget.cellWidget(row, 0).value()), 0)
                 self.ui.tableWidget.setItem(row, col, QTableWidgetItem(str(result)))
         # Вставляем кнопку Сохранить и закрыть
@@ -116,11 +117,33 @@ class WindowBakeryNormativEdit(QtWidgets.QMainWindow):
                                                            "}")
         self.ui.tableWidget.cellWidget(0, 3).clicked.connect(self.saveAndCloseDef)
         self.ui.tableWidget.setItem(0, 4, QTableWidgetItem("Кф. склада кондитерской"))
+        self.ui.tableWidget.setItem(self.ui.tableWidget.rowCount()-1, 4, QTableWidgetItem("ИТОГО"))
         self.ui.tableWidget.item(0, 4).setFont(self.font)
         self.ui.tableWidget.item(0, 4).setFlags(QtCore.Qt.ItemFlag.ItemIsEnabled)
         self.ui.tableWidget.resizeColumnsToContents()
         self.ui.tableWidget.cellChanged.connect(lambda row, col: self.on_cell_changed(row, col))
         self.addPeriodInNormativ(self.periodDay)
+        self.row_summ()
+        self.col_summ()
+
+    def row_summ(self):
+        for col in range(5, self.ui.tableWidget.columnCount()):
+            column_summ = 0
+            for row in range(1, self.ui.tableWidget.rowCount()-1):
+                item = self.ui.tableWidget.item(row, col)
+                if item is not None:
+                    column_summ += float(self.ui.tableWidget.item(row, col).text())
+            self.ui.tableWidget.setItem(self.ui.tableWidget.rowCount()-1, col, QTableWidgetItem(str(column_summ)))
+
+    def col_summ(self):
+        for row in range(1, self.ui.tableWidget.rowCount()):
+            row_summ = 0
+            for col in range(5, self.ui.tableWidget.columnCount()-1):
+                item = self.ui.tableWidget.item(row, col)
+                if item is not None:
+                    row_summ += float(self.ui.tableWidget.item(row, col).text())
+            self.ui.tableWidget.setItem(row, self.ui.tableWidget.columnCount()-1, QTableWidgetItem(str(row_summ)))
+
 
     def on_cell_changed(self, row, col):
         if row >= 1 and col >= 5:
@@ -152,22 +175,25 @@ class WindowBakeryNormativEdit(QtWidgets.QMainWindow):
         buttonClicked = self.sender()
         index = self.ui.tableWidget.indexAt(buttonClicked.pos())
         if index.row() == 0:
-            for i in range(1, self.ui.tableWidget.rowCount()):
+            for i in range(1, self.ui.tableWidget.rowCount()-1):
                 result = round(float(data[str(index.column()+2)][str(i)]) * float(self.ui.tableWidget.cellWidget(0, index.column()).value()) * float(self.ui.tableWidget.cellWidget(i, 0).value()), 0)
                 self.ui.tableWidget.setItem(i, index.column(), QTableWidgetItem(str(result)))
         else:
-            for i in range(5, self.ui.tableWidget.columnCount()):
+            for i in range(5, self.ui.tableWidget.columnCount()-1):
                 result = round(float(data[str(i+2)][str(index.row())]) * float(self.ui.tableWidget.cellWidget(index.row(), 0).value()) * float(self.ui.tableWidget.cellWidget(0, i).value()), 0)
                 self.ui.tableWidget.setItem(index.row(), i, QTableWidgetItem(str(result)))
+        self.row_summ()
+        self.col_summ()
 
     def saveAndCloseDef(self):
         savePeriod = self.periodDay
         saveNull = data.copy()
         saveHeaders = self.headers.copy()
+        saveHeaders.remove('ИТОГО')
         saveDB = {}
-        for col in range(0, self.ui.tableWidget.columnCount()):
+        for col in range(0, self.ui.tableWidget.columnCount()-1):
             saveDB[col] = {}
-            for row in range(0, self.ui.tableWidget.rowCount()):
+            for row in range(0, self.ui.tableWidget.rowCount()-1):
                 if col == 0 or row == 0:
                     if self.ui.tableWidget.cellWidget(row, col) == None:
                         saveDB[col][row] = 0
@@ -180,9 +206,9 @@ class WindowBakeryNormativEdit(QtWidgets.QMainWindow):
                 else:
                     saveDB[col][row] = float(self.ui.tableWidget.item(row, col).text())
         self.insertNormativInDB(savePeriod, json.dumps(saveHeaders, ensure_ascii=False), json.dumps(saveDB, ensure_ascii=False), json.dumps(saveNull, ensure_ascii=False))
-        for row in range(1, self.ui.tableWidget.rowCount()):
+        for row in range(1, self.ui.tableWidget.rowCount()-1):
             self.saveKfBakeryInDB(self.ui.tableWidget.item(row, 2).text(), self.ui.tableWidget.item(row, 3).text(), round(float(self.ui.tableWidget.cellWidget(row, 0).value()), 3))
-        for col in range(5, self.ui.tableWidget.columnCount()):
+        for col in range(5, self.ui.tableWidget.columnCount()-1):
             self.saveKfSkladaInDB(self.ui.tableWidget.horizontalHeaderItem(col).text(), round(float(self.ui.tableWidget.cellWidget(0, col).value()), 2))
         self.close()
 
