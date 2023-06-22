@@ -57,7 +57,7 @@ class WindowBakeryNormativEdit(QtWidgets.QMainWindow):
                     sklad = self.headers[int(col)-2]
                     self.ui.tableWidget.setCellWidget(0, int(col)-2, self.DspinboxRow)
                     self.ui.tableWidget.cellWidget(0, int(col)-2).setValue(float(self.raschetNormativovSklada(sklad)))
-                    self.ui.tableWidget.cellWidget(0, int(col)-2).setSingleStep(0.10)
+                    self.ui.tableWidget.cellWidget(0, int(col)-2).setSingleStep(0.01)
                     self.ui.tableWidget.cellWidget(0, int(col)-2).valueChanged.connect(self.raschetNormativov)
                 elif int(col) == 2:
                     self.DspinboxCol = QtWidgets.QDoubleSpinBox()
@@ -66,7 +66,7 @@ class WindowBakeryNormativEdit(QtWidgets.QMainWindow):
                     tovar = self.data['5'][row]
                     self.ui.tableWidget.setCellWidget(int(row), 0, self.DspinboxCol)
                     self.ui.tableWidget.cellWidget(int(row), 0).setValue(float(self.raschetNormativovBakery(kod, tovar)))
-                    self.ui.tableWidget.cellWidget(int(row), 0).setSingleStep(0.10)
+                    self.ui.tableWidget.cellWidget(int(row), 0).setSingleStep(0.01)
                     self.ui.tableWidget.cellWidget(int(row), 0).valueChanged.connect(self.raschetNormativov)
                 else:
                     # Перемножаем на каждый коэффициент дня недели и округляем до выкладки. Собираем сумму таких значей по каждой кондитерской.

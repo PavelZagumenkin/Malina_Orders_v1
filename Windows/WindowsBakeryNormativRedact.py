@@ -50,14 +50,14 @@ class WindowBakeryNormativRedact(QtWidgets.QMainWindow):
                     self.DspinboxRow.wheelEvent = lambda event: None
                     self.ui.tableWidget.setCellWidget(0, int(col), self.DspinboxRow)
                     self.ui.tableWidget.cellWidget(0, int(col)).setValue(float(self.data[col][row]))
-                    self.ui.tableWidget.cellWidget(0, int(col)).setSingleStep(0.10)
+                    self.ui.tableWidget.cellWidget(0, int(col)).setSingleStep(0.01)
                     self.ui.tableWidget.cellWidget(0, int(col)).valueChanged.connect(self.raschetNormativov)
                 elif int(col) == 0:
                     self.DspinboxCol = QtWidgets.QDoubleSpinBox()
                     self.DspinboxCol.wheelEvent = lambda event: None
                     self.ui.tableWidget.setCellWidget(int(row), 0, self.DspinboxCol)
                     self.ui.tableWidget.cellWidget(int(row), 0).setValue(float(self.data[col][row]))
-                    self.ui.tableWidget.cellWidget(int(row), 0).setSingleStep(0.10)
+                    self.ui.tableWidget.cellWidget(int(row), 0).setSingleStep(0.01)
                     self.ui.tableWidget.cellWidget(int(row), 0).valueChanged.connect(self.raschetNormativov)
                 else:
                     item = QTableWidgetItem(str(self.data[col][row]))

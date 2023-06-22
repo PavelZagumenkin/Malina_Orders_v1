@@ -72,7 +72,7 @@ class WindowBakeryTablesEdit(QtWidgets.QMainWindow):
             self.DspinboxCol.wheelEvent = lambda event: None
             self.ui.tableWidget.setCellWidget(0, col_spin, self.DspinboxCol)
             self.ui.tableWidget.cellWidget(0, col_spin).setValue(1.00)
-            self.ui.tableWidget.cellWidget(0, col_spin).setSingleStep(0.05)
+            self.ui.tableWidget.cellWidget(0, col_spin).setSingleStep(0.01)
             self.ui.tableWidget.cellWidget(0, col_spin).valueChanged.connect(self.raschetPrognoz)
         for row_spin in range(1, self.ui.tableWidget.rowCount()):
             self.DspinboxRow = QtWidgets.QDoubleSpinBox()
@@ -81,9 +81,10 @@ class WindowBakeryTablesEdit(QtWidgets.QMainWindow):
             self.SpinboxRow.wheelEvent = lambda event: None
             self.ui.tableWidget.setCellWidget(row_spin, 2, self.DspinboxRow)
             self.ui.tableWidget.cellWidget(row_spin, 2).setValue(1.00)
-            self.ui.tableWidget.cellWidget(row_spin, 2).setSingleStep(0.05)
+            self.ui.tableWidget.cellWidget(row_spin, 2).setSingleStep(0.01)
             self.ui.tableWidget.cellWidget(row_spin, 2).valueChanged.connect(self.raschetPrognoz)
             self.ui.tableWidget.setCellWidget(row_spin, 3, self.SpinboxRow)
+            self.ui.tableWidget.cellWidget(row_spin, 3).setMaximum(1000)
             self.ui.tableWidget.cellWidget(row_spin, 3).setValue(self.poisk_kod(self.ui.tableWidget.item(row_spin, 4).text(), self.ui.tableWidget.item(row_spin, 5).text()))
             self.ui.tableWidget.cellWidget(row_spin, 3).setSingleStep(1)
         for row_button in range(1, self.ui.tableWidget.rowCount()):
@@ -211,9 +212,10 @@ class WindowBakeryTablesEdit(QtWidgets.QMainWindow):
         self.SpinboxRow.wheelEvent = lambda event: None
         self.ui.tableWidget.setCellWidget(rowPosition, 2, self.DspinboxRow)
         self.ui.tableWidget.cellWidget(rowPosition, 2).setValue(1.00)
-        self.ui.tableWidget.cellWidget(rowPosition, 2).setSingleStep(0.05)
+        self.ui.tableWidget.cellWidget(rowPosition, 2).setSingleStep(0.01)
         self.ui.tableWidget.cellWidget(rowPosition, 2).valueChanged.connect(self.raschetPrognoz)
         self.ui.tableWidget.setCellWidget(rowPosition, 3, self.SpinboxRow)
+        self.ui.tableWidget.cellWidget(rowPosition, 3).setMaximum(1000)
         self.ui.tableWidget.cellWidget(rowPosition, 3).setValue(1)
         self.ui.tableWidget.cellWidget(rowPosition, 3).setSingleStep(1)
         for c in range(4, 6):
