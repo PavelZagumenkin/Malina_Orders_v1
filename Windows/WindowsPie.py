@@ -463,7 +463,6 @@ class WindowPie(QtWidgets.QMainWindow):
                 sheetDay = dayExcel.ActiveSheet
                 sheetDay.Columns(1).NumberFormat = "@"
                 DayInPeriod = self.periodDay[0].addDays(day)
-                # print(DayInPeriod.toString('dd.MM.yyyy'))
                 date = (datetime.date(int(DayInPeriod.toString('yyyy')), int(DayInPeriod.toString('MM')), int(DayInPeriod.toString('dd')))).isoweekday()
                 sheetDay.Cells(1, 2).Value = 'Дата производства'
                 sheetDay.Cells(1, 3).Value = DayInPeriod.addDays(-1).toString('dd.MM.yyyy')
@@ -489,6 +488,7 @@ class WindowPie(QtWidgets.QMainWindow):
                     if key != '0':
                         sheetDay.Cells(row, 1).Value = dataPrognoz['5'][key]
                         sheetDay.Cells(row, 2).Value = dataPrognoz['6'][key]
+                        print(dataPrognoz['6'][key])
                         sheetDay.Cells(row, 3).Value = 'Участок пирожных'
                         sheetSvod.Cells(row-2, 1).Value = dataPrognoz['5'][key]
                         sheetSvod.Cells(row-2, 2).Value = dataPrognoz['6'][key]
@@ -506,55 +506,59 @@ class WindowPie(QtWidgets.QMainWindow):
                         if summBludaToZames - summBludaToKvant > 0:
                             raspred = (summBludaToZames - summBludaToKvant) / dataPrognoz['3'][key]
                             spisokZnachToKvant = list(sheetDay.Range(sheetDay.Cells(row, 4), sheetDay.Cells(row, len(headersPrognoz) + 3)).Value[0])
-                            # Инициализируем список с парами (индекс, значение)
-                            indexed_values = list(enumerate(spisokZnachToKvant))
-                            # Сортируем список по убыванию значений
-                            sorted_values = sorted(indexed_values, key=lambda x: x[1], reverse=True)
-                            # Получаем список индексов первых n_max максимальных значений
-                            max_indexes = [x[0] for x in sorted_values[:int(raspred)]]
-                            max_znach = [x[1] for x in sorted_values[:int(raspred)]]
-                            # print(f'Работаем со строкой: {row}')
-                            # print(f'Необходимо распределить квантов:  {int(raspred)}')
-                            # print(f'Индексы максимальных значений для распределения:  {max_indexes}')
-                            # print(f'Максимальные значения для распределения:  {max_znach}')
-                            # print('Кондитерские с максимальными индексами:', end='')
-                            # for i in max_indexes:
-                            #     print({headersPrognoz[i]}, end=" ")
-                            # print()
-                            # print(f'Точки приоритета: {pointsPrioritet}')
-                            for znach in max_znach:
-                                if spisokZnachToKvant.count(znach) > 1:
-                                    # print(f'В строке найдено максимальных значений: {spisokZnachToKvant.count(znach)}')
-                                    savePointPrioritet = []
-                                    for point in pointsPrioritet:
-                                        columnPoint = sheetDay.Cells.Find(point).Column
-                                        if znach == sheetDay.Cells(row, columnPoint).Value:
-                                            savePointPrioritet.append(point)
-                                    # print(f'Список приоритетных кондитерских, где найдены максимальные значения: {savePointPrioritet}')
-                                    if len(savePointPrioritet) == 0:
-                                        spisok_indexes = []
-                                        for one_znach in range(len(spisokZnachToKvant)):
-                                            if spisokZnachToKvant[one_znach] == znach:
-                                                spisok_indexes.append(one_znach)
-                                        # print(f'Список индексов где лежат максимальные значения, если кондитерские не найдены в списке приоритетных {spisok_indexes}')
-                                        columnPoint = sheetDay.Cells.Find(headersPrognoz[random.choice(spisok_indexes)]).Column
-                                        # print(f'Получаем столбец рандомом для кондитерской, если ее нет в приоритетных кондитерских: {columnPoint}')
+                            kol_cycle = ceil(raspred / len(spisokZnachToKvant))
+                            print(f'Необходимо циклов для распределения: {kol_cycle}')
+                            for _ in range(0, kol_cycle):
+                                spisokZnachToKvant = list(sheetDay.Range(sheetDay.Cells(row, 4), sheetDay.Cells(row, len(headersPrognoz) + 3)).Value[0])
+                                # Инициализируем список с парами (индекс, значение)
+                                indexed_values = list(enumerate(spisokZnachToKvant))
+                                # Сортируем список по убыванию значений
+                                sorted_values = sorted(indexed_values, key=lambda x: x[1], reverse=True)
+                                # Получаем список индексов первых n_max максимальных значений
+                                max_indexes = [x[0] for x in sorted_values[:int(raspred)]]
+                                max_znach = [x[1] for x in sorted_values[:int(raspred)]]
+                                print(f'Необходимо распределить квантов:  {int(raspred)}')
+                                print(f'Индексы максимальных значений для распределения:  {max_indexes}')
+                                print(f'Максимальные значения для распределения:  {max_znach}')
+                                print('Кондитерские с максимальными индексами:', end='')
+                                for i in max_indexes:
+                                    print({headersPrognoz[i]}, end=" ")
+                                print()
+                                print(f'Точки приоритета: {pointsPrioritet}')
+                                for znach in max_znach:
+                                    if spisokZnachToKvant.count(znach) > 1:
+                                        # print(f'В строке найдено максимальных значений: {spisokZnachToKvant.count(znach)}')
+                                        savePointPrioritet = []
+                                        for point in pointsPrioritet:
+                                            columnPoint = sheetDay.Cells.Find(point).Column
+                                            if znach == sheetDay.Cells(row, columnPoint).Value:
+                                                savePointPrioritet.append(point)
+                                        # print(f'Список приоритетных кондитерских, где найдены максимальные значения: {savePointPrioritet}')
+                                        if len(savePointPrioritet) == 0:
+                                            spisok_indexes = []
+                                            for one_znach in range(len(spisokZnachToKvant)):
+                                                if spisokZnachToKvant[one_znach] == znach:
+                                                    spisok_indexes.append(one_znach)
+                                            # print(f'Список индексов где лежат максимальные значения, если кондитерские не найдены в списке приоритетных {spisok_indexes}')
+                                            columnPoint = sheetDay.Cells.Find(headersPrognoz[random.choice(spisok_indexes)]).Column
+                                            # print(f'Получаем столбец рандомом для кондитерской, если ее нет в приоритетных кондитерских: {columnPoint}')
+                                            sheetDay.Cells(row, columnPoint).Value += dataPrognoz['3'][key]
+                                        elif len(savePointPrioritet) == 1:
+                                            columnPoint = sheetDay.Cells.Find(savePointPrioritet[0]).Column
+                                            # print(f'Найдена всего одна кондитерская среди приоритетных значит получаем ее столбец: {columnPoint}')
+                                            sheetDay.Cells(row, columnPoint).Value += dataPrognoz['3'][key]
+                                        elif len(savePointPrioritet) > 1:
+                                            columnPoint = sheetDay.Cells.Find(random.choice(savePointPrioritet)).Column
+                                            # print(f'Найдена несколько кондитерских среди приоритетных значит получаем столбец рандомом: {columnPoint}')
+                                            sheetDay.Cells(row, columnPoint).Value += dataPrognoz['3'][key]
+                                    else:
+                                        columnPoint = sheetDay.Cells.Find(headersPrognoz[max_indexes[0]]).Column
+                                        # print(f'Получаем столбец для единственнонайденного максимального значения в строке: {columnPoint}')
                                         sheetDay.Cells(row, columnPoint).Value += dataPrognoz['3'][key]
-                                    elif len(savePointPrioritet) == 1:
-                                        columnPoint = sheetDay.Cells.Find(savePointPrioritet[0]).Column
-                                        # print(f'Найдена всего одна кондитерская среди приоритетных значит получаем ее столбец: {columnPoint}')
-                                        sheetDay.Cells(row, columnPoint).Value += dataPrognoz['3'][key]
-                                    elif len(savePointPrioritet) > 1:
-                                        columnPoint = sheetDay.Cells.Find(random.choice(savePointPrioritet)).Column
-                                        # print(f'Найдена несколько кондитерских среди приоритетных значит получаем столбец рандомом: {columnPoint}')
-                                        sheetDay.Cells(row, columnPoint).Value += dataPrognoz['3'][key]
-                                else:
-                                    columnPoint = sheetDay.Cells.Find(headersPrognoz[max_indexes[0]]).Column
-                                    # print(f'Получаем столбец для единственнонайденного максимального значения в строке: {columnPoint}')
-                                    sheetDay.Cells(row, columnPoint).Value += dataPrognoz['3'][key]
-                        sheetDay.Cells(row, len(headersPrognoz) + 6).Value = f"=RC[-2]-RC[-1]"
-                        sheetDay.Cells(row, len(headersPrognoz) + 4).Value = f"=SUM(RC[{-len(headersPrognoz)}]:RC[-1])"
-                        row += 1
+                                raspred = raspred - len(spisokZnachToKvant)
+                    sheetDay.Cells(row, len(headersPrognoz) + 6).Value = f"=RC[-2]-RC[-1]"
+                    sheetDay.Cells(row, len(headersPrognoz) + 4).Value = f"=SUM(RC[{-len(headersPrognoz)}]:RC[-1])"
+                    row += 1
                 for col in range(4, len(headersPrognoz) + 7):
                     sheetDay.Cells(row, col).Value = f"=SUM(R[{4 - row}]C:R[-1]C)"
                 sheetDay.Cells(row, 3).Value = 'ИТОГО'
