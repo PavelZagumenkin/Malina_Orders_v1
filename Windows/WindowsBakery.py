@@ -280,8 +280,8 @@ class WindowBakery(QtWidgets.QMainWindow):
         wb_OLAP_P = Excel.Workbooks.Open(pathOLAP_P)
         sheet_OLAP_P = wb_OLAP_P.ActiveSheet
         firstOLAPRow = sheet_OLAP_P.Range("A:A").Find("Код блюда").Row
+        pointsCheck = self.ui.formLayoutWidget.findChildren(QtWidgets.QCheckBox)
         if self.proverkaPeriodaKDayWeek(self.periodDay) == 0:
-            pointsCheck = self.ui.formLayoutWidget.findChildren(QtWidgets.QCheckBox)
             points = []
             for i in range(len(pointsCheck)):
                 if pointsCheck[i].isChecked():
@@ -290,6 +290,10 @@ class WindowBakery(QtWidgets.QMainWindow):
                         self.dialogNOvalidOLAP(pointsCheck[i].text())
                         return
                     points.append(pointsCheck[i].text())
+            pointsNonCheck = []
+            for i in range(len(pointsCheck)):
+                if not pointsCheck[i].isChecked():
+                    pointsNonCheck.append(pointsCheck[i].text())
         else:
             points = json.loads(self.poiskKDayWeek(self.periodDay).strip("\'"))
             del points[0:2]
@@ -298,9 +302,13 @@ class WindowBakery(QtWidgets.QMainWindow):
                 if ValidPoints == None:
                     self.dialogNOvalidOLAP(points[i])
                     return
+            pointsNonCheck = []
+            for i in range (len(pointsCheck)):
+                if not (pointsCheck[i].text() in points):
+                    pointsNonCheck.append(pointsCheck[i].text())
         self.hide()
         global WindowBakeryTablesEdit
-        WindowBakeryTablesEdit = Windows.WindowsBakeryTablesEdit.WindowBakeryTablesEdit(pathOLAP_P, periodDay, points)
+        WindowBakeryTablesEdit = Windows.WindowsBakeryTablesEdit.WindowBakeryTablesEdit(pathOLAP_P, periodDay, pointsNonCheck)
         WindowBakeryTablesEdit.showMaximized()
 
     def dialogNOvalidOLAP(self, pointsNoOLAP):
@@ -396,8 +404,8 @@ class WindowBakery(QtWidgets.QMainWindow):
         wb_OLAP_dayWeek_bakery = Excel.Workbooks.Open(pathOLAP_DayWeek)
         sheet_OLAP_dayWeek_bakery = wb_OLAP_dayWeek_bakery.ActiveSheet
         firstOLAPRow = sheet_OLAP_dayWeek_bakery.Range("A:A").Find("День недели").Row
+        pointsCheck = self.ui.formLayoutWidget.findChildren(QtWidgets.QCheckBox)
         if self.proverkaPerioda(self.periodDay) == 0:
-            pointsCheck = self.ui.formLayoutWidget.findChildren(QtWidgets.QCheckBox)
             points = []
             for i in range(len(pointsCheck)):
                 if pointsCheck[i].isChecked():
@@ -406,6 +414,10 @@ class WindowBakery(QtWidgets.QMainWindow):
                         self.dialogNOvalidOLAP(pointsCheck[i].text())
                         return
                     points.append(pointsCheck[i].text())
+            pointsNonCheck = []
+            for i in range(len(pointsCheck)):
+                if not pointsCheck[i].isChecked():
+                    pointsNonCheck.append(pointsCheck[i].text())
         else:
             points = json.loads(self.poiskPrognoza(self.periodDay).strip("\'"))
             del points[0:5]
@@ -414,10 +426,14 @@ class WindowBakery(QtWidgets.QMainWindow):
                 if ValidPoints == None:
                     self.dialogNOvalidOLAP(points[i])
                     return
+            pointsNonCheck = []
+            for i in range(len(pointsCheck)):
+                if not (pointsCheck[i].text() in points):
+                    pointsNonCheck.append(pointsCheck[i].text())
         self.hide()
         global WindowBakeryDayWeekEdit
         WindowBakeryDayWeekEdit = Windows.WindowsBakeryTablesDayWeekEdit.WindowBakeryTableDayWeekEdit(pathOLAP_DayWeek,
-                                                                                                      periodDay, points)
+                                                                                         periodDay, pointsNonCheck)
         WindowBakeryDayWeekEdit.showMaximized()
 
     def dayWeekTablesView(self):

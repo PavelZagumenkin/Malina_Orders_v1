@@ -297,8 +297,8 @@ class WindowPie(QtWidgets.QMainWindow):
         wb_OLAP_P = Excel.Workbooks.Open(pathOLAP_P)
         sheet_OLAP_P = wb_OLAP_P.ActiveSheet
         firstOLAPRow = sheet_OLAP_P.Range("A:A").Find("Код блюда").Row
+        pointsCheck = self.ui.formLayoutWidget.findChildren(QtWidgets.QCheckBox)
         if self.proverkaPeriodaKDayWeek(self.periodDay) == 0:
-            pointsCheck = self.ui.formLayoutWidget.findChildren(QtWidgets.QCheckBox)
             points = []
             for i in range(len(pointsCheck)):
                 if pointsCheck[i].isChecked():
@@ -307,6 +307,10 @@ class WindowPie(QtWidgets.QMainWindow):
                         self.dialogNOvalidOLAP(pointsCheck[i].text())
                         return
                     points.append(pointsCheck[i].text())
+            pointsNonCheck = []
+            for i in range(len(pointsCheck)):
+                if not pointsCheck[i].isChecked():
+                    pointsNonCheck.append(pointsCheck[i].text())
         else:
             points = json.loads(self.poiskKDayWeek(self.periodDay).strip("\'"))
             del points[0:2]
@@ -315,9 +319,13 @@ class WindowPie(QtWidgets.QMainWindow):
                 if ValidPoints == None:
                     self.dialogNOvalidOLAP(points[i])
                     return
+            pointsNonCheck = []
+            for i in range(len(pointsCheck)):
+                if not (pointsCheck[i].text() in points):
+                    pointsNonCheck.append(pointsCheck[i].text())
         self.hide()
         global WindowPieTablesEdit
-        WindowPieTablesEdit = Windows.WindowsPieTablesEdit.WindowPieTablesEdit(pathOLAP_P, periodDay, points)
+        WindowPieTablesEdit = Windows.WindowsPieTablesEdit.WindowPieTablesEdit(pathOLAP_P, periodDay, pointsNonCheck)
         WindowPieTablesEdit.showMaximized()
 
     def dialogNOvalidOLAP(self, pointsNoOLAP):
@@ -381,8 +389,8 @@ class WindowPie(QtWidgets.QMainWindow):
         wb_OLAP_dayWeek_pie = Excel.Workbooks.Open(pathOLAP_DayWeek)
         sheet_OLAP_dayWeek_pie = wb_OLAP_dayWeek_pie.ActiveSheet
         firstOLAPRow = sheet_OLAP_dayWeek_pie.Range("A:A").Find("День недели").Row
+        pointsCheck = self.ui.formLayoutWidget.findChildren(QtWidgets.QCheckBox)
         if self.proverkaPerioda(self.periodDay) == 0:
-            pointsCheck = self.ui.formLayoutWidget.findChildren(QtWidgets.QCheckBox)
             points = []
             for i in range(len(pointsCheck)):
                 if pointsCheck[i].isChecked():
@@ -391,6 +399,10 @@ class WindowPie(QtWidgets.QMainWindow):
                         self.dialogNOvalidOLAP(pointsCheck[i].text())
                         return
                     points.append(pointsCheck[i].text())
+                pointsNonCheck = []
+                for i in range(len(pointsCheck)):
+                    if not pointsCheck[i].isChecked():
+                        pointsNonCheck.append(pointsCheck[i].text())
         else:
             points = json.loads(self.poiskPrognoza(self.periodDay).strip("\'"))
             del points[0:6]
@@ -399,9 +411,13 @@ class WindowPie(QtWidgets.QMainWindow):
                 if ValidPoints == None:
                     self.dialogNOvalidOLAP(points[i])
                     return
+            pointsNonCheck = []
+            for i in range(len(pointsCheck)):
+                if not (pointsCheck[i].text() in points):
+                    pointsNonCheck.append(pointsCheck[i].text())
         self.hide()
         global WindowPieDayWeekEdit
-        WindowPieDayWeekEdit = Windows.WindowsPieTablesDayWeekEdit.WindowPieTableDayWeekEdit(pathOLAP_DayWeek, periodDay, points)
+        WindowPieDayWeekEdit = Windows.WindowsPieTablesDayWeekEdit.WindowPieTableDayWeekEdit(pathOLAP_DayWeek, periodDay, pointsNonCheck)
         WindowPieDayWeekEdit.showMaximized()
 
     def dayWeekTablesView(self):

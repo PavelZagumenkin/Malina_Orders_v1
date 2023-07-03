@@ -11,7 +11,7 @@ from handler.check_db import CheckThread
 import Windows.WindowsBakery
 
 class WindowBakeryTablesEdit(QtWidgets.QMainWindow):
-    def __init__(self, pathOLAP_P, periodDay, points):
+    def __init__(self, pathOLAP_P, periodDay, pointsNonCheck):
         super().__init__()
         self.ui = Ui_WindowBakeryTables()
         self.ui.setupUi(self)
@@ -24,9 +24,9 @@ class WindowBakeryTablesEdit(QtWidgets.QMainWindow):
         sheet_OLAP_P = wb_OLAP_P.ActiveSheet
         firstOLAPRow = sheet_OLAP_P.Range("A:A").Find("Код блюда").Row
         # Фильтруем точки по Checkbox-сам
-        for i in range(len(points)):
-            ValidPoints = sheet_OLAP_P.Rows(firstOLAPRow).Find(points[i])
-            if ValidPoints == None:
+        for i in range(len(pointsNonCheck)):
+            ValidPoints = sheet_OLAP_P.Rows(firstOLAPRow).Find(pointsNonCheck[i])
+            if ValidPoints != None:
                 sheet_OLAP_P.Columns(ValidPoints.Column).Delete()
         # Удаляем пустые столбцы и строки
         for _ in range(firstOLAPRow - 1):
