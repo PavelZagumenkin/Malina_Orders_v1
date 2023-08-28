@@ -563,6 +563,12 @@ class WindowBakery(QtWidgets.QMainWindow):
                 pointExcel = Excel.Workbooks.Add()
                 sheet = pointExcel.ActiveSheet
                 sheet.Columns(1).NumberFormat = "@"
+                sheet.Columns(6).NumberFormat = "@"
+                sheet.Columns(11).NumberFormat = "@"
+                sheet.Columns(16).NumberFormat = "@"
+                sheet.Columns(21).NumberFormat = "@"
+                sheet.Columns(26).NumberFormat = "@"
+                sheet.Columns(31).NumberFormat = "@"
                 dayCol = 1
                 for day in range(0, 7):
                     DayInPeriod = self.periodDay[0].addDays(day)
@@ -610,6 +616,8 @@ class WindowBakery(QtWidgets.QMainWindow):
                     if dayCol != 1:
                         sheet.Columns(dayCol).PageBreak = True
                     dayCol += 5
+                sortRange = sheet.Range(sheet.Cells(3, 1), sheet.Cells(sheet.UsedRange.Rows.Count, dayCol+4))
+                sortRange.Sort(Key1=sortRange.Range("B3"), Order1=1, Orientation=1)  # Сортировка по возрастанию
                 Excel.DisplayAlerts = False
                 pointExcel.SaveAs(Filename=(folderName + '\\' + point + '.xlsx'))
                 pointExcel.Close()
