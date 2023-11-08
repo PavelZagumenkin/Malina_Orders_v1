@@ -199,7 +199,7 @@ class WindowBakery(QtWidgets.QMainWindow):
         Excel = win32com.client.Dispatch("Excel.Application")
         wb_OLAP_P = Excel.Workbooks.Open(pathOLAP_P)
         sheet_OLAP_P = wb_OLAP_P.ActiveSheet
-        if sheet_OLAP_P.Name != "OLAP отчет для Пекарни":
+        if sheet_OLAP_P.Name != "OLAP отчет для Выпечки":
             wb_OLAP_P.Close()
             Excel.Quit()
             self.ui.lineEdit_OLAP_P.setStyleSheet("padding-left: 5px; color: rgba(228, 107, 134, 1)")
@@ -233,7 +233,7 @@ class WindowBakery(QtWidgets.QMainWindow):
         Excel = win32com.client.Dispatch("Excel.Application")
         wb_OLAP_DayWeek = Excel.Workbooks.Open(pathOLAP_DayWeek)
         sheet_OLAP_DayWeek = wb_OLAP_DayWeek.ActiveSheet
-        if sheet_OLAP_DayWeek.Name != "OLAP по дням недели для програм":
+        if sheet_OLAP_DayWeek.Name != "OLAP по дням недели для Выпечки":
             wb_OLAP_DayWeek.Close()
             Excel.Quit()
             self.ui.lineEdit_OLAP_dayWeek_bakery.setStyleSheet("padding-left: 5px; color: rgba(228, 107, 134, 1)")

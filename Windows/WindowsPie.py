@@ -250,7 +250,7 @@ class WindowPie(QtWidgets.QMainWindow):
         Excel = win32com.client.Dispatch("Excel.Application")
         wb_OLAP_DayWeek = Excel.Workbooks.Open(pathOLAP_DayWeek)
         sheet_OLAP_DayWeek = wb_OLAP_DayWeek.ActiveSheet
-        if sheet_OLAP_DayWeek.Name != "OLAP по дням недели для програм":
+        if sheet_OLAP_DayWeek.Name != "OLAP по дням недели для Пирожны":
             wb_OLAP_DayWeek.Close()
             Excel.Quit()
             self.ui.lineEdit_OLAP_dayWeek_pie.setStyleSheet("padding-left: 5px; color: rgba(228, 107, 134, 1)")
