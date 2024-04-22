@@ -131,7 +131,7 @@ class Ui_WindowLogin(object):
         self.btn_login.setText(_translate("WindowLogin", "Начать работу"))
         self.line_login.setPlaceholderText(_translate("WindowLogin", "Логин"))
         self.label_autor_text.setText(_translate("WindowLogin", "Автор логиcтических расчетов Китов А.О. \n"
-" Разработчик Загуменкин П.И.\n Версия программы 1.9"))
+" Разработчик Загуменкин П.И.\n Версия программы 1.9.5"))
         self.line_password.setPlaceholderText(_translate("WindowLogin", "Пароль"))
         self.label_login_password.setText(_translate("WindowLogin", "Введите логин и пароль"))
         self.lable_suppot_text.setText(_translate("WindowLogin", "По всем вопросам работы программы \n"

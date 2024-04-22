@@ -63,14 +63,14 @@
      <number>5</number>
     </property>
     <item row="0" column="0">
-     <widget class="QCheckBox" name="cb_begovaya">
+     <widget class="QCheckBox" name="cb_astahanskaya">
       <property name="font">
        <font>
         <pointsize>11</pointsize>
        </font>
       </property>
       <property name="text">
-       <string>Беговая</string>
+       <string>Астраханская</string>
       </property>
       <property name="checked">
        <bool>false</bool>
