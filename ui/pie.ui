@@ -118,7 +118,6 @@
      <font>
       <family>Trebuchet MS</family>
       <pointsize>22</pointsize>
-      <weight>50</weight>
       <bold>false</bold>
      </font>
     </property>
@@ -199,7 +198,6 @@ background-color: rgba(228, 107, 134, 1)
      <font>
       <family>Trebuchet MS</family>
       <pointsize>22</pointsize>
-      <weight>50</weight>
       <bold>false</bold>
      </font>
     </property>
@@ -239,7 +237,6 @@ background-color: rgba(228, 107, 134, 1)
      <font>
       <family>Trebuchet MS</family>
       <pointsize>22</pointsize>
-      <weight>50</weight>
       <bold>false</bold>
      </font>
     </property>
@@ -282,7 +279,6 @@ background-color: rgba(228, 107, 134, 1)
      <font>
       <family>Trebuchet MS</family>
       <pointsize>16</pointsize>
-      <weight>50</weight>
       <bold>false</bold>
      </font>
     </property>
@@ -391,7 +387,6 @@ background-color: rgba(228, 107, 134, 1)
      <font>
       <family>Trebuchet MS</family>
       <pointsize>12</pointsize>
-      <weight>75</weight>
       <bold>true</bold>
      </font>
     </property>
@@ -418,7 +413,6 @@ background-color: rgba(228, 107, 134, 1)
      <font>
       <family>Trebuchet MS</family>
       <pointsize>12</pointsize>
-      <weight>75</weight>
       <bold>true</bold>
      </font>
     </property>
@@ -442,7 +436,6 @@ background-color: rgba(228, 107, 134, 1)
      <font>
       <family>Trebuchet MS</family>
       <pointsize>16</pointsize>
-      <weight>50</weight>
       <bold>false</bold>
      </font>
     </property>
@@ -485,7 +478,6 @@ background-color: rgba(228, 107, 134, 1)
      <font>
       <family>Trebuchet MS</family>
       <pointsize>16</pointsize>
-      <weight>50</weight>
       <bold>false</bold>
      </font>
     </property>
@@ -528,7 +520,6 @@ background-color: rgba(228, 107, 134, 1)
      <font>
       <family>Trebuchet MS</family>
       <pointsize>16</pointsize>
-      <weight>50</weight>
       <bold>false</bold>
      </font>
     </property>
@@ -645,7 +636,6 @@ background-color: rgba(228, 107, 134, 1)
      <font>
       <family>Trebuchet MS</family>
       <pointsize>16</pointsize>
-      <weight>50</weight>
       <bold>false</bold>
      </font>
     </property>
@@ -688,7 +678,6 @@ background-color: rgba(228, 107, 134, 1)
      <font>
       <family>Trebuchet MS</family>
       <pointsize>16</pointsize>
-      <weight>50</weight>
       <bold>false</bold>
      </font>
     </property>
@@ -731,7 +720,6 @@ background-color: rgba(228, 107, 134, 1)
      <font>
       <family>Trebuchet MS</family>
       <pointsize>16</pointsize>
-      <weight>50</weight>
       <bold>false</bold>
      </font>
     </property>
@@ -774,7 +762,6 @@ background-color: rgba(228, 107, 134, 1)
      <font>
       <family>Trebuchet MS</family>
       <pointsize>16</pointsize>
-      <weight>50</weight>
       <bold>false</bold>
      </font>
     </property>
@@ -838,111 +825,6 @@ background-color: rgba(228, 107, 134, 1)
      <property name="topMargin">
       <number>5</number>
      </property>
-     <item row="0" column="1">
-      <widget class="QCheckBox" name="cb_svoboda_2">
-       <property name="font">
-        <font>
-         <pointsize>11</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Радищева</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QCheckBox" name="cb_rahova">
-       <property name="font">
-        <font>
-         <pointsize>11</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Рахова</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1">
-      <widget class="QCheckBox" name="cb_svoboda">
-       <property name="font">
-        <font>
-         <pointsize>11</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Свобода</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="1">
-      <widget class="QCheckBox" name="cb_solnechnii">
-       <property name="font">
-        <font>
-         <pointsize>11</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Солнечный</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="1">
-      <widget class="QCheckBox" name="cb_stargrad">
-       <property name="font">
-        <font>
-         <pointsize>11</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Старград</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="5" column="1">
-      <widget class="QCheckBox" name="cb_stepnaya">
-       <property name="font">
-        <font>
-         <pointsize>11</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Степная</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="6" column="1">
-      <widget class="QCheckBox" name="cb_topol">
-       <property name="font">
-        <font>
-         <pointsize>11</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Топольчанская</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
      <item row="7" column="0">
       <widget class="QCheckBox" name="cb_magazin">
        <property name="font">
@@ -952,36 +834,6 @@ background-color: rgba(228, 107, 134, 1)
        </property>
        <property name="text">
         <string>Магазин</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="7" column="1">
-      <widget class="QCheckBox" name="cb_trnavskaya">
-       <property name="font">
-        <font>
-         <pointsize>11</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Трнавская</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="8" column="1">
-      <widget class="QCheckBox" name="cb_ust_kurdym">
-       <property name="font">
-        <font>
-         <pointsize>11</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Усть-Курдюмская</string>
        </property>
        <property name="checked">
         <bool>true</bool>
@@ -1003,21 +855,6 @@ background-color: rgba(228, 107, 134, 1)
        </property>
       </widget>
      </item>
-     <item row="9" column="1">
-      <widget class="QCheckBox" name="cb_fridriha">
-       <property name="font">
-        <font>
-         <pointsize>11</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Фридриха 11</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
      <item row="10" column="0">
       <widget class="QCheckBox" name="cb_marks">
        <property name="font">
@@ -1033,27 +870,6 @@ background-color: rgba(228, 107, 134, 1)
        </property>
       </widget>
      </item>
-     <item row="10" column="1">
-      <widget class="QCheckBox" name="cb_chehova">
-       <property name="enabled">
-        <bool>true</bool>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>11</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Чехова</string>
-       </property>
-       <property name="checkable">
-        <bool>true</bool>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
      <item row="11" column="0">
       <widget class="QCheckBox" name="cb_orang">
        <property name="font">
@@ -1063,36 +879,6 @@ background-color: rgba(228, 107, 134, 1)
        </property>
        <property name="text">
         <string>Оранж</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="11" column="1">
-      <widget class="QCheckBox" name="cb_entuziastov">
-       <property name="font">
-        <font>
-         <pointsize>11</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Энтузиастов</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="12" column="0">
-      <widget class="QCheckBox" name="cb_pobeda">
-       <property name="font">
-        <font>
-         <pointsize>11</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Победа</string>
        </property>
        <property name="checked">
         <bool>true</bool>
@@ -1222,6 +1008,222 @@ background-color: rgba(228, 107, 134, 1)
        </property>
       </widget>
      </item>
+     <item row="12" column="1">
+      <widget class="QCheckBox" name="cb_entuziastov">
+       <property name="font">
+        <font>
+         <pointsize>11</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Энтузиастов</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="11" column="1">
+      <widget class="QCheckBox" name="cb_chehova">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>11</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Чехова</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="10" column="1">
+      <widget class="QCheckBox" name="cb_fridriha">
+       <property name="font">
+        <font>
+         <pointsize>11</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Фридриха 11</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="9" column="1">
+      <widget class="QCheckBox" name="cb_ust_kurdym">
+       <property name="font">
+        <font>
+         <pointsize>11</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Усть-Курдюмская</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="8" column="1">
+      <widget class="QCheckBox" name="cb_trnavskaya">
+       <property name="font">
+        <font>
+         <pointsize>11</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Трнавская</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="1">
+      <widget class="QCheckBox" name="cb_topol">
+       <property name="font">
+        <font>
+         <pointsize>11</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Топольчанская</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="1">
+      <widget class="QCheckBox" name="cb_stepnaya">
+       <property name="font">
+        <font>
+         <pointsize>11</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Степная</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="1">
+      <widget class="QCheckBox" name="cb_stargrad">
+       <property name="font">
+        <font>
+         <pointsize>11</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Старград</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1">
+      <widget class="QCheckBox" name="cb_solnechnii">
+       <property name="font">
+        <font>
+         <pointsize>11</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Солнечный</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QCheckBox" name="cb_svoboda">
+       <property name="font">
+        <font>
+         <pointsize>11</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Свобода</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QCheckBox" name="cb_rahova">
+       <property name="font">
+        <font>
+         <pointsize>11</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Рахова</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QCheckBox" name="cb_svoboda_2">
+       <property name="font">
+        <font>
+         <pointsize>11</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Радищева</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QCheckBox" name="cb_pobeda">
+       <property name="font">
+        <font>
+         <pointsize>11</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Победа</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="12" column="0">
+      <widget class="QCheckBox" name="cb_orgevskogo">
+       <property name="font">
+        <font>
+         <pointsize>11</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Оржевского</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
     </layout>
    </widget>
    <widget class="Line" name="line">
@@ -1344,7 +1346,6 @@ background-color: rgba(228, 107, 134, 1)
      <font>
       <family>Trebuchet MS</family>
       <pointsize>20</pointsize>
-      <weight>75</weight>
       <bold>true</bold>
      </font>
     </property>
@@ -1449,7 +1450,6 @@ background-color: rgba(228, 107, 134, 1)
      <font>
       <family>Trebuchet MS</family>
       <pointsize>16</pointsize>
-      <weight>50</weight>
       <bold>false</bold>
      </font>
     </property>
