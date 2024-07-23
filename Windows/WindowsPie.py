@@ -492,19 +492,17 @@ class WindowPie(QtWidgets.QMainWindow):
                 sheetSvod.Cells(1, 3).Value = 'Участок \nприготовления'
                 sheetSvod.Cells(1, 11).Value = 'ИТОГО'
                 sheetSvod.Cells(1, 4 + day).Value = DayInPeriod.addDays(-1).toString('dd.MM.yyyy')
-                sheetDay.Cells(3, len(headersPrognoz) + 4).Value = 'ПЛАН'
-                sheetDay.Cells(3, len(headersPrognoz) + 5).Value = 'ФАКТ'
-                sheetDay.Cells(3, len(headersPrognoz) + 6).Value = 'РАЗНИЦА'
+
                 col = 4
                 for point in headersPrognoz:
                     sheetDay.Cells(3, col).Value = point
                     col += 1
-                row = 4
+                row = 3
                 for key in dataPrognoz['5']:
                     if key != '0':
                         sheetDay.Cells(row, 1).Value = dataPrognoz['5'][key]
                         sheetDay.Cells(row, 2).Value = dataPrognoz['6'][key]
-                        print(dataPrognoz['6'][key])
+                        # print(dataPrognoz['6'][key])
                         sheetDay.Cells(row, 3).Value = 'Участок пирожных'
                         sheetSvod.Cells(row-2, 1).Value = dataPrognoz['5'][key]
                         sheetSvod.Cells(row-2, 2).Value = dataPrognoz['6'][key]
@@ -523,7 +521,7 @@ class WindowPie(QtWidgets.QMainWindow):
                             raspred = (summBludaToZames - summBludaToKvant) / dataPrognoz['3'][key]
                             spisokZnachToKvant = list(sheetDay.Range(sheetDay.Cells(row, 4), sheetDay.Cells(row, len(headersPrognoz) + 3)).Value[0])
                             kol_cycle = ceil(raspred / len(spisokZnachToKvant))
-                            print(f'Необходимо циклов для распределения: {kol_cycle}')
+                            # print(f'Необходимо циклов для распределения: {kol_cycle}')
                             for _ in range(0, kol_cycle):
                                 spisokZnachToKvant = list(sheetDay.Range(sheetDay.Cells(row, 4), sheetDay.Cells(row, len(headersPrognoz) + 3)).Value[0])
                                 # Инициализируем список с парами (индекс, значение)
@@ -533,14 +531,14 @@ class WindowPie(QtWidgets.QMainWindow):
                                 # Получаем список индексов первых n_max максимальных значений
                                 max_indexes = [x[0] for x in sorted_values[:int(raspred)]]
                                 max_znach = [x[1] for x in sorted_values[:int(raspred)]]
-                                print(f'Необходимо распределить квантов:  {int(raspred)}')
-                                print(f'Индексы максимальных значений для распределения:  {max_indexes}')
-                                print(f'Максимальные значения для распределения:  {max_znach}')
-                                print('Кондитерские с максимальными индексами:', end='')
-                                for i in max_indexes:
-                                    print({headersPrognoz[i]}, end=" ")
-                                print()
-                                print(f'Точки приоритета: {pointsPrioritet}')
+                                # print(f'Необходимо распределить квантов:  {int(raspred)}')
+                                # print(f'Индексы максимальных значений для распределения:  {max_indexes}')
+                                # print(f'Максимальные значения для распределения:  {max_znach}')
+                                # print('Кондитерские с максимальными индексами:', end='')
+                                # for i in max_indexes:
+                                #     print({headersPrognoz[i]}, end=" ")
+                                # print()
+                                # print(f'Точки приоритета: {pointsPrioritet}')
                                 for znach in max_znach:
                                     if spisokZnachToKvant.count(znach) > 1:
                                         # print(f'В строке найдено максимальных значений: {spisokZnachToKvant.count(znach)}')
@@ -575,6 +573,9 @@ class WindowPie(QtWidgets.QMainWindow):
                     sheetDay.Cells(row, len(headersPrognoz) + 6).Value = f"=RC[-2]-RC[-1]"
                     sheetDay.Cells(row, len(headersPrognoz) + 4).Value = f"=SUM(RC[{-len(headersPrognoz)}]:RC[-1])"
                     row += 1
+                sheetDay.Cells(3, len(headersPrognoz) + 4).Value = 'ПЛАН'
+                sheetDay.Cells(3, len(headersPrognoz) + 5).Value = 'ФАКТ'
+                sheetDay.Cells(3, len(headersPrognoz) + 6).Value = 'РАЗНИЦА'
                 for col in range(4, len(headersPrognoz) + 7):
                     sheetDay.Cells(row, col).Value = f"=SUM(R[{4 - row}]C:R[-1]C)"
                 sheetDay.Cells(row, 3).Value = 'ИТОГО'
@@ -602,7 +603,7 @@ class WindowPie(QtWidgets.QMainWindow):
             lastColumn = sheetSvod.UsedRange.Columns.Count
             lastRow = sheetSvod.UsedRange.Rows.Count
             for row in range(2, lastRow + 2):
-                sheetSvod.Cells(row, lastColumn).Value = f"=SUM(RC[-8]:RC[-1])"
+                sheetSvod.Cells(row, lastColumn).Value = f"=SUM(RC[-7]:RC[-1])"
                 sheetSvod.Cells(row, 2).WrapText = True
             lastRow = sheetSvod.UsedRange.Rows.Count
             for col in range(4, lastColumn):
