@@ -1116,21 +1116,6 @@ background-color: rgba(228, 107, 134, 1)
        </property>
       </widget>
      </item>
-     <item row="10" column="1">
-      <widget class="QCheckBox" name="cb_entuziastov">
-       <property name="font">
-        <font>
-         <pointsize>11</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Энтузиастов</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
      <item row="9" column="1">
       <widget class="QCheckBox" name="cb_fridriha">
        <property name="font">
@@ -1290,6 +1275,36 @@ background-color: rgba(228, 107, 134, 1)
        </property>
        <property name="text">
         <string>Оржевского</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="11" column="1">
+      <widget class="QCheckBox" name="cb_entuziastov">
+       <property name="font">
+        <font>
+         <pointsize>11</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Энтузиастов</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="10" column="1">
+      <widget class="QCheckBox" name="cb_centr">
+       <property name="font">
+        <font>
+         <pointsize>11</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Центр</string>
        </property>
        <property name="checked">
         <bool>true</bool>
